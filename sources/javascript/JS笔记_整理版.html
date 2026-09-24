@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JS 基础笔记｜整理版</title>
+<style>
+:root{--ink:#172033;--muted:#536176;--paper:#fffdf8;--line:#d9e0ea;--blue:#185adb;--blue-pale:#eaf1ff;--warn:#9a4f00;--warn-pale:#fff4e5;--code:#172033}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#eef2f7;color:var(--ink);font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}.wrap{max-width:1120px;margin:auto;background:var(--paper);min-height:100vh;padding:40px clamp(20px,5vw,68px) 80px}header{border-bottom:1px solid var(--line);padding-bottom:28px}h1{font-size:clamp(2.35rem,5vw,3.5rem);line-height:1.1;margin:0 0 10px;letter-spacing:-.025em}h2{font-size:2.15rem;line-height:1.25;margin:62px 0 16px;padding-top:14px;border-top:3px solid var(--blue)}h3{font-size:1.38rem;line-height:1.35;margin:34px 0 10px}p{margin:9px 0}.sub,.result{color:var(--muted);margin:0}.search{position:sticky;top:0;z-index:2;background:rgba(255,253,248,.96);padding:16px 0 10px;border-bottom:1px solid var(--line)}input{width:100%;padding:12px 14px;border:1px solid #aebbd0;border-radius:8px;font:inherit}nav{background:#f6f8fc;border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin:28px 0}nav ol{columns:2;margin:8px 0 0;padding-left:22px}a{color:var(--blue);text-decoration:none}.quick{background:var(--blue-pale);border:1px solid #c8d8fa;padding:13px 16px;border-radius:8px}.note,.accurate{padding:12px 15px;border-radius:8px;margin:15px 0}.note{background:#f4f6f9;border:1px solid #dce3eb}.accurate{background:var(--warn-pale);border:1px solid #f0cf9b}.label{font-weight:700}pre{overflow:auto;background:var(--code);color:#f4f7ff;padding:15px 17px;border-radius:8px;line-height:1.55;font:14px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}details{border:1px solid var(--line);border-radius:9px;margin:18px 0;background:#fff}summary{cursor:pointer;padding:12px 15px;font-weight:700;color:#263c62}.detail-body{padding:0 16px 16px}.original{white-space:pre-wrap;background:#f7f8fa;border-radius:7px;padding:13px;overflow:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.hidden{display:none!important}.mark{background:#ffe48a;padding:0 1px;border-radius:2px}@media(max-width:640px){.wrap{padding:26px 18px 55px}nav ol{columns:1}h2{font-size:1.75rem}h3{font-size:1.25rem}pre{font-size:12px}}
+</style></head>
+<body><main class="wrap">
+<header><h1>JavaScript 基础笔记</h1><p class="sub">整理版 · 原稿保留在同目录 <code>注释-[Javascript].html</code> · 无需联网，可直接双击打开</p></header>
+<div class="search"><input id="search" type="search" placeholder="搜索知识点、案例或原笔记内容，例如：NaN、temp、arr.length"><p id="count" class="result" aria-live="polite">输入关键词可定位内容；命中折叠内容会自动展开。</p></div>
+<nav aria-label="目录"><strong>目录</strong><ol><li><a href="#browser">JS 与浏览器</a></li><li><a href="#writing">书写方式</a></li><li><a href="#variables">变量与常量</a></li><li><a href="#types">数组与数据类型</a></li><li><a href="#conversion">类型转换</a></li><li><a href="#operators">运算符</a></li><li><a href="#branch">分支</a></li><li><a href="#debug">断点调试</a></li><li><a href="#loops">循环与案例</a></li></ol></nav>
+<section id="browser" data-section><h2>1. JS 与浏览器</h2><div class="quick"><span class="label">快速理解：</span>JavaScript 是让网页“会回应”的语言：点按钮、验证表单、把数据放到页面上，都离不开它。浏览器读到 JS 后执行它。</div><pre><code>console.log('你好，JS！'); // 在浏览器 Console 查看</code></pre><h3>原笔记整理</h3><p>JavaScript（简称 JS）是一种运行在客户端（浏览器）的编程语言，用来实现人机交互效果。</p><ul><li>网页特效：监听用户操作，作出相应反应。</li><li>表单验证：判断用户输入是否合法。</li><li>数据交互：获取后台数据并渲染到前端。</li><li>服务端编程：Node.js 也可以运行 JS。</li></ul><p><code>ECMAScript（基本语法） + Web APIs（DOM、BOM 等浏览器接口） = JavaScript</code>。ES 是 JS 的标准规范，由 ECMA 国际组织制定，规定语法、数据类型、控制结构、函数、对象等；Web API 是浏览器提供的接口。</p><p><strong>DOM（Document Object Model）</strong>操作 HTML 文档的结构、样式和内容；<strong>BOM（Browser Object Model）</strong>操作浏览器窗口、历史记录、导航等。</p><div class="note"><span class="label">执行顺序：</span>JS 通常按 HTML 文档流顺序执行。<code>alert()</code>、<code>prompt()</code> 会暂停当前脚本与页面交互，等待用户关闭对话框。</div></section>
+<section id="writing" data-section><h2>2. 书写方式</h2><div class="quick"><span class="label">快速理解：</span>通常将 JS 写入独立的 <code>.js</code> 文件，再由 HTML 引入；小练习可以直接放在页面底部的 <code>&lt;script&gt;</code> 中。</div><pre><code>&lt;!-- HTML 中，放在 body 结尾 --&gt;
+&lt;script src="app.js"&gt;&lt;/script&gt;
+
+// app.js
+console.log('页面加载后执行');</code></pre><ul><li><strong>内部 JS：</strong>在 HTML 的 <code>&lt;script&gt;</code> 中写。通常放在 <code>&lt;/body&gt;</code> 前；若放在 <code>&lt;head&gt;</code>，加 <code>defer</code>，避免元素未加载就查找失败。</li><li><strong>外部 JS：</strong>写入独立 <code>.js</code> 文件，以 <code>&lt;script src="..."&gt;&lt;/script&gt;</code> 引入。带 <code>src</code> 的 script 标签中不应再写可执行代码。</li><li><strong>行内 JS：</strong><code>&lt;button onclick="alert('Hello, JS!')"&gt;点击我&lt;/button&gt;</code>。不建议使用，因为 HTML 和 JS 混在一起，维护与安全性更差。</li></ul><p><code>alert()</code> 弹出提示框；<code>console.log()</code> 输出到控制台，适合调试；<code>document.write()</code> 向文档写内容；<code>prompt()</code> 返回用户输入（或取消时的 <code>null</code>）；<code>confirm()</code> 返回布尔值。</p><div class="accurate"><span class="label">更准确的说法：</span><code>document.write()</code> 在文档解析期间会写入当前位置；在页面加载完成后调用通常会清空并重写当前文档，因此现代页面一般不用它。</div><h3>命名、注释、结束符与字面量</h3><p>变量名不能用关键字（如 <code>let</code>、<code>if</code>、<code>for</code>），不能以数字开头，不能有空格或特殊字符，区分大小写；短横线 <code>-</code> 不能用于变量名。建议使用有意义的名字与小驼峰：<code>myUserName</code>。</p><p>单行注释是 <code>//</code>；块注释是 <code>/* ... */</code>，不能嵌套。分号可按项目规范统一写或省略；自动插入分号（ASI）有边界情况，初学阶段统一写更直观。字面量是代码中直接写出的固定值，例如 <code>42</code>、<code>'JavaScript'</code>、<code>true</code>、<code>[1,2,3]</code>、<code>{ name: 'Alice', age: 30 }</code>。</p></section>
+<section id="variables" data-section><h2>3. 变量与常量</h2><div class="quick"><span class="label">快速理解：</span>变量像贴了名字的盒子，值会变时用 <code>let</code>；绑定本身不换时用 <code>const</code>。先声明，再使用。</div><pre><code>let score = 60;
+score = 80;          // 更新变量
+const course = 'JS'; // 不能重新赋值 course = 'CSS'</code></pre><p>变量是程序在内存中申请的一小块存储空间：变量名像门牌号，地址由程序分配，数据放在对应空间中。基本使用分四步：声明、赋值、更新、声明多个变量。</p><pre><code>let age;            // 声明
+age = 18;           // 赋值
+age = 19;           // 更新，不再写 let
+let name = 'Siyu';  // 声明时赋值</code></pre><p><code>let</code> 在同一作用域不能重复声明。多变量可以写成 <code>let a = 1, b = 2;</code>，但原笔记建议一行一个，更清晰。</p><h3>案例：变量交换</h3><div class="note"><strong>需求：</strong>交换 <code>a</code> 与 <code>b</code> 的值。<br><strong>思路：</strong>不能直接先写 <code>a = b</code>，否则原 a 会丢失；借第三个临时变量 <code>temp</code> 暂存。</div><pre><code>let a = 114;
+let b = 514;
+let temp = a; // 第一步：temp 保存 a（114）
+a = b;        // 第二步：a 变为 514
+b = temp;     // 第三步：b 变为 114
+console.log(a, b); // 514 114</code></pre><p><strong>每一步如何变化：</strong><code>a=114, b=514</code> → <code>temp=114</code> → <code>a=514</code> → <code>b=114</code>。赋值永远是右边给左边；<code>temp</code> 是惯用名，不是固定名称。</p><h3>let、var、const</h3><ul><li><code>var</code> 是旧写法，可重复声明，函数作用域，有变量提升；现代代码通常不用。</li><li><code>let</code> 不可在同一作用域重复声明，块级作用域，声明前处于暂时性死区，不能访问。</li><li><code>const</code> 必须声明时赋值，不能重新赋值。原笔记的原则：能用 const 就用，确定值会变才用 let。</li></ul><div class="accurate"><span class="label">更准确的说法：</span><code>const</code> 禁止的是“重新赋值”，不是冻结对象或数组。<code>const list = [];</code> 后可 <code>list.push(1)</code>，但不能 <code>list = []</code>；对象属性同理。若要禁止内部修改，需要 <code>Object.freeze()</code>（默认是浅冻结）。</div></section>
+<section id="types" data-section><h2>4. 数组与数据类型</h2><div class="quick"><span class="label">快速理解：</span>数据类型决定一个值能做什么。数组用一个变量名按顺序保存多个值，访问时从下标 0 开始。</div><pre><code>const fruits = ['apple', 'banana', 'orange'];
+console.log(fruits[0]);      // apple
+console.log(fruits.length);  // 3</code></pre><h3>数组</h3><p>数组是有序值的集合，可混合放数字、字符串、布尔值、对象等。元素（element）是每个值；索引（index）是位置，从 0 开始；长度（length）是元素数量。</p><pre><code>let fruits = ['apple', 'banana', 'orange'];
+let numbers = [1, 2, 3, 4, 5];
+let mixed = [42, 'hello', true, null];
+// fruits[0] 是 'apple'，fruits[1] 是 'banana'</code></pre><h3>JS 的数据类型</h3><p>JS 是动态类型语言：变量不需要先写死类型，值改变时类型可以随之变化。基础值类型包括 <code>number</code>、<code>string</code>、<code>boolean</code>、<code>undefined</code>、<code>null</code>、<code>symbol</code>、<code>bigint</code>；对象、数组等是对象值。</p><ul><li><strong>Number：</strong>正数、负数、小数都是 Number；<code>Infinity</code> 表示无穷大。</li><li><strong>String：</strong>文本可用单引号、双引号或反引号；模板字符串可写 <code>`My name is ${name}`</code>。</li><li><strong>Boolean：</strong>只有 true 与 false。假值有 <code>false</code>、<code>0</code>、<code>''</code>、<code>null</code>、<code>undefined</code>、<code>NaN</code>；其余值为真值。</li><li><strong>null：</strong>主动表示“这里没有值”；<strong>undefined：</strong>通常表示未赋值，函数无返回值也会得到它。</li><li><strong>Symbol：</strong>每次创建都唯一，常作对象属性键，初级阶段了解即可。</li><li><strong>Object / Array：</strong>对象是键值对集合；数组是有序数据。</li></ul><pre><code>typeof 42;         // 'number'
+typeof 'hello';    // 'string'
+typeof true;       // 'boolean'
+typeof undefined;  // 'undefined'
+typeof null;       // 'object'（历史遗留）
+typeof [];         // 'object'</code></pre><div class="accurate"><span class="label">更准确的说法：</span>原笔记将数据类型分为“基本 / 引用”便于入门，但规范里没有“引用类型”这个正式分类；对象（包括数组、函数）是对象值。另有 <code>bigint</code> 类型；判断数组应使用 <code>Array.isArray([])</code>，不要只看 <code>typeof</code>。</div><div class="accurate"><span class="label">更准确的说法：</span><code>NaN</code> 是 number 类型的特殊值，不是“非数字类型”。它通常表示数值运算无法得到有效数字结果；<code>NaN !== NaN</code>，应使用 <code>Number.isNaN(value)</code> 判断，避免全局 <code>isNaN()</code> 先做隐式转换带来的误解。</div></section>
+<section id="conversion" data-section><h2>5. 类型转换</h2><div class="quick"><span class="label">快速理解：</span>输入框拿到的内容通常是字符串。要计算就先明确转成数字，避免 <code>'10' + 5</code> 得到 <code>'105'</code>。</div><pre><code>const price = Number(prompt('请输入价格'));
+console.log(price + 5);</code></pre><p><strong>显式转换</strong>是自己调用函数：<code>Number('42')</code> 得 42，<code>String(42)</code> 得 '42'，<code>Boolean(0)</code> 得 false。</p><ul><li><code>parseInt('42.9px')</code> 得 42；<code>parseFloat('3.14px')</code> 得 3.14。</li><li>开头不是数字时，<code>parseInt('px42')</code> 得 <code>NaN</code>。它们可从 CSS 的 <code>'300px'</code> 中提取数字。</li><li><code>Number('')</code>、<code>Number(null)</code> 是 0；<code>Number('hello')</code>、<code>Number(undefined)</code> 是 NaN。</li><li><code>String(true)</code>、<code>String(null)</code>、<code>String(undefined)</code> 会变成对应文字字符串。</li><li><code>Boolean(0)</code>、<code>Boolean('')</code>、<code>Boolean(null)</code>、<code>Boolean(undefined)</code>、<code>Boolean(NaN)</code> 都是 false。</li></ul><p><strong>隐式转换</strong>由 JS 自动进行：<code>'10' + 5</code> 是 <code>'105'</code>，而 <code>'10' - 5</code> 是 5；一元 <code>+'42'</code> 是 42。重要计算优先写显式转换。</p></section>
+<section id="operators" data-section><h2>6. 运算符</h2><div class="quick"><span class="label">快速理解：</span>运算符让值计算、比较或组合条件。日常最要分清：<code>=</code> 是赋值，<code>===</code> 是比较且会比较类型。</div><pre><code>const passed = score >= 60 && score <= 100;
+console.log(1 === '1'); // false</code></pre><p><strong>赋值：</strong><code>=</code> 直接赋值，<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code> 是计算后赋值。<strong>一元：</strong><code>++</code>/<code>--</code> 令变量加/减一；前置 <code>++a</code> 先改后取值，后置 <code>a++</code> 先取值后改。<strong>二元：</strong><code>+ - * / %</code> 需要两个操作数。</p><p><strong>算术：</strong>优先级常记为括号 > 乘除取余 > 加减。<strong>比较：</strong><code>&gt; &lt; &gt;= &lt;=</code> 返回布尔值；<code>==</code> 比较时会进行类型转换，<code>===</code> 同时比较值和类型；<code>!=</code> 与 <code>!==</code> 分别是不等形式。实际开发优先 <code>===</code> 和 <code>!==</code>。</p><div class="accurate"><span class="label">更准确的说法：</span><code>==</code> 并非“只比较值”，而是会执行复杂的抽象相等转换规则；例如 <code>'' == 0</code>、<code>false == 0</code> 都为真，容易误读。<code>===</code> 不做这种类型转换，通常更安全。</div><p><strong>逻辑：</strong><code>&amp;&amp;</code>（且）两个条件都真；<code>||</code>（或）至少一个真；<code>!</code>（非）反转真假。它们会短路，并且可能返回原操作数，而不总是布尔值。</p><p><strong>NaN：</strong><code>'老师' - 2</code> 得 <code>NaN</code>；含 NaN 的多数数值运算仍得 NaN。<strong>优先级：</strong>括号、递增递减/一元运算、乘除取余、加减、比较、相等、逻辑、赋值。逻辑非 <code>!</code> 的优先级高于 <code>&amp;&amp;</code> 与 <code>||</code>；不确定时用括号。</p><p><strong>表达式</strong>会计算出值，如 <code>2 * (3 + 4)</code>；<strong>语句</strong>执行操作但不一定有值，如变量声明、<code>if</code>、<code>for</code>、<code>break</code>。</p></section>
+<section id="branch" data-section><h2>7. 分支</h2><div class="quick"><span class="label">快速理解：</span>分支让程序按条件走不同路径：简单选择用 <code>if</code>，固定值匹配用 <code>switch</code>，很短的二选一可用三元运算符。</div><pre><code>const result = score >= 60 ? '及格' : '不及格';
+console.log(result);</code></pre><p>流程控制有三种结构：顺序结构（从上到下执行）、分支结构（按条件走路）、循环结构（重复执行直到条件不成立）。</p><pre><code>// 单分支
+if (score >= 60) { console.log('及格'); }
+// 双分支
+if (score >= 60) { console.log('及格'); } else { console.log('不及格'); }
+// 多分支：只执行第一个成立的分支
+if (score >= 90) { console.log('A'); }
+else if (score >= 60) { console.log('B'); }
+else { console.log('C'); }</code></pre><p>三元运算符语法为 <code>条件 ? 成立时的值 : 不成立时的值</code>，适合简单双分支；嵌套超过两层可读性差，复杂逻辑改用 <code>if...else</code>。</p><pre><code>switch (day) {
+  case 1: console.log('周一'); break;
+  case 2: console.log('周二'); break;
+  default: console.log('其他');
+}</code></pre><p><code>switch</code> 适合多个固定值匹配，范围判断用 <code>if...else</code> 更清楚。每个 <code>case</code> 通常要写 <code>break</code>，否则继续穿透到下一个 case；<code>default</code> 相当于 else，建议保留。</p><div class="accurate"><span class="label">更准确的说法：</span><code>switch</code> 的 case 比较采用严格相等语义，因此 <code>switch(1)</code> 不匹配 <code>case '1'</code>；不过并不是在语法里“写了 <code>===</code>”。</div></section>
+<section id="debug" data-section><h2>8. 断点调试</h2><div class="quick"><span class="label">快速理解：</span>断点会让代码在指定行暂停，便于看“这一刻变量到底是什么”，比反复加 <code>console.log</code> 更容易追踪问题。</div><pre><code>let total = 0;
+for (let i = 1; i <= 3; i++) { // 可在这里行号设置断点
+  total += i;
+}</code></pre><ol><li>按 F12 打开开发者工具，进入 Sources（源代码）面板。</li><li>找到 JS 文件，点击行号，出现标记即为断点。</li><li>刷新页面，代码运行到断点会暂停。</li><li>在右侧查看变量值，用控制按钮继续或逐行执行。</li></ol><p>常见按钮：继续（到下一个断点）、下一步（执行下一行）、进入（跳进函数）、跳出（离开当前函数）。在可疑位置暂停，逐行检查变量是否符合预期。</p></section>
+<section id="loops" data-section><h2>9. 循环与案例</h2><div class="quick"><span class="label">快速理解：</span>重复做同一件事时用循环。次数明确多用 <code>for</code>；只知道停止条件可用 <code>while</code>；必须先做一次才判断用 <code>do...while</code>。</div><pre><code>for (let i = 0; i < 3; i++) {
+  console.log(i); // 0、1、2
+}</code></pre><div class="note"><strong>原笔记的循环图示顺序：</strong><br><code>for</code>：初始值（只一次） → 判断条件 → 循环体 → 更新 → 判断条件 → …<br><code>while</code>：判断条件 → 循环体 → 判断条件 → …<br><code>do...while</code>：循环体（至少一次） → 判断条件 → …</div><pre><code>// while
+let i = 0;
+while (i < 3) { i++; }
+// do...while
+do { i++; } while (i < 3);</code></pre><div class="accurate"><span class="label">更准确的说法：</span>三种循环不一定都需要“让条件变为 false 的语句”：例如 <code>for (const item of list)</code> 会自然结束。这里的关键是：循环必须有可靠的退出条件；对于本页的 <code>for/while/do...while</code> 示例，确实需要更新变量以免死循环。</div><div class="note"><span class="label">break / continue：</span><code>break</code> 退出整个当前循环；<code>continue</code> 跳过本次循环剩余代码，继续下一次。</div>
+<h3>案例一：累加求和</h3><p><strong>需求：</strong>计算 1 加到 100 的总和。<br><strong>思路：</strong>在循环外声明 <code>sum</code> 存结果，每轮把当前 <code>i</code> 加入。</p><pre><code>let sum = 0;
+for (let i = 1; i <= 100; i++) {
+  sum += i;
+}
+console.log(sum); // 5050</code></pre><p><strong>每一步如何变化：</strong>开始 <code>sum=0</code>；i=1 后 sum=1；i=2 后 sum=3；……；i=100 后 sum=5050。<strong>结果：</strong>5050。<br><strong>注意：</strong><code>sum</code> 必须在循环外，否则每次会重置为 0。</p>
+<h3>案例二：倒序循环</h3><p><strong>需求：</strong>从 10 倒数到 1。<br><strong>思路：</strong>从大值开始，条件用 <code>&gt;=</code>，每次 <code>i--</code>。</p><pre><code>for (let i = 10; i >= 1; i--) {
+  console.log(i); // 10 9 8 7 6 5 4 3 2 1
+}</code></pre><p><strong>每一步如何变化：</strong>i 从 10 输出后减为 9，直至 i=1 输出后减为 0，条件不成立结束。<strong>结果：</strong>10 到 1。注意倒序条件与更新方向要配套。</p>
+<h3>案例三：遍历数组</h3><p><strong>需求：</strong>依次输出数组每个元素。<br><strong>思路：</strong>i 从 0 开始，用 <code>arr[i]</code> 访问，到 <code>arr.length - 1</code> 为止。</p><pre><code>let arr = ['a', 'b', 'c'];
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]); // a b c
+}</code></pre><p><strong>每一步如何变化：</strong>i=0 取 arr[0]='a'；i=1 取 'b'；i=2 取 'c'；i=3 时不满足 <code>i &lt; arr.length</code>。<strong>结果：</strong>a、b、c。<br><strong>注意：</strong>索引从 0 开始，所以是 <code>&lt; arr.length</code>，不是 <code>&lt;=</code>；不要把长度写成固定数字。</p>
+<h3>案例四：筛选输出奇数</h3><p><strong>需求：</strong>输出 1–10 的所有奇数。<br><strong>思路：</strong>用 <code>%</code> 取余；除以 2 余数不为 0 就是奇数。</p><pre><code>for (let i = 1; i <= 10; i++) {
+  if (i % 2 !== 0) console.log(i);
+}</code></pre><p><strong>每一步如何变化：</strong>i=1 余 1，输出；i=2 余 0，跳过；依次继续。<strong>结果：</strong>1、3、5、7、9。也可写 <code>if (i % 2 === 0) continue;</code> 先跳过偶数。</p>
+<h3>案例五：break 与 continue</h3><p><strong>需求：</strong>遇到第一个大于 5 的数停止；或跳过所有大于 5 的数。<br><strong>思路：</strong>前者用 <code>break</code>，后者用 <code>continue</code>。</p><pre><code>// break：i=6 时退出，后续不再运行
+for (let i = 1; i <= 10; i++) {
+  if (i > 5) break;
+  console.log(i); // 1 2 3 4 5
+}
+// continue：6–10 的每轮仍会执行判断，只是不打印
+for (let i = 1; i <= 10; i++) {
+  if (i > 5) continue;
+  console.log(i); // 1 2 3 4 5
+}</code></pre><p><strong>结果：</strong>两段都打印 1–5，但逻辑不同：break 后 6 之后完全不跑；continue 后 6–10 仍循环，只跳过本次剩余代码。</p>
+<h3>案例六：嵌套 for 循环</h3><p><strong>需求：</strong>组合两层重复工作，例如打印表格或九九乘法表。<br><strong>思路：</strong>外层每进行一次，内层完整执行一遍。</p><pre><code>for (let i = 1; i <= 3; i++) {
+  for (let j = 1; j <= 3; j++) {
+    console.log(`${i} * ${j} = ${i * j}`);
+  }
+}</code></pre><p><strong>每一步如何变化：</strong>i=1 时 j=1、2、3 全部完成；再进入 i=2，j 又从 1 开始。<strong>注意：</strong>嵌套时使用不同变量名（常用 i、j、k），每层都需要正确终止条件。</p></section>
+<section id="original" data-section><h2>原笔记保留说明</h2><div class="quick">此整理版没有新增 React、Promise 等原稿未讲章节。原稿的介绍、术语、例子、图示含义、注意事项和解题过程已按主题转成正文；原件未修改，仍在同目录，供逐行对照。</div><details><summary>展开：原笔记的流程图文字版</summary><div class="detail-body"><div class="original">三大流程控制结构：
+1. 顺序结构：从上到下逐行执行，没有任何跳转。
+2. 分支结构：开始 → 条件？→ true 执行 A / false 执行 B → 汇合 → 结束。
+3. 循环结构：开始 → 条件？→ true 执行循环体 → 回到条件；false → 结束。
+
+循环结构可视图的关键信息：
+for (let i = 0; i &lt; 3; i++)：let i = 0 只执行一次；之后判断 i &lt; 3，成立则执行循环体，再 i++，然后重新判断。
+while：初始值在外部声明；判断条件，成立执行循环体和 i++，然后重新判断。
+do while：先执行循环体和 i++，不论条件；再判断 i &lt; 3，成立才重复。
+
+对比总结：for 适合知道循环次数；while 只知道条件不知道次数；do while 至少执行一次。</div></div></details></section>
+</main><script>
+const input=document.querySelector('#search'),count=document.querySelector('#count');
+function clearMarks(root){root.querySelectorAll('.mark').forEach(m=>m.replaceWith(document.createTextNode(m.textContent)));root.normalize()}
+function mark(root,term){const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('script,style,input')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);let matches=0;nodes.forEach(n=>{const text=n.nodeValue,low=text.toLowerCase(),needle=term.toLowerCase();let i=low.indexOf(needle);if(i<0)return;const f=document.createDocumentFragment();let last=0;while(i>=0){f.append(text.slice(last,i));const s=document.createElement('span');s.className='mark';s.textContent=text.slice(i,i+term.length);f.append(s);last=i+term.length;matches++;i=low.indexOf(needle,last)}f.append(text.slice(last));n.replaceWith(f)});return matches}
+input.addEventListener('input',()=>{document.querySelectorAll('[data-section]').forEach(s=>{clearMarks(s);s.classList.remove('hidden')});const q=input.value.trim();if(!q){count.textContent='输入关键词可定位内容；命中折叠内容会自动展开。';return}let total=0,visible=0;document.querySelectorAll('[data-section]').forEach(s=>{const n=mark(s,q);if(n){visible++;total+=n;s.querySelectorAll('details').forEach(d=>d.open=true)}else s.classList.add('hidden')});count.textContent=total?`找到 ${total} 处匹配，位于 ${visible} 个章节。`:'没有找到匹配内容。'});
+</script></body></html>
