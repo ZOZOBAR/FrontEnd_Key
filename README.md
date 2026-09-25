@@ -1,3 +1,5 @@
+English | [简体中文](README.zh-CN.md)
+
 # Siyu's Frontend Knowledge Base
 
 A long-term personal frontend knowledge integration system. It consolidates self-study notes, BU coursework, real project and debugging experience, plus selectively approved external references.

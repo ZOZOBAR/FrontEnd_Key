@@ -1,3 +1,5 @@
+English | [简体中文](CONTRIBUTING.zh-CN.md)
+
 # Contributing to FrontEnd_Key
 
 FrontEnd_Key is a source-grounded, bilingual frontend learning knowledge base. Foundation V1 is frozen: normal contributions add or improve knowledge within the established system; they do not trigger a redesign.
