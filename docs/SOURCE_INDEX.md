@@ -4,7 +4,16 @@ This registry tracks source identity and processing state so unchanged material 
 
 | Source | Category | Type | Status | Last processed | Integrated destination |
 |---|---|---|---|---|---|
-| `sources/javascript/JS笔记_整理版.html` | JavaScript | Original self-study note | Integrated | 2026-09-24 | `pages/javascript.html` |
+| `sources/javascript/JS笔记_整理版.html` | JavaScript | Original self-study note | Integrated — verified | 2026-09-24 | `pages/javascript.html` |
+| `/Users/zozobar/Desktop/Self_Study/自学内容/前端学习/代码/注释/注释-[html].html` | HTML | Original self-study annotation note | Integrated — verified | 2026-09-24 | `pages/html.html` |
+| `/Users/zozobar/Desktop/Self_Study/自学内容/前端学习/代码/注释/注释-[CSS]/注释-[CSS].html` | CSS | Original self-study annotation note | Integrated — verified | 2026-09-24 | `pages/css.html` |
+| `/Users/zozobar/Desktop/Self_Study/自学内容/前端学习/代码/代码练习/{HTML,CSS,Javascript}/` | HTML / CSS / JavaScript | Self-study exercises (source collection) | Discovered / Audited | 2026-09-24 | Relevant pages (comparison only) |
+| `/Users/zozobar/Desktop/Self_Study/自学内容/前端学习/代码/综合案例总集/` | HTML / CSS / JavaScript | Self-study integrated exercises | Discovered / Audited; project-experience review pending | 2026-09-24 | Relevant pages (comparison only) |
+| `/Users/zozobar/Desktop/BU_XIN_XUE_QI/cs303/NOTE/HTML-SECT.txt` | HTML | BU CS303 course note | Integrated — verified | 2026-09-24 | `pages/html.html` |
+| `/Users/zozobar/Desktop/BU_XIN_XUE_QI/cs303/NOTE/CSS-SECT.txt` | CSS | BU CS303 course note | Integrated — verified | 2026-09-24 | `pages/css.html` |
+| `/Users/zozobar/Desktop/BU_XIN_XUE_QI/cs303/NOTE/JS-SECT.txt` | JavaScript | BU CS303 course note | Discovered / Audited; mostly deferred at current boundary | 2026-09-24 | `pages/javascript.html` (comparison only) |
+| `/Users/zozobar/Desktop/BU_XIN_XUE_QI/cs303/NOTE/CS303-LEC4-5-NOTES.txt` | JavaScript / React | BU CS303 lecture note | Discovered / Audited; React portion deferred | 2026-09-24 | No current destination |
+| `/Users/zozobar/Desktop/BU_XIN_XUE_QI/cs303/NOTE/In_class_note.txt` | JavaScript / Web data | BU CS303 class note | Discovered / Audited; deferred at current boundary | 2026-09-24 | No current destination |
 
 ## Relationship to archive
 

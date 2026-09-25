@@ -1,1 +1,301 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Git Notes</title><link rel="stylesheet" href="../assets/css/notes.css"></head><body data-title data-zh="Git 笔记｜Siyu 的前端知识库" data-en="Git Notes | Siyu's Frontend Knowledge Base"><div class="progress"></div><header class="topbar"><a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span></a><nav class="tabs"><a href="../index.html">Home</a><a href="html.html">HTML</a><a href="css.html">CSS</a><a href="javascript.html">JavaScript</a><a aria-current="page" href="git.html">Git</a></nav><div class="lang"><button data-lang="zh">中文</button><button data-lang="en">EN</button></div></header><div class="layout"><aside class="sidebar"><h2>Git</h2><nav><a href="#core">01–04 Core model</a><a href="#local">05–10 Local work</a><a href="#branches">11–16 Branches</a><a href="#remote">17–25 Remote</a><a href="#undo">26–27 Recovery</a><a href="#workflow">28–31 Workflows</a><a href="#errors">32–33 Errors</a><a href="#dictionary">34 Dictionary</a><a href="#summary">35 Summary</a></nav></aside><main id="main"><header class="hero"><h1 data-zh="版本历史，而不是命令魔法" data-en="Version history, not command magic">版本历史，而不是命令魔法</h1><p data-zh="每次输入命令前都问：它在做什么？为什么现在做？变化去了哪里？下一步是什么？" data-en="Before each command, ask: what does it do, why now, where do changes go, and what comes next?"></p></header><div class="search-wrap"><input id="site-search" type="search" placeholder="Search / 搜索，例如 origin、commit、conflict"><p id="search-result" class="search-result"></p></div><section id="core" data-section><h2>01–04 Git, GitHub, Repository, Core Model</h2><div class="card"><strong data-zh="01 Git 到底是什么？" data-en="01 What is Git?">01 Git 到底是什么？</strong><span data-zh="没有 Git 时会出现 <code>project-v1</code>、<code>project-final-real-2</code>。Git（Distributed Version Control System，分布式版本控制系统）让一个项目拥有可读历史，你能回看、比较并安全试验。" data-en="Without Git, you may have <code>project-v1</code> and <code>project-final-real-2</code>. Git is a distributed version control system: one project with readable history, so you can review, compare, and experiment safely."></span></div><div class="flow"><div>My computer<br>Git</div><b>→</b><div>Local Repository</div><b>: git push →</b><div>GitHub / Remote</div></div><p data-zh="<strong>02 Git ≠ GitHub：</strong>Git 是电脑上的工具；GitHub 是托管 Git repository 的在线平台。<strong>03 Repository / Repo：</strong>Git 追踪的 folder，隐藏 <code>.git</code> 保存历史；不要手动修改它。" data-en="<strong>02 Git ≠ GitHub:</strong> Git is the tool on your computer; GitHub hosts Git repositories online. <strong>03 Repository / Repo:</strong> a folder Git tracks; hidden <code>.git</code> stores history:do not edit it manually."></p><div class="flow"><div>Working Directory<br><small data-zh="正在编辑" data-en="files you edit">正在编辑</small></div><b>git add ↓</b><div>Staging Area<br><small data-zh="选择下一快照" data-en="choose next snapshot">选择下一快照</small></div><b>git commit ↓</b><div>Local Repository</div><b>git push ↓</b><div>Remote Repository</div></div><p data-zh="<strong>04 核心模型：</strong>暂存区让你只选择这次完成的改动进入 commit，而不是把所有未完成工作混进历史。" data-en="<strong>04 Core model:</strong> staging lets you choose completed work for a commit instead of mixing unfinished changes into history."></p></section><section id="local" data-section><h2>05–10 Local Work</h2><details open><summary>05 git init <span class="risk">🟢 Beginner Safe</span></summary><div><pre><code>cd project<br>git init</code></pre><p data-zh="在项目 folder 内运行一次，创建 <code>.git</code>。" data-en="Run once inside a project folder; it creates <code>.git</code>."></p></div></details><details><summary>06 git status <span class="risk">🟢 Beginner Safe</span></summary><div><pre><code>git status</code></pre><p data-zh="“Git，我现在是什么状态？”显示 Untracked、Modified、Staged 或 Clean。不知道下一步，先 status。" data-en="“Git, what is my state?” It shows Untracked, Modified, Staged, or Clean. When unsure, status first."></p></div></details><details><summary>07 git add <span class="risk">🟢 Beginner Safe</span></summary><div><pre><code>git add index.html<br>git add .</code></pre><p data-zh="把改动放进 Staging Area，准备下一个 commit；不是上传。<code>git add .</code> 前先看 status / diff。" data-en="Put changes in the Staging Area for the next commit; it does not upload. Check status / diff before <code>git add .</code>."></p></div></details><details><summary>08–09 git commit & messages <span class="risk">🟢 Beginner Safe</span></summary><div><pre><code>git commit -m &quot;Add responsive navigation&quot;</code></pre><p data-zh="Commit 是 local history 的有说明 snapshot，只记录 staged 内容，commit ≠ GitHub。不要写 update / stuff / final；写 <code>Fix calculator clear button</code>、<code>Add Git notes page</code>。" data-en="A commit is a named snapshot in local history; it records only staged content and is not GitHub. Avoid update / stuff / final; write <code>Fix calculator clear button</code> or <code>Add Git notes page</code>."></p></div></details><details><summary>10 git log <span class="risk">🟢 Beginner Safe</span></summary><div><pre><code>git log<br>git log --oneline</code></pre><p data-zh="查看 commit history；oneline 适合快速总览。" data-en="View commit history; oneline is a compact overview."></p></div></details></section><section id="branches" data-section><h2>11–16 Branch, main, switch, merge, conflict</h2><pre><code>main: A---B---C<br>              \<br>feature:       D---E</code></pre><p data-zh="<strong>11 Branch：</strong>独立开发线，不是复制文件夹。<strong>12 git branch：</strong><code>git branch</code> 查看，<code>git branch feature-name</code> 创建。<strong>13 switch：</strong>优先 <code>git switch branch-name</code>，<code>git switch -c new-branch</code> 创建并切换；旧教程可见 checkout。<strong>14 main：</strong>通常 primary branch，不等于 Git。" data-en="<strong>11 Branch:</strong> an independent line, not a copied folder. <strong>12 git branch:</strong> <code>git branch</code> lists; <code>git branch feature-name</code> creates. <strong>13 switch:</strong> prefer <code>git switch branch-name</code>; <code>git switch -c new-branch</code> creates and switches; old tutorials use checkout. <strong>14 main:</strong> usually the primary branch, not Git itself."></p><pre><code>git switch main<br>git merge feature</code></pre><p data-zh="<strong>15 Merge：</strong>把 feature 的提交整合进当前 branch。<strong>16 Merge Conflict：</strong>同一文件同一位置被不同修改时 Git 无法选择。选择正确内容，删除 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>，测试，再 add / commit。冲突是请求人做决定，不是失败。" data-en="<strong>15 Merge:</strong> integrate feature commits into the current branch. <strong>16 Merge Conflict:</strong> Git cannot choose between different edits to the same location. Choose correct content, remove <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>, test, then add / commit. A conflict asks a human to decide; it is not failure."></p></section><section id="remote" data-section><h2>17–25 Remote, sync, HEAD, ignore</h2><pre><code>git remote -v<br>git remote add origin URL<br>git push -u origin main</code></pre><p data-zh="<strong>17 Remote：</strong>远程仓库的连接信息。<strong>18 origin：</strong>不是 GitHub，只是 remote 默认 nickname。<strong>19 remote add：</strong>告诉本机 Git“把这个 URL 叫 origin”。<strong>20 push 🟡：</strong>Local Repository → Remote；<code>-u</code> 设 upstream，之后通常只需 <code>git push</code>。会改共享 remote，推前先检查。" data-en="<strong>17 Remote:</strong> connection information for a remote repo. <strong>18 origin:</strong> not GitHub, only the default remote nickname. <strong>19 remote add:</strong> tell local Git “call this URL origin.” <strong>20 push 🟡:</strong> Local Repository → Remote; <code>-u</code> sets upstream, so later <code>git push</code> usually works. It changes shared remote state; inspect first."></p><table class="compare"><tr><th>21–23</th><th data-zh="含义" data-en="Meaning">含义</th></tr><tr><td><code>git pull</code></td><td data-zh="通常 fetch + integrate：获取远程更新并整合。" data-en="Usually fetch + integrate: obtain remote updates and integrate them.">通常 fetch + integrate。</td></tr><tr><td><code>git fetch</code></td><td data-zh="下载 remote 信息，但不直接整合到当前工作。" data-en="Downloads remote information without direct integration.">下载信息，不直接整合。</td></tr><tr><td><code>git clone URL</code></td><td data-zh="第一次完整复制 repository；clone ≠ pull。" data-en="First complete copy of a repository; clone ≠ pull.">第一次完整复制。</td></tr></table><p data-zh="<strong>24 HEAD：</strong>“我现在在哪里？”通常指向 current branch 的当前 commit；detached HEAD 是 Supplementary Knowledge。<strong>25 .gitignore：</strong>写 <code>.DS_Store</code>、<code>node_modules/</code>、<code>.env</code> 等不该提交的文件；.env 可能有 secret。已追踪文件后来加入 ignore 不会自动停止追踪。" data-en="<strong>24 HEAD:</strong> “where am I now?” usually points to the current commit of the current branch; detached HEAD is Supplementary Knowledge. <strong>25 .gitignore:</strong> list files such as <code>.DS_Store</code>, <code>node_modules/</code>, <code>.env</code> that should not be committed; .env may contain secrets. Previously tracked files do not automatically stop tracking."></p></section><section id="undo" data-section><h2>26–27 Undo / Recovery Basics</h2><pre><code>git status<br>git diff<br>git diff --staged<br>git restore filename<br>git restore --staged filename</code></pre><p data-zh="先检查再恢复。<code>diff</code> 看未暂存改动，<code>diff --staged</code> 看将进入 commit 的内容。<code>restore filename</code> 丢弃该文件未提交修改；<code>restore --staged filename</code> 只是 unstage，保留工作区修改。" data-en="Inspect before restoring. <code>diff</code> shows unstaged changes; <code>diff --staged</code> shows next-commit content. <code>restore filename</code> discards uncommitted file changes; <code>restore --staged filename</code> only unstages and keeps working changes."></p><div class="card danger" data-zh="<strong>🔴 Danger Zone</strong><code>git reset --hard</code> 可能永久丢失未提交修改；<code>git push --force</code> 可重写共享 remote history。只为认识风险而列出；未充分理解和备份时不要执行。" data-en="<strong>🔴 Danger Zone</strong><code>git reset --hard</code> can permanently lose uncommitted work; <code>git push --force</code> can rewrite shared remote history. Listed for awareness only; do not run without understanding and backup."></div></section><section id="workflow" data-section><h2>28–31 Beginner Workflows</h2><details open><summary>28 First GitHub project</summary><div><pre><code>mkdir project<br>cd project<br>git init<br>git status<br>git add .<br>git commit -m &quot;Initial commit&quot;<br>git branch -M main<br>git remote add origin URL<br>git push -u origin main</code></pre></div></details><details><summary>29 Daily workflow</summary><div><pre><code>git status<br># edit code<br>git status<br>git diff<br>git add .<br>git status<br>git commit -m &quot;Describe one clear change&quot;<br>git push</code></pre><p data-zh="每步有目的：知道状态 → 改代码 → 检查实际变化 → 选择进快照 → 确认 → 本地保存 → 共享。" data-en="Each step has a purpose: know state → edit → inspect → choose snapshot → confirm → save locally → share."></p></div></details><details><summary>30 Existing cloned project</summary><div><pre><code>git pull<br># edit<br>git status<br>git add .<br>git commit -m &quot;...&quot;<br>git push</code></pre></div></details><details><summary>31 Branch workflow</summary><div><pre><code>git switch -c feature-navbar<br># edit<br>git add .<br>git commit -m &quot;Add responsive navbar&quot;<br>git switch main<br>git merge feature-navbar<br>git push</code></pre></div></details></section><section id="errors" data-section><h2>32–33 Common Errors & Real Project Pitfall</h2><div class="card pitfall" data-zh="<strong>src refspec main does not match any</strong>常见原因：没有 first commit 或 branch 状态不对。不要乱贴命令。依次：<code>git status</code> → 确认文件 → <code>git add .</code> → <code>git commit -m &quot;Initial commit&quot;</code> → <code>git branch</code> → 必要时 <code>git branch -M main</code> → <code>git push -u origin main</code>。先理解 current Git state。" data-en="<strong>src refspec main does not match any</strong>A common cause: no first commit or wrong branch state. Do not paste random commands. Use: <code>git status</code> → confirm files → <code>git add .</code> → <code>git commit -m &quot;Initial commit&quot;</code> → <code>git branch</code> → if needed <code>git branch -M main</code> → <code>git push -u origin main</code>. Understand the current Git state first."></div><p data-zh="其他：<code>fatal: not a git repository</code>（目录错）；<code>remote origin already exists</code>（已有 nickname）；rejected / non-fast-forward（remote 有你没有的历史）；nothing to commit（没有 staged 新改动）；branch not found（拼写或尚未创建）；merge conflict（人工选择内容）。" data-en="Others: <code>fatal: not a git repository</code> (wrong directory); <code>remote origin already exists</code> (nickname exists); rejected / non-fast-forward (remote has history you lack); nothing to commit (no staged new changes); branch not found (typo or not created); merge conflict (human chooses content)."></p></section><section id="dictionary" data-section><h2>34 Git Command Dictionary</h2><table class="compare"><tr><th>Command group</th><th>Meaning / when</th><th>Risk</th></tr><tr><td><code>init</code>, <code>clone</code></td><td>Start local repo / first copy</td><td>🟢</td></tr><tr><td><code>status</code>, <code>log</code>, <code>diff</code></td><td>Inspect state/history/change</td><td>🟢</td></tr><tr><td><code>add</code>, <code>commit</code></td><td>Stage / save local snapshot</td><td>🟢</td></tr><tr><td><code>branch</code>, <code>switch</code>, <code>merge</code></td><td>Lines of development</td><td>🟡</td></tr><tr><td><code>remote</code>, <code>fetch</code>, <code>pull</code>, <code>push</code></td><td>Connect and synchronize</td><td>🟡</td></tr><tr><td><code>restore</code></td><td>Discard or unstage:read target first</td><td>🟡</td></tr></table></section><section id="summary" data-section><h2>35 Git Mental Model</h2><div class="flow"><div>Working Directory</div><b>↓ add</b><div>Staging</div><b>↓ commit</b><div>Local Repository</div><b>↓ push</b><div>Remote</div></div><p data-zh="Branch = 独立开发线；Merge = 整合线；Remote = 远程连接；origin = remote 昵称；HEAD = 我现在在哪里。最可靠习惯：不确定时先 <code>git status</code>。" data-en="Branch = independent line; Merge = integrate lines; Remote = remote connection; origin = remote nickname; HEAD = where I am. Most reliable habit: when unsure, run <code>git status</code>."></p></section></main></div><button class="to-top" aria-label="Back to top">↑</button><script src="../assets/js/notes.js"></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Git 笔记｜Siyu 的前端知识库</title>
+<link rel="stylesheet" href="../assets/css/notes.css">
+</head>
+<body data-title data-zh="Git 笔记｜Siyu 的前端知识库" data-en="Git Notes | Siyu's Frontend Knowledge Base">
+<div class="progress">
+</div>
+<a class="skip" href="#main" data-zh="跳到内容" data-en="Skip to content">跳到内容</a>
+<header class="topbar">
+<a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span>
+</a>
+<nav class="tabs" data-zh-aria-label="主导航" data-en-aria-label="Primary navigation" aria-label="主导航">
+<a href="../index.html" data-zh="首页" data-en="Home">首页</a>
+<a href="html.html">HTML</a>
+<a href="css.html">CSS</a>
+<a href="javascript.html">JavaScript</a>
+<a aria-current="page" href="git.html">Git</a>
+</nav>
+<div class="lang">
+<button data-lang="zh">中文</button>
+<button data-lang="en">EN</button>
+</div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+<h2>Git</h2>
+<nav data-zh-aria-label="Git 章节" data-en-aria-label="Git sections" aria-label="Git 章节">
+<a href="#model" data-zh="01 心智模型" data-en="01 Mental model">01 心智模型</a>
+<a href="#local" data-zh="02 本地工作" data-en="02 Local work">02 本地工作</a>
+<a href="#remote" data-zh="03 远程与 GitHub" data-en="03 Remote and GitHub">03 远程与 GitHub</a>
+<a href="#branch" data-zh="04 分支" data-en="04 Branches">04 分支</a>
+<a href="#safe" data-zh="05 检查、恢复与安全" data-en="05 Inspect, recovery, and safety">05 检查、恢复与安全</a>
+<a href="#workflows" data-zh="06 初学者工作流" data-en="06 Beginner workflows">06 初学者工作流</a>
+<a href="#errors" data-zh="07 常见问题" data-en="07 Common problems">07 常见问题</a>
+</nav>
+</aside>
+<main id="main">
+<header class="hero">
+<h1 data-zh="Git：版本历史，不是命令魔法" data-en="Git: version history, not command magic">Git：版本历史，不是命令魔法</h1>
+<p data-zh="每次命令前先问：它会改哪里？为什么现在做？变化接着会去哪里？" data-en="Before each command, ask: what will it change, why now, and where do the changes go next?">每次命令前先问：它会改哪里？为什么现在做？变化接着会去哪里？</p>
+</header>
+<div class="search-wrap">
+<label class="skip" for="site-search" data-zh="搜索 Git 笔记" data-en="Search Git notes">搜索 Git 笔记</label>
+<input id="site-search" type="search" data-zh-placeholder="搜索，例如 commit、origin、refspec" data-en-placeholder="Search, for example commit, origin, refspec" placeholder="搜索，例如 commit、origin、refspec">
+<p id="search-result" class="search-result">
+</p>
+</div>
+<section id="model" data-section>
+<h2 data-zh="01 Git、GitHub 与核心心智模型" data-en="01 Git, GitHub, and the core mental model">01 Git、GitHub 与核心心智模型</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<p data-zh="没有 Git 时，项目容易出现 <code>project-v1</code>、<code>project-final-real-2</code>。Git 是分布式版本控制系统：它让一个项目有可读历史，能回看、比较和安全试验。Git 是电脑上的工具；GitHub 是托管 Git repository 的在线平台，二者不是同一个东西。" data-en="Without Git, a project can turn into <code>project-v1</code> and <code>project-final-real-2</code>. Git is a distributed version control system: one project has readable history, so you can review, compare, and experiment safely. Git is the tool on your computer; GitHub is an online platform that hosts Git repositories. They are not the same thing.">没有 Git 时，项目容易出现 <code>project-v1</code>、<code>project-final-real-2</code>。Git 是分布式版本控制系统：它让一个项目有可读历史，能回看、比较和安全试验。Git 是电脑上的工具；GitHub 是托管 Git repository 的在线平台，二者不是同一个东西。</p>
+</div>
+<p data-zh="Repository（repo）是 Git 追踪的项目文件夹；隐藏的 <code>.git</code> 保存历史，不要手动修改。暂存区的价值是：你可以只选择已完成的改动进入一个 commit，而不是把所有未完成工作混在历史中。" data-en="A repository (repo) is a project folder tracked by Git; hidden <code>.git</code> stores its history and should not be edited manually. The staging area lets you select only completed changes for a commit instead of mixing unfinished work into history.">Repository（repo）是 Git 追踪的项目文件夹；隐藏的 <code>.git</code> 保存历史，不要手动修改。暂存区的价值是：你可以只选择已完成的改动进入一个 commit，而不是把所有未完成工作混在历史中。</p>
+<h3 data-zh="先看文件所处的位置" data-en="First, see where the file is">先看文件所处的位置</h3>
+<pre data-zh="你编辑 index.html&#10;        │&#10;        ▼&#10;Working Directory（工作区）&#10;“文件已经改变”&#10;        │&#10;        │ git add index.html&#10;        ▼&#10;Staging Area（暂存区）&#10;“把这次改变选进下一个快照”&#10;        │&#10;        │ git commit -m &quot;...&quot;&#10;        ▼&#10;Local Repository（本地仓库）&#10;“一个本地版本已保存”&#10;        │&#10;        │ git push&#10;        ▼&#10;Remote / GitHub（远程仓库）&#10;“本地版本已同步到远程”" data-en="You edit index.html&#10;        │&#10;        ▼&#10;Working Directory&#10;“the file has changed”&#10;        │&#10;        │ git add index.html&#10;        ▼&#10;Staging Area&#10;“include this change in the next snapshot”&#10;        │&#10;        │ git commit -m &quot;...&quot;&#10;        ▼&#10;Local Repository&#10;“a local version is saved”&#10;        │&#10;        │ git push&#10;        ▼&#10;Remote / GitHub&#10;“the local version is synchronized remotely”">你编辑 index.html
+        │
+        ▼
+Working Directory（工作区）
+“文件已经改变”
+        │
+        │ git add index.html
+        ▼
+Staging Area（暂存区）
+“把这次改变选进下一个快照”
+        │
+        │ git commit -m "..."
+        ▼
+Local Repository（本地仓库）
+“一个本地版本已保存”
+        │
+        │ git push
+        ▼
+Remote / GitHub（远程仓库）
+“本地版本已同步到远程”</pre>
+<figure class="knowledge-diagram git-diagram" data-diagram="git" aria-labelledby="git-figure-title">
+<figcaption id="git-figure-title"><span>FIG. GIT_01.02</span><strong data-zh="每个 Git 命令只改变一个阶段" data-en="Each Git command changes one stage">每个 Git 命令只改变一个阶段</strong></figcaption>
+<div class="diagram-stage git-stages" role="group" data-zh-aria-label="Git 状态流关系图" data-en-aria-label="Git state-flow relationship" aria-label="Git 状态流关系图">
+<div class="diagram-node git-node" data-state="working"><b>01</b><strong>Working Directory</strong><small data-zh="正在编辑的文件" data-en="files you are editing">正在编辑的文件</small></div>
+<button type="button" class="diagram-command" data-command="add" aria-pressed="false"><code>git add</code><small data-zh="选择下一快照" data-en="select next snapshot">选择下一快照</small></button>
+<div class="diagram-node git-node" data-state="staging"><b>02</b><strong>Staging Area</strong><small data-zh="已选入下次 commit" data-en="selected for next commit">已选入下次 commit</small></div>
+<button type="button" class="diagram-command" data-command="commit" aria-pressed="false"><code>git commit</code><small data-zh="保存本地版本" data-en="save local version">保存本地版本</small></button>
+<div class="diagram-node git-node" data-state="local"><b>03</b><strong>Local Repository</strong><small data-zh="本机 commit 历史" data-en="commit history on this computer">本机 commit 历史</small></div>
+<button type="button" class="diagram-command" data-command="push" aria-pressed="false"><code>git push</code><small data-zh="同步到远程" data-en="synchronize remotely">同步到远程</small></button>
+<div class="diagram-node git-node" data-state="remote"><b>04</b><strong>Remote / GitHub</strong><small data-zh="远程仓库" data-en="remote repository">远程仓库</small></div>
+</div>
+<p class="diagram-explain" aria-live="polite" data-zh="选择 git add、git commit 或 git push，将只强调它连接的两个状态；其余状态仍保留，帮助你看见完整流程。" data-en="Select git add, git commit, or git push to focus its two connected states; the other states remain visible so the full workflow stays clear.">选择 git add、git commit 或 git push，将只强调它连接的两个状态；其余状态仍保留，帮助你看见完整流程。</p>
+</figure>
+<p data-zh="工作区是电脑上正在编辑的项目文件；暂存区是“下一次 commit 要包含哪些改动”的清单；本地仓库保存 commit 历史；remote 是另一台位置上的仓库，GitHub 是常见的托管地点。<code>main</code> 通常是主分支名称；<code>origin</code> 是这个远程地址常用的本地昵称。" data-en="The working directory is the project files you edit on your computer; the staging area is the list of changes to include in the next commit; the local repository stores commit history; a remote is a repository elsewhere, and GitHub is a common host. <code>main</code> is usually the primary branch name; <code>origin</code> is the common local nickname for that remote address.">工作区是电脑上正在编辑的项目文件；暂存区是“下一次 commit 要包含哪些改动”的清单；本地仓库保存 commit 历史；remote 是另一台位置上的仓库，GitHub 是常见的托管地点。<code>main</code> 通常是主分支名称；<code>origin</code> 是这个远程地址常用的本地昵称。</p>
+</section>
+<section id="local" data-section>
+<h2 data-zh="02 本地工作：初始化、检查、暂存与提交" data-en="02 Local work: initialize, inspect, stage, and commit">02 本地工作：初始化、检查、暂存与提交</h2>
+<pre>
+<code>cd project
+git init
+git status
+git add index.html
+git add .
+git commit -m "Add responsive navigation"
+git log --oneline</code>
+</pre>
+<h3 data-zh="用 status 判断“我现在在哪里？”" data-en="Use status to ask “where am I now?”">用 status 判断“我现在在哪里？”</h3>
+<pre data-zh="git status 不是“下一步命令”，而是状态检查。&#10;│&#10;├── Untracked：文件存在，但 Git 尚未开始追踪它&#10;├── Modified：已追踪文件在工作区被改过&#10;├── Staged：改动已选入下一次 commit&#10;└── Clean：没有待提交改动&#10;&#10;不确定时：先 status，再决定下一步。" data-en="git status is not “the next command”; it checks state.&#10;│&#10;├── Untracked: the file exists, but Git does not track it yet&#10;├── Modified: a tracked file changed in the working directory&#10;├── Staged: the change is selected for the next commit&#10;└── Clean: there are no changes waiting to be committed&#10;&#10;When unsure: run status, then decide the next step.">git status 不是“下一步命令”，而是状态检查。
+│
+├── Untracked：文件存在，但 Git 尚未开始追踪它
+├── Modified：已追踪文件在工作区被改过
+├── Staged：改动已选入下一次 commit
+└── Clean：没有待提交改动
+
+不确定时：先 status，再决定下一步。</pre>
+<h3 data-zh="同一个 index.html 的三次状态变化" data-en="Three state changes for the same index.html">同一个 index.html 的三次状态变化</h3>
+<pre data-zh="编辑后&#10;Working Directory：index.html = modified&#10;        │&#10;        │ git add index.html&#10;        ▼&#10;Staging Area：index.html = staged&#10;        │&#10;        │ git commit -m &quot;Update navigation&quot;&#10;        ▼&#10;Local Repository：一个本地 commit 已保存&#10;&#10;git add 不等于 commit，也不等于上传。&#10;git commit 不等于 GitHub 上传。&#10;只有 git push 才会同步已存在的本地 commit 到远程。" data-en="After editing&#10;Working Directory: index.html = modified&#10;        │&#10;        │ git add index.html&#10;        ▼&#10;Staging Area: index.html = staged&#10;        │&#10;        │ git commit -m &quot;Update navigation&quot;&#10;        ▼&#10;Local Repository: a local commit is saved&#10;&#10;git add is not commit and not upload.&#10;git commit is not a GitHub upload.&#10;Only git push synchronizes an existing local commit to the remote.">编辑后
+Working Directory：index.html = modified
+        │
+        │ git add index.html
+        ▼
+Staging Area：index.html = staged
+        │
+        │ git commit -m "Update navigation"
+        ▼
+Local Repository：一个本地 commit 已保存
+
+git add 不等于 commit，也不等于上传。
+git commit 不等于 GitHub 上传。
+只有 git push 才会同步已存在的本地 commit 到远程。</pre>
+<p data-zh="<strong>add 前：</strong>改动只在工作区。<strong>add 后：</strong>它已被选进下一快照；还没有创建 commit，也没有上传。<strong>commit 后：</strong>历史已保存到本机；GitHub 仍可能没有这个 commit。通常下一步是用 <code>git status</code> 检查，确认后再 <code>git push</code>。" data-en="<strong>Before add:</strong> the change is only in the working directory. <strong>After add:</strong> it is selected for the next snapshot; no commit exists and nothing is uploaded. <strong>After commit:</strong> history is saved on this computer; GitHub may still not have that commit. The usual next step is <code>git status</code>, then <code>git push</code> after confirming."><strong>add 前：</strong>改动只在工作区。<strong>add 后：</strong>它已被选进下一快照；还没有创建 commit，也没有上传。<strong>commit 后：</strong>历史已保存到本机；GitHub 仍可能没有这个 commit。通常下一步是用 <code>git status</code> 检查，确认后再 <code>git push</code>。</p>
+<table class="compare">
+<tr>
+<th data-zh="命令" data-en="Command">命令</th>
+<th data-zh="做什么 / 何时用" data-en="What it does / when to use it">做什么 / 何时用</th>
+<th data-zh="安全级别" data-en="Safety">安全级别</th>
+</tr>
+<tr>
+<td>
+<code>git init</code>
+</td>
+<td data-zh="在项目文件夹内运行一次，创建 .git。" data-en="Run once in a project folder to create .git.">在项目文件夹内运行一次，创建 .git。</td>
+<td><span class="tech-marker foundation"><b aria-hidden="true">◇</b><span data-zh="基础 / 可安全练习" data-en="Foundation / safe to practise">基础 / 可安全练习</span></span>
+</td>
+</tr>
+<tr>
+<td>
+<code>git status</code>
+</td>
+<td data-zh="问“现在是什么状态？”它显示 Untracked、Modified、Staged 或 Clean。不确定下一步时，先 status。" data-en="Ask “what is my state?” It shows Untracked, Modified, Staged, or Clean. When unsure, status first.">问“现在是什么状态？”它显示 Untracked、Modified、Staged 或 Clean。不确定下一步时，先 status。</td>
+<td><span class="tech-marker foundation"><b aria-hidden="true">◇</b><span data-zh="基础" data-en="Foundation">基础</span></span></td>
+</tr>
+<tr>
+<td>
+<code>git add</code>
+</td>
+<td data-zh="把改动放入 Staging Area，准备下一个 commit；它不是上传。<code>git add .</code> 前先看 status/diff。" data-en="Put changes in the Staging Area for the next commit; it is not upload. Inspect status/diff before <code>git add .</code>.">把改动放入 Staging Area，准备下一个 commit；它不是上传。<code>git add .</code> 前先看 status/diff。</td>
+<td><span class="tech-marker foundation"><b aria-hidden="true">◇</b><span data-zh="基础" data-en="Foundation">基础</span></span></td>
+</tr>
+<tr>
+<td>
+<code>git commit -m</code>
+</td>
+<td data-zh="在本地保存带说明的快照，只记录 staged 内容。消息写一个清楚变化，例如 <code>Fix calculator clear button</code>，不要只写 update/stuff/final。commit 不等于 GitHub。" data-en="Save a named local snapshot, recording staged content only. Describe one clear change, for example <code>Fix calculator clear button</code>, not merely update/stuff/final. A commit is not GitHub.">在本地保存带说明的快照，只记录 staged 内容。消息写一个清楚变化，例如 <code>Fix calculator clear button</code>，不要只写 update/stuff/final。commit 不等于 GitHub。</td>
+<td><span class="tech-marker foundation"><b aria-hidden="true">◇</b><span data-zh="基础" data-en="Foundation">基础</span></span></td>
+</tr>
+<tr>
+<td>
+<code>git log</code>
+</td>
+<td data-zh="查看 commit 历史；<code>--oneline</code> 用于简洁总览。" data-en="View commit history; <code>--oneline</code> is a compact overview.">查看 commit 历史；<code>--oneline</code> 用于简洁总览。</td>
+<td><span class="tech-marker foundation"><b aria-hidden="true">◇</b><span data-zh="基础" data-en="Foundation">基础</span></span></td>
+</tr>
+</table>
+</section>
+<section id="remote" data-section>
+<h2 data-zh="03 远程仓库、origin 与同步" data-en="03 Remote repositories, origin, and synchronization">03 远程仓库、origin 与同步</h2>
+<pre>
+<code>git remote -v
+git remote add origin URL
+git push -u origin main
+git fetch
+git pull
+git clone URL</code>
+</pre>
+<p data-zh="remote 是远程仓库的连接信息；<code>origin</code> 不是 GitHub 本身，而是远程地址常用的昵称。<code>git remote add origin URL</code> 是告诉本机 Git“把这个 URL 叫 origin”。<code>push</code> 将本地提交发送到 remote；<code>-u</code> 设 upstream，之后常可直接 <code>git push</code>。由于 push 会改变共享远程状态，属于 🟡 先理解再做。" data-en="A remote is connection information for a remote repository; <code>origin</code> is not GitHub itself, but a common nickname for the remote address. <code>git remote add origin URL</code> tells local Git “call this URL origin.” <code>push</code> sends local commits to the remote; <code>-u</code> sets upstream so later <code>git push</code> often works. Because push changes shared remote state, it is 🟡 Understand First.">remote 是远程仓库的连接信息；<code>origin</code> 不是 GitHub 本身，而是远程地址常用的昵称。<code>git remote add origin URL</code> 是告诉本机 Git“把这个 URL 叫 origin”。<code>push</code> 将本地提交发送到 remote；<code>-u</code> 设 upstream，之后常可直接 <code>git push</code>。由于 push 会改变共享远程状态，属于 🟡 先理解再做。</p>
+<p data-zh="<code>clone URL</code> 是第一次完整复制一个 repo，clone 不等于 pull。<code>fetch</code> 下载远程信息但不直接整合当前工作；<code>pull</code> 通常是获取并整合。已有 remote 时不要重复添加 origin；先用 <code>git remote -v</code> 看连接。<code>.gitignore</code> 可列出不应提交的文件，例如 <code>.DS_Store</code>、<code>node_modules/</code>、可能含秘密的 <code>.env</code>；已被追踪的文件后来加入 ignore 不会自动停止追踪。" data-en="<code>clone URL</code> is the first complete copy of a repo; clone is not pull. <code>fetch</code> downloads remote information without directly integrating current work; <code>pull</code> usually fetches and integrates. When origin already exists, do not add it again; inspect the connection with <code>git remote -v</code>. <code>.gitignore</code> can list files that should not be committed, such as <code>.DS_Store</code>, <code>node_modules/</code>, and potentially secret-bearing <code>.env</code>; a file already tracked does not automatically stop tracking after being added to ignore.">
+<code>clone URL</code> 是第一次完整复制一个 repo，clone 不等于 pull。<code>fetch</code> 下载远程信息但不直接整合当前工作；<code>pull</code> 通常是获取并整合。已有 remote 时不要重复添加 origin；先用 <code>git remote -v</code> 看连接。<code>.gitignore</code> 可列出不应提交的文件，例如 <code>.DS_Store</code>、<code>node_modules/</code>、可能含秘密的 <code>.env</code>；已被追踪的文件后来加入 ignore 不会自动停止追踪。</p>
+</section>
+<section id="branch" data-section>
+<h2 data-zh="04 分支、main、合并与冲突" data-en="04 Branches, main, merge, and conflicts">04 分支、main、合并与冲突</h2>
+<pre>
+<code>main: A---B---C
+              \
+feature:       D---E
+
+git branch
+git switch -c feature-navbar
+git switch main
+git merge feature-navbar</code>
+</pre>
+<p data-zh="branch 是独立开发线，不是复制项目文件夹。<code>git branch</code> 查看分支，<code>git branch feature-name</code> 创建；推荐 <code>git switch branch-name</code> 切换，<code>git switch -c new-branch</code> 创建并切换。旧教程可能写 checkout。<code>main</code> 通常是主分支名称，不等于 Git。merge 把 feature 的提交整合进当前分支。" data-en="A branch is an independent line of development, not a copied project folder. <code>git branch</code> lists branches and <code>git branch feature-name</code> creates one; prefer <code>git switch branch-name</code> to switch and <code>git switch -c new-branch</code> to create and switch. Older tutorials may use checkout. <code>main</code> is usually the primary branch name, not Git itself. Merge integrates a feature branch’s commits into the current branch.">branch 是独立开发线，不是复制项目文件夹。<code>git branch</code> 查看分支，<code>git branch feature-name</code> 创建；推荐 <code>git switch branch-name</code> 切换，<code>git switch -c new-branch</code> 创建并切换。旧教程可能写 checkout。<code>main</code> 通常是主分支名称，不等于 Git。merge 把 feature 的提交整合进当前分支。</p>
+<div class="card pitfall">
+<strong data-zh="冲突不是失败" data-en="A conflict is not failure">冲突不是失败</strong>
+<p data-zh="当同一文件同一位置有不同修改，Git 无法替人选择。阅读冲突内容，选择正确版本，删除 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>、<code>=======</code>、<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>，测试，再 <code>git add</code> 与 <code>git commit</code>。冲突是在请求人做决定。" data-en="When different edits occupy the same file location, Git cannot choose for a person. Read the conflict, choose the correct content, remove <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>, test, then <code>git add</code> and <code>git commit</code>. A conflict asks a human to decide.">当同一文件同一位置有不同修改，Git 无法替人选择。阅读冲突内容，选择正确版本，删除 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>、<code>=======</code>、<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>，测试，再 <code>git add</code> 与 <code>git commit</code>。冲突是在请求人做决定。</p>
+</div>
+</section>
+<section id="safe" data-section>
+<h2 data-zh="05 先检查，再恢复：安全边界" data-en="05 Inspect first, then recover: safety boundaries">05 先检查，再恢复：安全边界</h2>
+<pre>
+<code>git status
+git diff
+git diff --staged
+git restore filename
+git restore --staged filename</code>
+</pre>
+<p data-zh="<code>diff</code> 看未暂存改动；<code>diff --staged</code> 看将进入 commit 的内容。<code>git restore --staged filename</code> 只撤销暂存，保留工作区改动；<code>git restore filename</code> 会丢弃该文件未提交修改，执行前必须读 diff 和确认目标。HEAD 是“我现在在哪里”，通常指当前分支的当前 commit。" data-en="<code>diff</code> shows unstaged changes; <code>diff --staged</code> shows content going into a commit. <code>git restore --staged filename</code> only unstages and retains working changes; <code>git restore filename</code> discards uncommitted changes in that file, so read diff and confirm the target first. HEAD is “where am I now?” and usually points to the current commit of the current branch.">
+<code>diff</code> 看未暂存改动；<code>diff --staged</code> 看将进入 commit 的内容。<code>git restore --staged filename</code> 只撤销暂存，保留工作区改动；<code>git restore filename</code> 会丢弃该文件未提交修改，执行前必须读 diff 和确认目标。HEAD 是“我现在在哪里”，通常指当前分支的当前 commit。</p>
+<div class="card danger">
+<strong data-zh="🔴 危险 / 破坏性" data-en="🔴 Danger / destructive">🔴 危险 / 破坏性</strong>
+<p data-zh="<code>git reset --hard</code> 可能永久丢失未提交修改；<code>git push --force</code> 可重写共享远程历史。本页仅为识别风险而列出它们：未充分理解、确认目标和备份时，不要执行。" data-en="<code>git reset --hard</code> can permanently lose uncommitted changes; <code>git push --force</code> can rewrite shared remote history. This page lists them only for risk recognition: do not run them without understanding, confirming the target, and having a backup.">
+<code>git reset --hard</code> 可能永久丢失未提交修改；<code>git push --force</code> 可重写共享远程历史。本页仅为识别风险而列出它们：未充分理解、确认目标和备份时，不要执行。</p>
+</div>
+</section>
+<section id="workflows" data-section>
+<h2 data-zh="06 初学者工作流" data-en="06 Beginner workflows">06 初学者工作流</h2>
+<h3 data-zh="第一个 GitHub 项目" data-en="First GitHub project">第一个 GitHub 项目</h3>
+<pre>
+<code>mkdir project
+cd project
+git init
+git status
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin URL
+git push -u origin main</code>
+</pre>
+<p data-zh="这不是一段应盲目粘贴的魔法：<code>git init</code> 让当前文件夹成为有本地历史的 repository；第一次 <code>git commit</code> 才创建本地版本；<code>git branch -M main</code> 把当前分支命名为 main；<code>git remote add origin URL</code> 给远程仓库地址一个本机昵称 <code>origin</code>；最后 <code>git push -u origin main</code> 才把本地 main 的 commit 发送到远程，并记住这条对应关系，方便之后直接 <code>git push</code>。" data-en="This is not magic to paste blindly: <code>git init</code> makes the current folder a repository with local history; the first <code>git commit</code> creates a local version; <code>git branch -M main</code> names the current branch main; <code>git remote add origin URL</code> gives the remote repository address a local nickname, <code>origin</code>; finally, <code>git push -u origin main</code> sends commits from local main to the remote and remembers that relationship, so later <code>git push</code> can work directly.">这不是一段应盲目粘贴的魔法：<code>git init</code> 让当前文件夹成为有本地历史的 repository；第一次 <code>git commit</code> 才创建本地版本；<code>git branch -M main</code> 把当前分支命名为 main；<code>git remote add origin URL</code> 给远程仓库地址一个本机昵称 <code>origin</code>；最后 <code>git push -u origin main</code> 才把本地 main 的 commit 发送到远程，并记住这条对应关系，方便之后直接 <code>git push</code>。</p>
+<pre data-zh="第一次 push 前&#10;├── 本地仓库：已有至少一个 commit&#10;├── 当前分支：main&#10;└── remote：origin 已指向正确 URL&#10;        │&#10;        │ git push -u origin main&#10;        ▼&#10;第一次 push 后&#10;├── 远程仓库：收到 local main 的 commit&#10;└── upstream：local main 与 origin/main 已建立对应&#10;&#10;push 改变共享远程状态（🟡 先理解再做），但不会替你创建 commit。" data-en="Before the first push&#10;├── local repository: at least one commit exists&#10;├── current branch: main&#10;└── remote: origin points to the correct URL&#10;        │&#10;        │ git push -u origin main&#10;        ▼&#10;After the first push&#10;├── remote repository: receives commits from local main&#10;└── upstream: local main and origin/main are connected&#10;&#10;push changes shared remote state (🟡 Understand First), but does not create a commit for you.">第一次 push 前
+├── 本地仓库：已有至少一个 commit
+├── 当前分支：main
+└── remote：origin 已指向正确 URL
+        │
+        │ git push -u origin main
+        ▼
+第一次 push 后
+├── 远程仓库：收到 local main 的 commit
+└── upstream：local main 与 origin/main 已建立对应
+
+push 改变共享远程状态（🟡 先理解再做），但不会替你创建 commit。</pre>
+<h3 data-zh="日常工作" data-en="Daily work">日常工作</h3>
+<pre>
+<code>git status
+# edit code
+git diff
+git add .
+git status
+git commit -m "Describe one clear change"
+git push</code>
+</pre>
+<p data-zh="每步都有目的：知道状态 → 修改 → 看实际变化 → 选择进快照 → 确认暂存内容 → 保存本地历史 → 共享。已有 clone 的项目，开始前先 <code>git pull</code>；要单独开发功能，<code>git switch -c feature-navbar</code>，完成后切回 main、merge、再 push。" data-en="Every step has a purpose: know state → edit → see actual changes → select the snapshot → confirm staged content → save local history → share. For an existing clone, start with <code>git pull</code>; to develop one feature separately, use <code>git switch -c feature-navbar</code>, then switch back to main, merge, and push when complete.">每步都有目的：知道状态 → 修改 → 看实际变化 → 选择进快照 → 确认暂存内容 → 保存本地历史 → 共享。已有 clone 的项目，开始前先 <code>git pull</code>；要单独开发功能，<code>git switch -c feature-navbar</code>，完成后切回 main、merge、再 push。</p>
+</section>
+<section id="errors" data-section>
+<h2 data-zh="07 常见问题与真实项目经验" data-en="07 Common problems and real project experience">07 常见问题与真实项目经验</h2>
+<div class="card pitfall">
+<strong data-zh="src refspec main does not match any" data-en="src refspec main does not match any">src refspec main does not match any</strong>
+<p data-zh="已有项目经验表明：常见原因是还没有 first commit，或当前 branch 状态不是 main。不要随机粘贴命令。依次执行：<code>git status</code> → 确认需要追踪的文件 → <code>git add .</code> → <code>git commit -m &quot;Initial commit&quot;</code> → <code>git branch</code> → 必要时 <code>git branch -M main</code> → <code>git push -u origin main</code>。每一步都先确认当前 Git state。" data-en="Existing project experience shows a common cause: there is no first commit yet, or the current branch state is not main. Do not paste random commands. Work through: <code>git status</code> → confirm files to track → <code>git add .</code> → <code>git commit -m &quot;Initial commit&quot;</code> → <code>git branch</code> → if needed <code>git branch -M main</code> → <code>git push -u origin main</code>. Confirm the current Git state at every step.">已有项目经验表明：常见原因是还没有 first commit，或当前 branch 状态不是 main。不要随机粘贴命令。依次执行：<code>git status</code> → 确认需要追踪的文件 → <code>git add .</code> → <code>git commit -m &quot;Initial commit&quot;</code> → <code>git branch</code> → 必要时 <code>git branch -M main</code> → <code>git push -u origin main</code>。每一步都先确认当前 Git state。</p>
+<pre data-zh="症状：src refspec main does not match any&#10;        │&#10;        ▼&#10;发生了什么？Git 找不到可发送的 local main 内容。&#10;        │&#10;        ▼&#10;为什么？常见原因：还没有 first commit，或当前分支不是 main。&#10;        │&#10;        ▼&#10;心智模型：push 只能发送已经存在的本地 commit；它不会创造 commit。&#10;        │&#10;        ▼&#10;修复：先 status 确认状态，再 add → commit → branch → 必要时命名 main → push。&#10;        │&#10;        ▼&#10;避免：每一步先检查状态，不随机粘贴修复命令。" data-en="Symptom: src refspec main does not match any&#10;        │&#10;        ▼&#10;What happened? Git cannot find local main content to send.&#10;        │&#10;        ▼&#10;Why? Commonly, no first commit exists, or the current branch is not main.&#10;        │&#10;        ▼&#10;Mental model: push can only send an existing local commit; it does not create one.&#10;        │&#10;        ▼&#10;Fix: check status, then add → commit → branch → name main if needed → push.&#10;        │&#10;        ▼&#10;Avoid: check state at each step; do not paste random repair commands.">症状：src refspec main does not match any
+        │
+        ▼
+发生了什么？Git 找不到可发送的 local main 内容。
+        │
+        ▼
+为什么？常见原因：还没有 first commit，或当前分支不是 main。
+        │
+        ▼
+心智模型：push 只能发送已经存在的本地 commit；它不会创造 commit。
+        │
+        ▼
+修复：先 status 确认状态，再 add → commit → branch → 必要时命名 main → push。
+        │
+        ▼
+避免：每一步先检查状态，不随机粘贴修复命令。</pre>
+</div>
+<ul>
+<li data-zh="<code>fatal: not a git repository</code>：先确认当前目录。" data-en="<code>fatal: not a git repository</code>: confirm the current directory first.">
+<code>fatal: not a git repository</code>：先确认当前目录。</li>
+<li data-zh="<code>remote origin already exists</code>：昵称已经存在，用 <code>git remote -v</code> 检查。" data-en="<code>remote origin already exists</code>: the nickname exists; inspect with <code>git remote -v</code>.">
+<code>remote origin already exists</code>：昵称已经存在，用 <code>git remote -v</code> 检查。</li>
+<li data-zh="rejected/non-fast-forward：remote 有你还没整合的历史；先理解 pull/fetch 和冲突。" data-en="rejected/non-fast-forward: the remote has history you have not integrated; understand pull/fetch and conflicts first.">rejected/non-fast-forward：remote 有你还没整合的历史；先理解 pull/fetch 和冲突。</li>
+<li data-zh="nothing to commit：没有新的 staged 改动；用 status/diff 看原因。" data-en="nothing to commit: there are no new staged changes; use status/diff to see why.">nothing to commit：没有新的 staged 改动；用 status/diff 看原因。</li>
+</ul>
+</section>
+</main>
+</div>
+<button class="to-top" data-zh-aria-label="返回顶部" data-en-aria-label="Back to top" aria-label="返回顶部">↑</button>
+<script src="../assets/js/knowledge-diagrams.js"></script>
+<script src="../assets/js/notes.js">
+</script>
+</body>
+</html>

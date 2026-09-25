@@ -1,6 +1,8 @@
 # Asset Index
 
-There are currently no learning images or external visual assets in this project. `assets/images/` is intentionally not created yet.
+| Asset | Topic | Type | Local path | Source / usage note | Used in |
+|---|---|---|---|---|---|
+| FrontEnd_Key industrial learning device | Product identity | Generated raster hero artifact | `assets/images/frontend-key-hero-v1.png` | Generated with OpenAI ImageGen on 2026-09-24; technical editorial/industrial product-mockup style; no external license dependency | `index.html` home hero |
 
 When assets are added, record:
 

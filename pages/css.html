@@ -1,46 +1,213 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CSS Notes</title><link rel="stylesheet" href="../assets/css/notes.css"></head><body data-title data-zh="CSS 笔记｜Siyu 的前端知识库" data-en="CSS Notes | Siyu's Frontend Knowledge Base"><div class="progress"></div><a class="skip" href="#main">跳到内容</a><header class="topbar"><a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span></a><nav class="tabs"><a href="../index.html">Home</a><a href="html.html">HTML</a><a aria-current="page" href="css.html">CSS</a><a href="javascript.html">JavaScript</a><a href="git.html">Git</a></nav><div class="lang"><button data-lang="zh">中文</button><button data-lang="en">EN</button></div></header><div class="layout"><aside class="sidebar"><h2>CSS</h2><nav><a href="#intro">01 Introduction</a><a href="#syntax">02 Syntax</a><a href="#ways">03 Where CSS lives</a><a href="#selectors">04–05 Selectors</a><a href="#cascade">06 Cascade</a><a href="#colors">07 Colors</a><a href="#text">08 Text</a><a href="#background">09 Background</a><a href="#box">10–12 Box model</a><a href="#display">13 Display</a><a href="#units">14 / 23 Units</a><a href="#position">15–16 Position</a><a href="#pseudo">17–18 Pseudo</a><a href="#transition">19 Transition</a><a href="#flex">20 Flexbox</a><a href="#columns">21 Columns</a><a href="#responsive">22–25 Responsive</a><a href="#forms">26 Forms</a><a href="#a11y">27 Accessibility</a><a href="#devtools">28 DevTools</a><a href="#errors">29 Errors</a><a href="#quick">30 Quick reference</a></nav></aside><main id="main"><header class="hero"><h1 data-zh="布局与视觉设计" data-en="Layout and visual design">布局与视觉设计</h1><p data-zh="CSS（Cascading Style Sheets）告诉浏览器内容应如何呈现。先理解浏览器的布局规则，再记属性。" data-en="CSS (Cascading Style Sheets) tells a browser how content should be presented. Learn the browser’s layout rules before memorizing properties."></p></header><div class="search-wrap"><input id="site-search" type="search" placeholder="Search / 搜索，例如 flex、margin、specificity"><p id="search-result" class="search-result"></p></div>
-<section id="intro" data-section><h2>01 CSS Introduction</h2><div class="card"><strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong><span data-zh="HTML 说“这是一个标题”；CSS 说“它多大、什么颜色、在哪里”。CSS 可以一处规则应用到很多元素。" data-en="HTML says “this is a heading”; CSS says how large, what color, and where it appears. One CSS rule can apply to many elements."></span></div></section>
-<section id="syntax" data-section><h2>02 CSS Syntax</h2><pre><code>selector {
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSS 笔记｜Siyu 的前端知识库</title>
+<link rel="stylesheet" href="../assets/css/notes.css">
+</head>
+<body data-title data-zh="CSS 笔记｜Siyu 的前端知识库" data-en="CSS Notes | Siyu's Frontend Knowledge Base">
+<div class="progress">
+</div>
+<a class="skip" href="#main" data-zh="跳到内容" data-en="Skip to content">跳到内容</a>
+<header class="topbar">
+<a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span>
+</a>
+<nav class="tabs" data-zh-aria-label="主导航" data-en-aria-label="Primary navigation" aria-label="主导航">
+<a href="../index.html" data-zh="首页" data-en="Home">首页</a>
+<a href="html.html">HTML</a>
+<a aria-current="page" href="css.html">CSS</a>
+<a href="javascript.html">JavaScript</a>
+<a href="git.html">Git</a>
+</nav>
+<div class="lang">
+<button data-lang="zh">中文</button>
+<button data-lang="en">EN</button>
+</div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+<h2>CSS</h2>
+<nav data-zh-aria-label="CSS 章节" data-en-aria-label="CSS sections" aria-label="CSS 章节">
+<a href="#foundations" data-zh="01 基础与引入" data-en="01 Foundations and inclusion">01 基础与引入</a>
+<a href="#selectors" data-zh="02 选择器与层叠" data-en="02 Selectors and cascade">02 选择器与层叠</a>
+<a href="#type" data-zh="03 文字、颜色与背景" data-en="03 Type, color, and backgrounds">03 文字、颜色与背景</a>
+<a href="#box" data-zh="04 盒模型与间距" data-en="04 Box model and spacing">04 盒模型与间距</a>
+<a href="#layout" data-zh="05 Display、Flexbox 与定位" data-en="05 Display, Flexbox, and positioning">05 Display、Flexbox 与定位</a>
+<a href="#responsive" data-zh="06 响应式设计" data-en="06 Responsive design">06 响应式设计</a>
+<a href="#state" data-zh="07 状态、过渡与可访问性" data-en="07 States, transitions, and accessibility">07 状态、过渡与可访问性</a>
+<a href="#debug" data-zh="08 DevTools 与踩坑" data-en="08 DevTools and pitfalls">08 DevTools 与踩坑</a>
+</nav>
+</aside>
+<main id="main">
+<header class="hero">
+<h1 data-zh="CSS：布局与视觉呈现" data-en="CSS: layout and visual presentation">CSS：布局与视觉呈现</h1>
+<p data-zh="CSS（Cascading Style Sheets）告诉浏览器 HTML 内容如何呈现。先理解规则如何作用于盒子，再记属性。" data-en="CSS (Cascading Style Sheets) tells the browser how HTML content should be presented. Understand how rules act on boxes before memorizing properties.">CSS（Cascading Style Sheets）告诉浏览器 HTML 内容如何呈现。先理解规则如何作用于盒子，再记属性。</p>
+</header>
+<div class="search-wrap">
+<label class="skip" for="site-search" data-zh="搜索 CSS 笔记" data-en="Search CSS notes">搜索 CSS 笔记</label>
+<input id="site-search" type="search" data-zh-placeholder="搜索，例如 flex、margin、specificity" data-en-placeholder="Search, for example flex, margin, specificity" placeholder="搜索，例如 flex、margin、specificity">
+<p id="search-result" class="search-result">
+</p>
+</div>
+<section id="foundations" data-section>
+<h2 data-zh="01 CSS 基础、语法与三种引入方式" data-en="01 CSS foundations, syntax, and three inclusion methods">01 CSS 基础、语法与三种引入方式</h2>
+<div class="card">
+<strong data-zh="定义与价值" data-en="Definition and value">定义与价值</strong>
+<p data-zh="CSS 是层叠样式表：用样式规则描述 HTML 的呈现。它把内容与设计分开；一个 .css 文件能控制多个 HTML 页，因此更容易统一更新、协作、适配设备并保持 DRY（不重复自己）。" data-en="CSS is Cascading Style Sheets: style rules describe HTML presentation. It separates content from design; one .css file can control several HTML pages, making unified updates, collaboration, device adaptation, and DRY maintenance easier.">CSS 是层叠样式表：用样式规则描述 HTML 的呈现。它把内容与设计分开；一个 .css 文件能控制多个 HTML 页，因此更容易统一更新、协作、适配设备并保持 DRY（不重复自己）。</p>
+</div>
+<pre>
+<code>selector {
   property: value;
-}</code></pre><p data-zh="Selector（选择器）选中目标；declaration（声明）由 property 与 value 组成。" data-en="A selector targets elements; a declaration contains a property and value."></p></section>
-<section id="ways" data-section><h2>03 External / Internal / Inline CSS</h2><pre><code>&lt;link rel="stylesheet" href="css/notes.css"&gt;
+}
+
+&lt;link rel="stylesheet" type="text/css" href="css/site.css"&gt;
 &lt;style&gt;p { color: navy; }&lt;/style&gt;
-&lt;p style="color: navy"&gt;...&lt;/p&gt;</code></pre><p data-zh="External CSS 最适合多页项目：可复用、可维护。Internal 适合小型单页实验；inline 优先级高但混合内容与外观，应尽量少用。" data-en="External CSS is best for multi-page projects: reusable and maintainable. Internal CSS suits small one-page experiments; inline CSS has high priority but mixes content and appearance, so use it sparingly."></p></section>
-<section id="selectors" data-section><h2>04–05 Basic & Compound Selectors</h2><pre><code>p {}       /* element */
-.card {}   /* class */
-#hero {}   /* id */
-* {}       /* universal */
-nav a {}   /* descendant */
-nav &gt; a {} /* child */
-h1, h2 {} /* group */
-button.primary {} /* intersection: same element has both */</code></pre><p data-zh="descendant 不要求直接父子；child（<code>&gt;</code>）只匹配直接子元素。class 适合可复用样式，id 应保持页面唯一。" data-en="A descendant selector does not require a direct parent; child (<code>&gt;</code>) matches direct children only. Classes suit reusable styles; ids should remain unique in a page."></p></section>
-<section id="cascade" data-section><h2>06 Cascade / Inheritance / Specificity</h2><div class="card course" data-zh="<strong>三个容易混淆的概念</strong>Cascade（层叠）决定冲突规则谁胜；Inheritance（继承）让部分属性如 color 从父元素传下；Specificity（特异性）比较选择器权重，最后 source order（源码顺序）才破平局。<code>!important</code> 会破坏正常判断，优先修正选择器或结构。" data-en="<strong>Three easy-to-confuse ideas</strong>The Cascade chooses among conflicting rules. Inheritance lets some properties, such as color, flow from parent to child. Specificity compares selector weight, then source order breaks a tie. <code>!important</code> disrupts normal reasoning; fix the selector or structure first."></div></section>
-<section id="colors" data-section><h2>07 Colors</h2><pre><code>color: rebeccapurple;
-color: #4b72c2;
-color: rgb(75 114 194);
-color: rgb(75 114 194 / .7);
-color: hsl(220 49% 53%);</code></pre><p data-zh="Name、HEX、RGB/RGBA、HSL/HSLA 都能表达颜色；alpha（透明度）可以用现代 RGB/HSL 的 <code>/</code> 写法。" data-en="Names, HEX, RGB/RGBA, and HSL/HSLA all express color; alpha can use the modern RGB/HSL <code>/</code> syntax."></p></section>
-<section id="text" data-section><h2>08 Font & Text</h2><pre><code>body { font-family: system-ui, sans-serif; font-size: 1rem; line-height: 1.6; }
-h1 { font-weight: 700; text-align: center; letter-spacing: -.02em; }</code></pre><p data-zh="常用属性：font-family、font-size、font-weight、font-style、line-height；以及 text-align、text-decoration、text-transform、text-indent、letter-spacing。行高不仅是美观，也影响阅读。" data-en="Common properties: font-family, font-size, font-weight, font-style, line-height; plus text-align, text-decoration, text-transform, text-indent, letter-spacing. Line height affects readability, not just aesthetics."></p></section>
-<section id="background" data-section><h2>09 Background</h2><p><code>background-color</code> · <code>background-image</code> · <code>background-repeat</code> · <code>background-position</code> · <code>background-size</code> · <code>background-attachment</code></p><p data-zh="背景在盒子内容、padding 后面绘制。<code>cover</code> 填满区域但可能裁剪图；<code>contain</code> 保证看全但可能留空。" data-en="Backgrounds paint behind content and padding. <code>cover</code> fills an area but may crop; <code>contain</code> preserves the full image but may leave empty space."></p></section>
-<section id="box" data-section><h2>10–12 Box Model, Margin / Padding, Border</h2><div class="flow"><div>margin<br><small data-zh="盒子外的距离" data-en="space outside">盒子外的距离</small></div><b>→</b><div>border</div><b>→</b><div>padding<br><small data-zh="内容周围空间" data-en="space around content">内容周围空间</small></div><b>→</b><div>content</div></div><pre><code>* { box-sizing: border-box; }</code></pre><p data-zh="margin 推开相邻盒子；padding 在盒子内部留白。vertical margin collapse（垂直外边距折叠）主要发生在普通 block 的相邻/父子 margin。<code>border-box</code> 让设定宽高包含 padding 与 border，布局更可预测。" data-en="Margin separates neighboring boxes; padding creates inner space. Vertical margin collapse mainly occurs between ordinary block margins. <code>border-box</code> makes set width/height include padding and border, making layout more predictable."></p></section>
-<section id="display" data-section><h2>13 Display</h2><p><code>block</code> 另起行且可设宽高；<code>inline</code> 在文字流中；<code>inline-block</code> 保持行内排列又可设尺寸；<code>none</code> 从布局中移除。详见 HTML 的比较表。</p></section>
-<section id="units" data-section><h2>14 & 23 Width / Height / Units</h2><table class="compare"><tr><th>Unit</th><th data-zh="适合场景" data-en="Good for">适合场景</th></tr><tr><td>px</td><td data-zh="清晰、固定的小尺寸；不是错误。" data-en="Crisp fixed small sizes; not an error.">清晰、固定的小尺寸；不是错误。</td></tr><tr><td>%</td><td data-zh="相对父容器。" data-en="Relative to parent.">相对父容器。</td></tr><tr><td>vw / vh</td><td data-zh="相对视口宽 / 高。" data-en="Relative to viewport width / height.">相对视口宽 / 高。</td></tr><tr><td>rem / em</td><td data-zh="Supplementary Knowledge：相对根字号 / 当前字号。" data-en="Supplementary Knowledge: relative to root / current font size.">Supplementary Knowledge：相对根字号 / 当前字号。</td></tr><tr><td>calc()</td><td data-zh="组合计算，如 <code>calc(100% - 2rem)</code>。" data-en="Combines values, e.g. <code>calc(100% - 2rem)</code>。">组合计算。</td></tr></table></section>
-<section id="position" data-section><h2>15–16 Position & Z-index</h2><pre><code>.parent { position: relative; }
-.badge { position: absolute; top: 0; right: 0; z-index: 1; }</code></pre><p data-zh="static 是默认；relative 保留原位置并可作为 absolute 子元素定位参照；absolute 脱离普通文档流；fixed 相对视口固定。<code>sticky</code> 是 Supplementary Knowledge：在阈值前像 relative、之后像 fixed。z-index 只在合适的定位/stacking context 中比较，不是“数字越大永远越上”。" data-en="Static is default; relative keeps its space and can anchor absolute children; absolute leaves normal flow; fixed anchors to the viewport. <code>sticky</code> is Supplementary Knowledge: relative until a threshold, then fixed-like. z-index compares within relevant positioning/stacking contexts, not globally forever."></p></section>
-<section id="pseudo" data-section><h2>17–18 Pseudo-class / Pseudo-element</h2><pre><code>a:link {} a:visited {} a:hover {} a:focus {} a:active {} /* LVHFA */
-p::first-letter {} .label::before { content: "New"; }</code></pre><p data-zh="伪类描述状态；保留 CS103 的 LVHFA 顺序以减少链接状态覆盖。伪元素如 <code>::before</code>、<code>::after</code>、<code>::first-letter</code>、<code>::first-line</code> 是 Supplementary Knowledge。focus 不要只靠鼠标 hover，键盘用户需要它。" data-en="Pseudo-classes describe state; keep CS103’s LVHFA order to avoid link-state overrides. Pseudo-elements such as <code>::before</code>, <code>::after</code>, <code>::first-letter</code>, <code>::first-line</code> are Supplementary Knowledge. Do not rely on hover alone; keyboard users need focus."></p></section>
-<section id="transition" data-section><h2>19 Transition</h2><pre><code>button { transition: background-color 180ms ease, transform 180ms ease; }</code></pre><p data-zh="由 property、duration、timing-function、delay 组成。只为用户可理解的状态变化加 transition，并尊重 reduced motion。" data-en="It has property, duration, timing-function, and delay. Use transition for user-understandable state changes and respect reduced motion."></p></section>
-<section id="flex" data-section><h2>20 Flexbox</h2><pre><code>.row { display: flex; flex-direction: row; justify-content: space-between;
-       align-items: center; flex-wrap: wrap; gap: 1rem; }</code></pre><div class="card"><strong data-zh="视觉思路" data-en="Visual model">视觉思路</strong><span data-zh="在 parent（父元素）写 <code>display:flex</code>；主轴由 flex-direction 决定。<code>justify-content</code> 沿主轴分配，<code>align-items</code> 沿交叉轴对齐，gap 是项目间距；<code>flex-wrap</code> 决定能否换行，<strong>不等于</strong> flex-direction。" data-en="Put <code>display:flex</code> on the parent. flex-direction defines the main axis. <code>justify-content</code> distributes on it, <code>align-items</code> aligns on the cross axis, gap spaces items; <code>flex-wrap</code> controls wrapping and is <strong>not</strong> flex-direction."></span></div></section>
-<section id="columns" data-section><h2>21 Two Column Layout</h2><pre><code>#container { display: flex; }
-nav { width: 30%; }
-main { width: 70%; }</code></pre><p data-zh="这是 CS103 可读的双栏思路。真实项目更常用 <code>flex: 0 0 30%</code> / <code>flex: 1</code> 与 gap；宽度相加再加 gap 可能超出 parent。" data-en="This is a readable CS103 two-column model. In real projects, <code>flex: 0 0 30%</code> / <code>flex: 1</code> with gap is common; widths that total 100% plus a gap can overflow the parent."></p></section>
-<section id="responsive" data-section><h2>22 / 24 / 25 Responsive Web Design</h2><pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;p style="color: navy"&gt;...&lt;/p&gt;</code>
+</pre>
+<table class="compare">
+<tr>
+<th data-zh="方式" data-en="Method">方式</th>
+<th data-zh="何时与如何" data-en="When and how">何时与如何</th>
+</tr>
+<tr>
+<td data-zh="外部 CSS" data-en="External CSS">外部 CSS</td>
+<td data-zh="独立 <code>.css</code> 文件；用 <code>link</code> 放在 <code>head</code>，适合多页项目。<code>rel</code>、<code>type</code>、<code>href</code> 是课程笔记强调的 link 部分，href 随文件位置而变。" data-en="A separate <code>.css</code> file; use <code>link</code> in <code>head</code>, best for multi-page work. The course note emphasizes <code>rel</code>, <code>type</code>, and <code>href</code>; href changes with the file location.">独立 <code>.css</code> 文件；用 <code>link</code> 放在 <code>head</code>，适合多页项目。<code>rel</code>、<code>type</code>、<code>href</code> 是课程笔记强调的 link 部分，href 随文件位置而变。</td>
+</tr>
+<tr>
+<td data-zh="内部 CSS" data-en="Internal CSS">内部 CSS</td>
+<td data-zh="写在当前 HTML 的 <code>head &gt; style</code>，只影响该页，适合学习/小实验。" data-en="Write it in <code>head &gt; style</code> of the current HTML file; it affects that page only and suits learning/small experiments.">写在当前 HTML 的 <code>head &gt; style</code>，只影响该页，适合学习/小实验。</td>
+</tr>
+<tr>
+<td data-zh="行内 CSS" data-en="Inline CSS">行内 CSS</td>
+<td data-zh="写在单个元素的 <code>style</code> 属性，混合结构和外观，通常少用；课程笔记提到它常与 JavaScript 配合。" data-en="Write it in one element’s <code>style</code> attribute; it mixes structure and appearance and is usually used sparingly; the course note mentions it often alongside JavaScript.">写在单个元素的 <code>style</code> 属性，混合结构和外观，通常少用；课程笔记提到它常与 JavaScript 配合。</td>
+</tr>
+</table>
+<div class="card course">
+<strong data-zh="课程笔记 + 更准确的理解" data-en="Course note + more accurate understanding">课程笔记 + 更准确的理解</strong>
+<p data-zh="课程把优先级概括为 external → internal → inline。这个顺序可帮助初学者记住行内规则常更强；但真正冲突还受 selector specificity、源码顺序和其他层叠规则影响，不能把它当成所有情况的唯一公式。文件寻址仍从当前 HTML 算：同目录可写 <code>href=&quot;demo.css&quot;</code>，<code>../</code> 回上级，<code>../../styles/home/demo.css</code> 跨多个目录。" data-en="The course summarizes priority as external → internal → inline. This helps beginners remember that inline rules are often stronger; however, real conflicts also depend on selector specificity, source order, and other cascade rules, so it is not the only formula. File addressing still starts from the current HTML file: same folder can use <code>href=&quot;demo.css&quot;</code>, <code>../</code> goes up, and <code>../../styles/home/demo.css</code> crosses several folders.">课程把优先级概括为 external → internal → inline。这个顺序可帮助初学者记住行内规则常更强；但真正冲突还受 selector specificity、源码顺序和其他层叠规则影响，不能把它当成所有情况的唯一公式。文件寻址仍从当前 HTML 算：同目录可写 <code>href=&quot;demo.css&quot;</code>，<code>../</code> 回上级，<code>../../styles/home/demo.css</code> 跨多个目录。</p>
+</div>
+</section>
+<section id="selectors" data-section>
+<h2 data-zh="02 选择器、继承、层叠与优先级" data-en="02 Selectors, inheritance, cascade, and specificity">02 选择器、继承、层叠与优先级</h2>
+<pre>
+<code>p {}             /* tag */
+.card {}         /* class */
+#hero {}          /* id */
+* { margin: 0; box-sizing: border-box; }
+nav a {}          /* descendant */
+nav &gt; a {}        /* direct child */
+h1, h2 {}         /* group */
+button.primary {} /* intersection */
+a:link {} a:visited {} a:hover {} a:focus {} a:active {}</code>
+</pre>
+<p data-zh="选择器寻找需要设样式的元素。标签选择器会选中所有同名标签；类选择器 <code>.class</code> 适合重复使用，一个元素可有多个用空格分开的 class，类名应见名知意、使用英文/连字符而不是纯数字或中文。<code>#id</code> 选唯一 id，课程笔记认为它更常与 JavaScript 配合。通配符 <code>*</code> 选全页元素，常用于清除浏览器默认间距。" data-en="Selectors find elements to style. A tag selector selects every tag with that name; a class selector <code>.class</code> suits reuse, one element can have several space-separated classes, and names should be meaningful English/hyphenated words rather than pure numbers or Chinese. <code>#id</code> selects a unique id, which the course note more often associates with JavaScript. The universal selector <code>*</code> selects every page element and is often used to clear browser default spacing.">选择器寻找需要设样式的元素。标签选择器会选中所有同名标签；类选择器 <code>.class</code> 适合重复使用，一个元素可有多个用空格分开的 class，类名应见名知意、使用英文/连字符而不是纯数字或中文。<code>#id</code> 选唯一 id，课程笔记认为它更常与 JavaScript 配合。通配符 <code>*</code> 选全页元素，常用于清除浏览器默认间距。</p>
+<p data-zh="后代选择器用空格，匹配任意深度的后代；子代选择器 <code>&gt;</code> 只匹配直接孩子；并集用逗号给多组相同样式；交集连写，要求同一元素同时满足条件。伪类用冒号表示状态；链接状态按课程口诀 LVHFA（link、visited、hover、focus、active）书写以减少覆盖问题。" data-en="A descendant selector uses a space and matches descendants at any depth; a child selector <code>&gt;</code> matches direct children only; a group uses commas for several targets with one style; an intersection is written together and requires the same element to meet every condition. A pseudo-class uses a colon for state; write link states in the course mnemonic LVHFA (link, visited, hover, focus, active) to reduce override problems.">后代选择器用空格，匹配任意深度的后代；子代选择器 <code>&gt;</code> 只匹配直接孩子；并集用逗号给多组相同样式；交集连写，要求同一元素同时满足条件。伪类用冒号表示状态；链接状态按课程口诀 LVHFA（link、visited、hover、focus、active）书写以减少覆盖问题。</p>
+<div class="card">
+<strong data-zh="三个容易混淆的概念" data-en="Three easy-to-confuse ideas">三个容易混淆的概念</strong>
+<p data-zh="继承（Inheritance）让部分属性（如 <code>color</code>）从父元素传给孩子；层叠（Cascade）在规则冲突时决定胜者；优先级（Specificity）比较选择器权重，权重相同再看源码后出现的规则。不要急着用 <code>!important</code>，先检查选择器、结构和规则顺序。" data-en="Inheritance lets some properties, such as <code>color</code>, pass from parent to child; the Cascade chooses a winner when rules conflict; Specificity compares selector weight, and equal weight then uses the later source rule. Do not reach for <code>!important</code> first—check selectors, structure, and rule order.">继承（Inheritance）让部分属性（如 <code>color</code>）从父元素传给孩子；层叠（Cascade）在规则冲突时决定胜者；优先级（Specificity）比较选择器权重，权重相同再看源码后出现的规则。不要急着用 <code>!important</code>，先检查选择器、结构和规则顺序。</p>
+</div>
+</section>
+<section id="type" data-section>
+<h2 data-zh="03 字体、文本、颜色与背景" data-en="03 Fonts, text, color, and backgrounds">03 字体、文本、颜色与背景</h2>
+<pre>
+<code>body { font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; }
+h1 { font: italic 700 30px/2 sans-serif; text-align: center; }
+p { text-indent: 2em; text-decoration: underline; }
+.note { color: #fc0; background-color: rgba(20, 40, 90, .2); }</code>
+</pre>
+<p data-zh="文字常用 <code>font-size</code>（PC 常见 px）、<code>font-weight</code>（400/700 或 normal/bold）、<code>font-style</code>（normal/italic）、<code>line-height</code>、<code>font-family</code>。font-family 可从左到右写多个候选，最后给通用 sans-serif。<code>font</code> 简写顺序是 style、weight、size/line-height、family；字号和字体必须出现，否则简写不生效。单行文字要在固定高度盒子中垂直居中时，可令 line-height 等于盒子高度。" data-en="Common text properties are <code>font-size</code> (px is common on desktop), <code>font-weight</code> (400/700 or normal/bold), <code>font-style</code> (normal/italic), <code>line-height</code>, and <code>font-family</code>. font-family can list fallback choices left to right and end with generic sans-serif. The <code>font</code> shorthand order is style, weight, size/line-height, family; size and family must appear or it does not work. To vertically center one line in a fixed-height box, line-height can equal the box height.">文字常用 <code>font-size</code>（PC 常见 px）、<code>font-weight</code>（400/700 或 normal/bold）、<code>font-style</code>（normal/italic）、<code>line-height</code>、<code>font-family</code>。font-family 可从左到右写多个候选，最后给通用 sans-serif。<code>font</code> 简写顺序是 style、weight、size/line-height、family；字号和字体必须出现，否则简写不生效。单行文字要在固定高度盒子中垂直居中时，可令 line-height 等于盒子高度。</p>
+<p data-zh="<code>text-indent</code> 可用 px 或 em（1em 是当前字号），<code>text-align</code> 控制水平 left/center/right，<code>text-decoration</code> 可为 none/underline/line-through/overline。颜色可用英文名称、<code>#RRGGBB</code>（可缩写 #RGB）、<code>rgb()</code>、<code>rgba()</code>，以及来源也覆盖的 HSL/HSLA；alpha 范围是 0（全透明）到 1（不透明）。背景常见 <code>background-color</code>、image、repeat、position、size；<code>cover</code> 可填满但可能裁剪，<code>contain</code> 保留完整图片但可能留空。" data-en="<code>text-indent</code> can use px or em (1em is the current font size), <code>text-align</code> controls horizontal left/center/right, and <code>text-decoration</code> can be none/underline/line-through/overline. Colors can use English names, <code>#RRGGBB</code> (shortened #RGB), <code>rgb()</code>, <code>rgba()</code>, and the source also covers HSL/HSLA; alpha ranges from 0 (transparent) to 1 (opaque). Common backgrounds are <code>background-color</code>, image, repeat, position, and size; <code>cover</code> can fill but crop, while <code>contain</code> preserves the whole image but may leave space."> <code>text-indent</code> 可用 px 或 em（1em 是当前字号），<code>text-align</code> 控制水平 left/center/right，<code>text-decoration</code> 可为 none/underline/line-through/overline。颜色可用英文名称、<code>#RRGGBB</code>（可缩写 #RGB）、<code>rgb()</code>、<code>rgba()</code>，以及来源也覆盖的 HSL/HSLA；alpha 范围是 0（全透明）到 1（不透明）。背景常见 <code>background-color</code>、image、repeat、position、size；<code>cover</code> 可填满但可能裁剪，<code>contain</code> 保留完整图片但可能留空。</p>
+</section>
+<section id="box" data-section>
+<h2 data-zh="04 盒模型（Box Model）、边框与间距" data-en="04 Box model, borders, and spacing">04 盒模型（Box Model）、边框与间距</h2>
+<div class="box-primer" aria-labelledby="box-primer-title"><div class="box-primer-head"><span id="box-primer-title">BOX MODEL / SPATIAL ORDER</span><p data-zh="从外部空间走进真实内容" data-en="Move from outside space into real content">从外部空间走进真实内容</p><div class="box-primer-axis"><span data-zh="OUTSIDE（外部）" data-en="OUTSIDE">OUTSIDE（外部）</span><i aria-hidden="true">→</i><span data-zh="INSIDE（内部）" data-en="INSIDE">INSIDE（内部）</span></div></div><div class="box-primer-grid"><div><b>01</b><strong>MARGIN</strong><small data-zh="外部间距" data-en="outside space">外部间距</small><p data-zh="border 外部的透明空间" data-en="transparent space outside the border">border 外部的透明空间</p></div><div><b>02</b><strong>BORDER</strong><small data-zh="边界" data-en="boundary">边界</small><p data-zh="元素的实际边界" data-en="the element’s actual boundary">元素的实际边界</p></div><div><b>03</b><strong>PADDING</strong><small data-zh="内部间距" data-en="inside space">内部间距</small><p data-zh="border 与 content 之间的空间" data-en="space between border and content">border 与 content 之间的空间</p></div><div><b>04</b><strong>CONTENT</strong><small data-zh="真实内容" data-en="actual content">真实内容</small><p data-zh="元素真正承载内容的区域" data-en="the area carrying the actual material">元素真正承载内容的区域</p></div></div></div>
+<figure class="knowledge-diagram learning-instrument box-lab" data-instrument="box" aria-labelledby="box-figure-title">
+<figcaption id="box-figure-title">
+<span>FIG. CSS_04.01</span>
+<strong data-zh="盒子的空间从哪里来？" data-en="Where does a box’s space come from?">盒子的空间从哪里来？</strong>
+</figcaption>
+<p class="instrument-intro" data-zh="选择一个区域，再改变真实元素的 CSS 值。所有层始终可见；留意空间发生在边框的哪一侧。" data-en="Select a region, then change a real element’s CSS value. Every layer remains visible; notice which side of the border receives the space.">选择一个区域，再改变真实元素的 CSS 值。所有层始终可见；留意空间发生在边框的哪一侧。</p>
+<div class="instrument-toolbar" role="group" data-zh-aria-label="选择盒模型区域" data-en-aria-label="Select a box-model region" aria-label="选择盒模型区域">
+<button type="button" data-box-layer="margin" aria-pressed="false">MARGIN <span data-zh="外部" data-en="outside">外部</span></button><button type="button" data-box-layer="border" aria-pressed="false">BORDER <span data-zh="边界" data-en="boundary">边界</span></button><button type="button" data-box-layer="padding" aria-pressed="false">PADDING <span data-zh="内部" data-en="inside">内部</span></button><button type="button" data-box-layer="content" aria-pressed="true">CONTENT <span data-zh="内容" data-en="content">内容</span></button>
+</div>
+<div class="instrument-controls box-controls" data-zh-aria-label="调整盒模型属性" data-en-aria-label="Adjust box-model properties" aria-label="调整盒模型属性">
+<fieldset><legend>margin</legend><button type="button" data-box-control="margin" data-value="0">0</button><button type="button" data-box-control="margin" data-value="16">16</button><button type="button" data-box-control="margin" data-value="32">32</button></fieldset>
+<fieldset><legend>padding</legend><button type="button" data-box-control="padding" data-value="0">0</button><button type="button" data-box-control="padding" data-value="16" aria-pressed="true">16</button><button type="button" data-box-control="padding" data-value="32">32</button></fieldset>
+<fieldset><legend>border-width</legend><button type="button" data-box-control="border" data-value="0">0</button><button type="button" data-box-control="border" data-value="2" aria-pressed="true">2</button><button type="button" data-box-control="border" data-value="6">6</button></fieldset>
+</div>
+<div class="box-lab-stage"><div class="box-live-margin" data-box-region="margin" role="button" tabindex="0"><span class="region-marker">MARGIN / <b data-box-value="margin">0</b>px</span><div class="box-live-border" data-box-region="border" role="button" tabindex="0"><span class="region-marker">BORDER / <b data-box-value="border">2</b>px</span><div class="box-live-padding" data-box-region="padding" role="button" tabindex="0"><span class="region-marker">PADDING / <b data-box-value="padding">16</b>px</span><div class="box-live-content" data-box-region="content" role="button" tabindex="0"><strong>CONTENT</strong><span data-zh="真实内容盒" data-en="real content box">真实内容盒</span></div></div></div></div></div>
+<div class="instrument-readout"><code data-box-property>content</code><p aria-live="polite" data-box-explain data-zh="Content 是实际内容所在的区域。" data-en="Content is where the actual material lives.">Content 是实际内容所在的区域。</p></div>
+</figure>
+<pre>
+<code>* { margin: 0; box-sizing: border-box; }
+.box { width: 200px; padding: 30px; border: 5px solid orange; }
+/* without border-box: 200 + 30 + 30 + 5 + 5 = 270px */
+margin: 50px;              /* all */
+margin: 50px 70px;         /* top/bottom | left/right */
+padding: 10px 70px 20px;   /* top | left/right | bottom */
+padding: 20px 10px 50px 70px; /* top right bottom left */</code>
+</pre>
+<p data-zh="content 是内容，padding 是内容到边框的内部空间，border 包住它们，margin 是盒子与其他盒子的外部距离。border 的三部分是 width、style、color；常用 style 有 solid、dashed、dotted，简写如 <code>border: 5px solid red</code>，也可写 border-top/right/bottom/left。" data-en="Content is the content, padding is inner space from content to border, border encloses them, and margin is outside space from other boxes. A border has width, style, and color; common styles are solid, dashed, and dotted, with shorthand such as <code>border: 5px solid red</code>; you can also write border-top/right/bottom/left.">content 是内容，padding 是内容到边框的内部空间，border 包住它们，margin 是盒子与其他盒子的外部距离。border 的三部分是 width、style、color；常用 style 有 solid、dashed、dotted，简写如 <code>border: 5px solid red</code>，也可写 border-top/right/bottom/left。</p>
+<p data-zh="相邻普通 block 的垂直 margin 可能折叠：40px 的 margin-bottom 与 25px 的 margin-top 实际通常是 40px，不是 65px；水平方向不这样折叠。padding 不折叠，但默认会增加总尺寸。<code>box-sizing: border-box</code> 让声明的 width/height 包含 padding 和 border，避免计算把布局撑大。水平居中有两种来源方法：eligible block 写 <code>margin: auto</code>；inline 内容在父元素上写 <code>text-align: center</code>。" data-en="Vertical margins of adjacent ordinary blocks can collapse: a 40px margin-bottom and 25px margin-top are usually 40px, not 65px; horizontal margins do not collapse this way. Padding does not collapse, but by default it increases total size. <code>box-sizing: border-box</code> makes declared width/height include padding and border, avoiding layout expansion. The sources give two ways to center horizontally: eligible blocks use <code>margin: auto</code>; inline content uses <code>text-align: center</code> on its parent.">相邻普通 block 的垂直 margin 可能折叠：40px 的 margin-bottom 与 25px 的 margin-top 实际通常是 40px，不是 65px；水平方向不这样折叠。padding 不折叠，但默认会增加总尺寸。<code>box-sizing: border-box</code> 让声明的 width/height 包含 padding 和 border，避免计算把布局撑大。水平居中有两种来源方法：eligible block 写 <code>margin: auto</code>；inline 内容在父元素上写 <code>text-align: center</code>。</p>
+</section>
+<section id="layout" data-section>
+<h2 data-zh="05 Display、Flexbox、定位与两栏布局" data-en="05 Display, Flexbox, positioning, and two columns">05 Display、Flexbox、定位与两栏布局</h2>
+<pre>
+<code>.row { display: flex; flex-direction: row; justify-content: space-between;
+       align-items: center; flex-wrap: wrap; gap: 1rem; }
+#container { display: flex; }
+nav { width: 30%; } main { width: 70%; }
+.parent { position: relative; }
+.badge { position: absolute; top: 0; right: 0; z-index: 2; }</code>
+</pre>
+<figure class="knowledge-diagram flex-diagram" data-diagram="flex" aria-labelledby="flex-figure-title">
+<figcaption id="flex-figure-title"><span>FIG. CSS_05.01</span><strong data-zh="Flexbox：两个方向，两个对齐问题" data-en="Flexbox: two directions, two alignment questions">Flexbox：两个方向，两个对齐问题</strong></figcaption>
+<div class="flex-figure" role="group" data-zh-aria-label="选择 Flexbox 关系来查看" data-en-aria-label="Select a Flexbox relationship to inspect" aria-label="选择 Flexbox 关系来查看">
+<button type="button" class="axis main-axis" data-flex="main" aria-pressed="true"><b>01</b><strong data-zh="主轴（main axis）" data-en="Main axis">主轴（main axis）</strong><small data-zh="flex-direction 决定方向；justify-content 沿它分配项目" data-en="flex-direction sets it; justify-content distributes items along it">flex-direction 决定方向；justify-content 沿它分配项目</small></button>
+<div class="flex-items" aria-hidden="true"><i></i><i></i><i></i></div>
+<button type="button" class="axis cross-axis" data-flex="cross" aria-pressed="false"><b>02</b><strong data-zh="交叉轴（cross axis）" data-en="Cross axis">交叉轴（cross axis）</strong><small data-zh="垂直于主轴；align-items 沿它对齐项目" data-en="perpendicular to the main axis; align-items aligns items along it">垂直于主轴；align-items 沿它对齐项目</small></button>
+</div>
+<p class="diagram-explain" aria-live="polite" data-diagram-result data-zh="主轴是项目排列的方向。row 时通常横向；justify-content 决定项目如何沿主轴分布。" data-en="The main axis is the direction in which items are arranged. In row, it is usually horizontal; justify-content distributes items along it.">主轴是项目排列的方向。row 时通常横向；justify-content 决定项目如何沿主轴分布。</p>
+</figure>
+<p data-zh="block 通常另起一行并可设尺寸；inline 在文字流中；inline-block 行内排列但可设尺寸；<code>none</code> 从布局移除。图片默认 inline，能用 <code>display: block</code> 改变。Flexbox 属性写在父元素：<code>flex-direction</code> 定义主轴，<code>justify-content</code> 沿主轴分配，<code>align-items</code> 沿交叉轴对齐，<code>gap</code> 是项目间距，<code>flex-wrap</code> 控制是否换行，不能把它当成方向。" data-en="Block usually starts a new line and can take dimensions; inline flows with text; inline-block flows inline while accepting dimensions; <code>none</code> removes from layout. Images are inline by default and can become <code>display: block</code>. Flexbox properties go on the parent: <code>flex-direction</code> defines the main axis, <code>justify-content</code> distributes along it, <code>align-items</code> aligns along the cross axis, <code>gap</code> is item space, and <code>flex-wrap</code> controls wrapping—not direction.">block 通常另起一行并可设尺寸；inline 在文字流中；inline-block 行内排列但可设尺寸；<code>none</code> 从布局移除。图片默认 inline，能用 <code>display: block</code> 改变。Flexbox 属性写在父元素：<code>flex-direction</code> 定义主轴，<code>justify-content</code> 沿主轴分配，<code>align-items</code> 沿交叉轴对齐，<code>gap</code> 是项目间距，<code>flex-wrap</code> 控制是否换行，不能把它当成方向。</p>
+<figure class="knowledge-diagram learning-instrument flex-lab" data-instrument="flex" aria-labelledby="flex-lab-title"><figcaption id="flex-lab-title"><span>LAB. CSS_05.02</span><strong data-zh="让真实 Flexbox 回应属性" data-en="Make real Flexbox respond to properties">让真实 Flexbox 回应属性</strong></figcaption><div class="instrument-controls flex-controls"><fieldset><legend>flex-direction</legend><button type="button" data-flex-control="direction" data-value="row" aria-pressed="true">row</button><button type="button" data-flex-control="direction" data-value="column">column</button></fieldset><fieldset><legend>justify-content</legend><button type="button" data-flex-control="justify" data-value="flex-start" aria-pressed="true">flex-start</button><button type="button" data-flex-control="justify" data-value="center">center</button><button type="button" data-flex-control="justify" data-value="space-between">space-between</button></fieldset><fieldset><legend>align-items</legend><button type="button" data-flex-control="align" data-value="flex-start" aria-pressed="true">flex-start</button><button type="button" data-flex-control="align" data-value="center">center</button><button type="button" data-flex-control="align" data-value="flex-end">flex-end</button></fieldset></div><div class="flex-lab-axis" data-flex-axis><span data-flex-main data-zh="主轴 →" data-en="main axis →">主轴 →</span><span data-flex-cross data-zh="交叉轴 ↓" data-en="cross axis ↓">交叉轴 ↓</span></div><div class="flex-live" aria-label="Flexbox demonstration"><i>A</i><i>B</i><i>C</i></div><div class="instrument-readout"><code data-flex-specimen>flex-direction: row;</code><p aria-live="polite" data-flex-explain data-zh="row 令主轴横向；justify-content 沿主轴分配项目。" data-en="row makes the main axis horizontal; justify-content distributes items along it.">row 令主轴横向；justify-content 沿主轴分配项目。</p></div></figure>
+<figure class="knowledge-diagram learning-instrument display-lab" data-instrument="display" aria-labelledby="display-lab-title"><figcaption id="display-lab-title"><span>LAB. CSS_05.03</span><strong data-zh="同一个元素，不同 display 行为" data-en="One element, different display behavior">同一个元素，不同 display 行为</strong></figcaption><div class="instrument-toolbar" role="group" data-zh-aria-label="选择 display 值" data-en-aria-label="Select a display value" aria-label="选择 display 值"><button type="button" data-display="block" aria-pressed="true">display: block</button><button type="button" data-display="inline">display: inline</button><button type="button" data-display="inline-block">display: inline-block</button></div><div class="display-live"><span data-display-sibling>before</span><span class="display-live-target" data-display-target>target</span><span data-display-sibling>after</span></div><div class="instrument-readout"><code data-display-specimen>display: block; width: 12rem; height: 3rem;</code><p aria-live="polite" data-display-explain data-zh="block 从新行开始；这里的 width 与 height 生效。" data-en="block begins on a new line; width and height apply here.">block 从新行开始；这里的 width 与 height 生效。</p></div></figure>
+<p data-zh="定位：static 是默认正常流；relative 相对原位置偏移并保留原空间；absolute 脱离正常流、相对最近 relative 父元素；fixed 固定相对视口，常见于导航/返回顶部。<code>z-index</code> 管理有定位元素的层叠顺序，数值大通常在上，但先确认定位和 stacking context。两栏练习中 nav 30% + main 70% 是起点；若再加 gap/边距可能溢出，需检查总宽度。" data-en="Positioning: static is default normal flow; relative offsets from its original position while preserving space; absolute leaves normal flow and is positioned from the nearest relative parent; fixed is anchored to the viewport, common for navigation/back-to-top. <code>z-index</code> manages stacking order for positioned elements; a larger number is usually higher, but first check positioning and stacking context. In the two-column practice, nav 30% + main 70% is a starting point; adding gap/margins can overflow, so check total width.">定位：static 是默认正常流；relative 相对原位置偏移并保留原空间；absolute 脱离正常流、相对最近 relative 父元素；fixed 固定相对视口，常见于导航/返回顶部。<code>z-index</code> 管理有定位元素的层叠顺序，数值大通常在上，但先确认定位和 stacking context。两栏练习中 nav 30% + main 70% 是起点；若再加 gap/边距可能溢出，需检查总宽度。</p>
+</section>
+<section id="responsive" data-section>
+<h2 data-zh="06 响应式设计、单位与媒体查询" data-en="06 Responsive design, units, and media queries">06 响应式设计、单位与媒体查询</h2>
+<pre>
+<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
 img { max-width: 100%; height: auto; }
-@media (max-width: 700px) { .row { flex-direction: column; } }</code></pre><p data-zh="Responsive（响应式）不是只做 mobile：用 viewport、相对单位、弹性布局与 responsive image，让内容适应可用空间。breakpoint（断点）应由布局开始挤压的位置决定，而不是固定神秘数字。" data-en="Responsive design is not only mobile: use viewport, relative units, flexible layout, and responsive images so content adapts to available space. Choose a breakpoint where the layout becomes cramped, not by a magic fixed number."></p></section>
-<section id="forms" data-section><h2>26 Tables / Forms Styling</h2><p data-zh="为输入控件提供清楚 label、可见 focus 与足够点击面积。表格设置 border-collapse、padding 与可读的表头，不要只靠颜色表达状态。" data-en="Give inputs clear labels, visible focus, and enough hit area. For tables, use border-collapse, padding, and readable headers; do not rely on color alone for state."></p></section>
-<section id="a11y" data-section><h2>27 Accessibility / Visual Hierarchy</h2><p data-zh="用颜色、大小、间距和层级建立 visual hierarchy（视觉层级），同时保留足够对比度与 focus state。用户应该快速看出标题、主要操作与辅助信息。" data-en="Use color, size, space, and hierarchy to establish visual hierarchy while keeping contrast and focus states adequate. Users should quickly find the title, primary action, and supporting information."></p></section>
-<section id="devtools" data-section><h2>28 DevTools</h2><p data-zh="Elements 看真实 DOM，Styles 看哪条 CSS 生效与被覆盖，Box Model 看尺寸，Console 留意错误。不要猜：先 Inspect 元素。" data-en="Elements shows the real DOM, Styles shows applied and overridden CSS, Box Model shows dimensions, and Console surfaces errors. Do not guess: inspect the element first."></p></section>
-<section id="errors" data-section><h2>29 Common Errors</h2><div class="card pitfall" data-zh="<strong>Real Project Pitfalls</strong><code>#container {display:flex}</code> 不工作，先确认 HTML 真的有 <code>&lt;div id=&quot;container&quot;&gt;</code>；nav 30% + main 100% 在 row 中会溢出；<code>flex-wrap</code> 不会改变主轴；HTML class 与 CSS class 大小写/拼写不同就不会匹配。" data-en="<strong>Real Project Pitfalls</strong>If <code>#container {display:flex}</code> fails, confirm HTML really has <code>&lt;div id=&quot;container&quot;&gt;</code>; nav 30% + main 100% overflows in a row; <code>flex-wrap</code> does not change the main axis; a class spelling/case mismatch does not match."></div></section>
-<section id="quick" data-section><h2>30 CSS Quick Reference</h2><table class="compare"><tr><th>Need</th><th>Start with</th></tr><tr><td>Spacing</td><td><code>margin</code> / <code>padding</code></td></tr><tr><td>Row / column</td><td><code>display:flex</code></td></tr><tr><td>Responsive</td><td><code>max-width</code> + <code>@media</code></td></tr><tr><td>Debug</td><td>DevTools → Elements → Styles</td></tr></table></section></main></div><button class="to-top" aria-label="Back to top">↑</button><script src="../assets/js/notes.js"></script></body></html>
+h1 { font-size: calc(2px + 2vw); }
+@media (max-width: 700px) { .row { flex-direction: column; } }</code>
+</pre>
+<p data-zh="响应式设计让内容适应可用空间，而不只是在手机上缩小。课程来源使用 px、%、vh、vw 和 <code>calc()</code>：% 相对父容器，vh/vw 相对视口；<code>calc()</code> 组合数值，运算符前后要有空格。viewport、相对单位、弹性布局、max-width 图片与媒体查询一起使用。断点应在布局开始挤压时决定，而不是背一个神秘数字。" data-en="Responsive design adapts content to available space rather than merely shrinking for phones. The course sources use px, %, vh, vw, and <code>calc()</code>: % is relative to a parent and vh/vw to the viewport; <code>calc()</code> combines values and requires spaces around operators. Use viewport, relative units, flexible layout, max-width images, and media queries together. Choose a breakpoint where a layout becomes cramped, not by memorizing a magic number.">响应式设计让内容适应可用空间，而不只是在手机上缩小。课程来源使用 px、%、vh、vw 和 <code>calc()</code>：% 相对父容器，vh/vw 相对视口；<code>calc()</code> 组合数值，运算符前后要有空格。viewport、相对单位、弹性布局、max-width 图片与媒体查询一起使用。断点应在布局开始挤压时决定，而不是背一个神秘数字。</p>
+</section>
+<section id="state" data-section>
+<h2 data-zh="07 伪类、过渡、视觉层级与可访问性" data-en="07 Pseudo-classes, transitions, hierarchy, and accessibility">07 伪类、过渡、视觉层级与可访问性</h2>
+<pre>
+<code>a:hover { color: hotpink; }
+button { transition: background-color 180ms ease, transform 180ms ease; }
+/* shorthand: property duration timing-function delay */
+div { transition: width 2s linear 1s; }</code>
+</pre>
+<p data-zh="伪类通过 <code>:</code> 表示状态，例如 hover、focus、active；focus 不能只靠鼠标 hover，因为键盘用户需要可见焦点。transition 有 property、duration、timing-function、delay；简写中两个时间值的第一个是 duration、第二个是 delay。把 transition 写在初始规则，给用户可理解的状态变化使用。" data-en="Pseudo-classes use <code>:</code> for states such as hover, focus, and active; do not rely on mouse hover because keyboard users need visible focus. A transition has property, duration, timing-function, and delay; in shorthand, the first time value is duration and the second is delay. Put transition on the initial rule and use it for user-understandable state changes.">伪类通过 <code>:</code> 表示状态，例如 hover、focus、active；focus 不能只靠鼠标 hover，因为键盘用户需要可见焦点。transition 有 property、duration、timing-function、delay；简写中两个时间值的第一个是 duration、第二个是 delay。把 transition 写在初始规则，给用户可理解的状态变化使用。</p>
+<p data-zh="用大小、颜色、留白和对齐建立视觉层级，但不只用颜色传达状态；保持足够对比度、清楚的表单 label、可见 focus 和足够点击面积。表格应有可读表头、padding 和合适边框处理。" data-en="Use size, color, whitespace, and alignment to create visual hierarchy, but do not communicate state with color alone; keep enough contrast, clear form labels, visible focus, and adequate hit area. Tables need readable headers, padding, and appropriate border handling.">用大小、颜色、留白和对齐建立视觉层级，但不只用颜色传达状态；保持足够对比度、清楚的表单 label、可见 focus 和足够点击面积。表格应有可读表头、padding 和合适边框处理。</p>
+</section>
+<section id="debug" data-section>
+<h2 data-zh="08 DevTools、常见错误与项目踩坑" data-en="08 DevTools, common errors, and project pitfalls">08 DevTools、常见错误与项目踩坑</h2>
+<div class="card pitfall">
+<strong data-zh="从真实匹配关系调试" data-en="Debug the real matching relationship">从真实匹配关系调试</strong>
+<p data-zh="右键检查或 F12 打开 DevTools：Elements 看真实 DOM，Styles 看哪些属性生效/被覆盖，Box Model 看尺寸；错误属性可能有黄色感叹号，属性前复选框能临时关闭规则。不要猜，先 Inspect 目标。若 <code>#container { display:flex }</code> 无效，确认 HTML 真的有该 id；class/id 的拼写和大小写必须一致。<code>flex-wrap</code> 不会改主轴；nav 30% + main 100%（或 70% 再加 gap）会溢出；padding 没有 border-box 会撑大宽度。" data-en="Open DevTools with Inspect or F12: Elements shows the real DOM, Styles shows applied/overridden properties, and Box Model shows dimensions; an invalid property may have a yellow warning, and its checkbox can temporarily disable it. Do not guess—inspect the target first. If <code>#container { display:flex }</code> fails, confirm the HTML really has that id; class/id spelling and case must match. <code>flex-wrap</code> does not change the main axis; nav 30% + main 100% (or 70% plus gap) overflows; padding without border-box expands width.">右键检查或 F12 打开 DevTools：Elements 看真实 DOM，Styles 看哪些属性生效/被覆盖，Box Model 看尺寸；错误属性可能有黄色感叹号，属性前复选框能临时关闭规则。不要猜，先 Inspect 目标。若 <code>#container { display:flex }</code> 无效，确认 HTML 真的有该 id；class/id 的拼写和大小写必须一致。<code>flex-wrap</code> 不会改主轴；nav 30% + main 100%（或 70% 再加 gap）会溢出；padding 没有 border-box 会撑大宽度。</p>
+</div>
+</section>
+</main>
+</div>
+<button class="to-top" data-zh-aria-label="返回顶部" data-en-aria-label="Back to top" aria-label="返回顶部">↑</button>
+<script src="../assets/js/knowledge-diagrams.js"></script>
+<script src="../assets/js/notes.js">
+</script>
+</body>
+</html>

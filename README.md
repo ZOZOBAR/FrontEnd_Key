@@ -14,3 +14,12 @@ This is not intended to become a generic frontend encyclopedia. Its current know
 - `docs/` — project memory and maintenance guidance
 
 Open `index.html` directly in a browser. The site intentionally supports direct `file://` use; JavaScript enhances the notes but does not gate the core content.
+
+## Learning & Teaching Philosophy
+
+FrontEnd_Key is not a compressed cheat sheet. It preserves useful source detail while making relationships between concepts easy to understand.
+
+- Complete source integration and current learning boundaries come first.
+- Explanations assume minimal prior knowledge and introduce one new idea at a time.
+- Relationships, execution flow, comparisons, examples, traces, and ASCII/monospace diagrams build mental models.
+- Whitespace and hierarchy reduce cognitive load; visual polish serves knowledge rather than shrinking it.

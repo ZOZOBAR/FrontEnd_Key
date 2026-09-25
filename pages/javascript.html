@@ -1,31 +1,601 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JavaScript Notes</title><link rel="stylesheet" href="../assets/css/notes.css"></head><body data-title data-zh="JavaScript 笔记｜Siyu 的前端知识库" data-en="JavaScript Notes | Siyu's Frontend Knowledge Base"><div class="progress"></div><a class="skip" href="#main">跳到内容</a><header class="topbar"><a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span></a><nav class="tabs"><a href="../index.html">Home</a><a href="html.html">HTML</a><a href="css.html">CSS</a><a aria-current="page" href="javascript.html">JavaScript</a><a href="git.html">Git</a></nav><div class="lang"><button data-lang="zh">中文</button><button data-lang="en">EN</button></div></header><div class="layout"><aside class="sidebar"><h2>JavaScript</h2><nav><a href="#browser">01 Browser & JS</a><a href="#writing">02 Writing JS</a><a href="#variables">03 Variables</a><a href="#types">04 Types & arrays</a><a href="#conversion">05 Conversion</a><a href="#operators">06 Operators</a><a href="#branch">07 Branches</a><a href="#debug">08 Debugging</a><a href="#loops">09 Loops</a></nav></aside><main id="main"><header class="hero"><h1 data-zh="逻辑与交互基础" data-en="Logic and interaction foundations">逻辑与交互基础</h1><p data-zh="本页从已有 JS 整理笔记提炼为双语版本：只包含当前已学的基础，不提前引入 Promise、async/await、React 或复杂模式。" data-en="This bilingual page is distilled from the existing JS notes. It includes only current foundations—no premature Promise, async/await, React, or advanced patterns."></p></header><div class="search-wrap"><input id="site-search" type="search" placeholder="Search / 搜索，例如 NaN、loop、const"><p id="search-result" class="search-result"></p></div>
-<section id="browser" data-section><h2>01 JavaScript & the Browser</h2><div class="card"><strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong><span data-zh="JavaScript 让网页“会回应”：用户点击、表单验证、根据数据更新界面。<code>ECMAScript</code> 是语言标准；Web APIs 是浏览器提供的能力。DOM 操作文档，BOM 涉及窗口、历史与导航。" data-en="JavaScript makes a page respond: clicks, form validation, and data-driven updates. <code>ECMAScript</code> is the language standard; Web APIs are browser capabilities. DOM works with the document, while BOM involves windows, history, and navigation."></span></div><pre><code>console.log('Hello, JavaScript!');</code></pre></section>
-<section id="writing" data-section><h2>02 Writing JavaScript</h2><pre><code>&lt;!-- near the end of body --&gt;
-&lt;script src="app.js"&gt;&lt;/script&gt;</code></pre><p data-zh="外部 <code>.js</code> 文件最易维护；内部 script 可用于小实验。放在 head 时使用 <code>defer</code>，避免元素尚未加载。带 <code>src</code> 的 script 不应再放可执行代码。行内 <code>onclick</code> 不推荐。" data-en="External <code>.js</code> files are easiest to maintain; an internal script suits small experiments. Use <code>defer</code> in head so elements have loaded. A script with <code>src</code> should not contain executable code. Inline <code>onclick</code> is not recommended."></p><div class="card supp" data-zh="<strong>更准确的理解</strong><code>document.write()</code> 在页面加载后调用通常会清空并重写文档；现代页面一般不用它。<code>alert</code>、<code>prompt</code> 会暂停交互，适合练习而非正式 UI。" data-en="<strong>More accurate explanation</strong>Calling <code>document.write()</code> after load usually clears and rewrites the document; modern pages generally avoid it. <code>alert</code> and <code>prompt</code> pause interaction—fine for exercises, not production UI."></div></section>
-<section id="variables" data-section><h2>03 Variables & Constants</h2><pre><code>let score = 60;
-score = 80;
-const course = 'JavaScript';</code></pre><p data-zh="值会重新绑定时用 <code>let</code>；绑定不变时用 <code>const</code>。赋值永远是右边给左边。变量名区分大小写、不能以数字开头，建议用有意义的小驼峰。现代代码一般避免旧写法 <code>var</code>。" data-en="Use <code>let</code> when a binding will change; use <code>const</code> when it will not. Assignment always moves the right value to the left. Names are case-sensitive, cannot start with a number, and should use meaningful camelCase. Modern code generally avoids <code>var</code>."></p><div class="card supp" data-zh="<strong>更准确的理解</strong><code>const</code> 禁止重新赋值，不会自动冻结数组/对象内部；<code>const list=[]; list.push(1)</code> 合法。" data-en="<strong>More accurate explanation</strong><code>const</code> prevents reassignment, not internal mutation of an array/object; <code>const list=[]; list.push(1)</code> is valid."></div></section>
-<section id="types" data-section><h2>04 Arrays & Data Types</h2><pre><code>const fruits = ['apple', 'banana', 'orange'];
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JavaScript 笔记｜Siyu 的前端知识库</title>
+<link rel="stylesheet" href="../assets/css/notes.css">
+</head>
+<body data-title data-zh="JavaScript 笔记｜Siyu 的前端知识库" data-en="JavaScript Notes | Siyu's Frontend Knowledge Base">
+<div class="progress">
+</div>
+<a class="skip" href="#main" data-zh="跳到内容" data-en="Skip to content">跳到内容</a>
+<header class="topbar">
+<a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span>
+</a>
+<nav class="tabs" data-zh-aria-label="主导航" data-en-aria-label="Primary navigation" aria-label="主导航">
+<a href="../index.html" data-zh="首页" data-en="Home">首页</a>
+<a href="html.html">HTML</a>
+<a href="css.html">CSS</a>
+<a href="javascript.html" aria-current="page">JavaScript</a>
+<a href="git.html">Git</a>
+</nav>
+<div class="lang">
+<button data-lang="zh">中文</button>
+<button data-lang="en">EN</button>
+</div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+<h2>JavaScript</h2>
+<nav data-zh-aria-label="JavaScript 章节" data-en-aria-label="JavaScript sections" aria-label="JavaScript 章节">
+<a href="#browser" data-zh="01 JS 与浏览器" data-en="01 JS and the browser">01 JS 与浏览器</a>
+<a href="#writing" data-zh="02 JS 的书写方式" data-en="02 Writing JavaScript">02 JS 的书写方式</a>
+<a href="#variables" data-zh="03 变量与常量" data-en="03 Variables and constants">03 变量与常量</a>
+<a href="#types" data-zh="04 数组与数据类型" data-en="04 Arrays and data types">04 数组与数据类型</a>
+<a href="#conversion" data-zh="05 类型转换" data-en="05 Type conversion">05 类型转换</a>
+<a href="#operators" data-zh="06 运算符" data-en="06 Operators">06 运算符</a>
+<a href="#branch" data-zh="07 条件语句" data-en="07 Conditionals">07 条件语句</a>
+<a href="#debug" data-zh="08 断点调试" data-en="08 Breakpoint debugging">08 断点调试</a>
+<a href="#loops" data-zh="09 循环与案例" data-en="09 Loops and cases">09 循环与案例</a>
+</nav>
+</aside>
+<main id="main">
+<header class="hero">
+<h1 data-zh="JavaScript：逻辑与交互基础" data-en="JavaScript: foundations of logic and interaction">JavaScript：逻辑与交互基础</h1>
+<p data-zh="本页以现有《JS 基础笔记｜整理版》为主要证据，保留当前学习范围内的定义、语法、案例、推理过程与注意事项；不提前加入 Promise、async/await、React 或复杂模式。" data-en="This page is reconstructed from the existing JavaScript foundation note. It preserves definitions, syntax, cases, reasoning, and cautions within the current learning scope—without prematurely adding Promise, async/await, React, or advanced patterns.">本页以现有《JS 基础笔记｜整理版》为主要证据，保留当前学习范围内的定义、语法、案例、推理过程与注意事项；不提前加入 Promise、async/await、React 或复杂模式。</p>
+</header>
+<div class="search-wrap">
+<input id="site-search" type="search" data-zh-placeholder="搜索知识点、案例或原笔记内容，例如：NaN、temp、arr.length" data-en-placeholder="Search concepts, cases, or note content, e.g. NaN, temp, arr.length" placeholder="搜索知识点、案例或原笔记内容，例如：NaN、temp、arr.length">
+<p id="search-result" class="search-result" aria-live="polite">
+</p>
+</div>
+
+<section id="browser" data-section>
+<h2 data-zh="01 JavaScript 与浏览器" data-en="01 JavaScript and the browser">01 JavaScript 与浏览器</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="JavaScript（简称 JS）让网页“会回应”：监听点击等操作、验证表单、把数据放到页面上。浏览器读到 JS 后执行它。" data-en="JavaScript (JS) makes a webpage respond: it can listen for actions such as clicks, validate forms, and put data on a page. The browser executes the JavaScript it reads.">JavaScript（简称 JS）让网页“会回应”：监听点击等操作、验证表单、把数据放到页面上。浏览器读到 JS 后执行它。</span>
+</div>
+<pre>
+<code>console.log('Hello, JavaScript!');</code>
+</pre>
+<h3 data-zh="定义与用途" data-en="Definition and uses">定义与用途</h3>
+<p data-zh="JavaScript 是一种运行在客户端（浏览器）的编程语言，用来实现人机交互效果。原笔记列出的典型用途包括：网页特效（监听用户操作并作出反应）、表单验证（判断输入是否合法）、数据交互（获取后台数据并渲染到前端），以及服务端编程（Node.js 也可以运行 JS）。" data-en="JavaScript is a programming language that runs on the client side (in the browser) to create human–computer interaction. The original note identifies common uses: webpage effects that respond to user actions, form validation, data interaction that renders backend data on the frontend, and server-side programming because Node.js can also run JavaScript.">JavaScript 是一种运行在客户端（浏览器）的编程语言，用来实现人机交互效果。原笔记列出的典型用途包括：网页特效（监听用户操作并作出反应）、表单验证（判断输入是否合法）、数据交互（获取后台数据并渲染到前端），以及服务端编程（Node.js 也可以运行 JS）。</p>
+<p data-zh="<code>ECMAScript</code>（基本语法）加上 <code>Web APIs</code>（DOM、BOM 等浏览器接口）构成网页中的 JavaScript 学习框架。ECMAScript 是由 ECMA 国际组织制定的语言标准，规定语法、数据类型、控制结构、函数和对象等；Web API 是浏览器提供的接口。" data-en="<code>ECMAScript</code> (core syntax) plus <code>Web APIs</code> (browser interfaces such as DOM and BOM) form the JavaScript learning frame for webpages. ECMAScript is the language standard developed by Ecma International; it specifies syntax, data types, control structures, functions, and objects. Web APIs are browser-provided interfaces.">
+<code>ECMAScript</code>（基本语法）加上 <code>Web APIs</code>（DOM、BOM 等浏览器接口）构成网页中的 JavaScript 学习框架。ECMAScript 是由 ECMA 国际组织制定的语言标准，规定语法、数据类型、控制结构、函数和对象等；Web API 是浏览器提供的接口。</p>
+<ul>
+<li data-zh="<strong>DOM：</strong>操作 HTML 文档的结构、样式和内容。" data-en="<strong>DOM:</strong> works with an HTML document’s structure, style, and content.">
+<strong>DOM：</strong>操作 HTML 文档的结构、样式和内容。</li>
+<li data-zh="<strong>BOM：</strong>操作浏览器窗口、历史记录和导航等。" data-en="<strong>BOM:</strong> works with browser windows, history, navigation, and related features.">
+<strong>BOM：</strong>操作浏览器窗口、历史记录和导航等。</li>
+</ul>
+<div class="card course">
+<strong data-zh="执行顺序" data-en="Execution order">执行顺序</strong>
+<span data-zh="JS 通常按 HTML 文档流顺序执行。<code>alert()</code> 与 <code>prompt()</code> 会暂停当前脚本和页面交互，直到用户关闭对话框。" data-en="JavaScript normally runs in HTML document-flow order. <code>alert()</code> and <code>prompt()</code> pause the current script and page interaction until the user closes the dialog.">JS 通常按 HTML 文档流顺序执行。<code>alert()</code> 与 <code>prompt()</code> 会暂停当前脚本和页面交互，直到用户关闭对话框。</span>
+</div>
+</section>
+
+<section id="writing" data-section>
+<h2 data-zh="02 JavaScript 的书写方式" data-en="02 Writing JavaScript">02 JavaScript 的书写方式</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="通常把 JS 写进独立的 <code>.js</code> 文件，再由 HTML 引入；小练习也可以直接写在页面底部的 <code>&lt;script&gt;</code> 中。" data-en="Usually, write JavaScript in a separate <code>.js</code> file and include it from HTML. Small experiments can also be written in a <code>&lt;script&gt;</code> near the bottom of a page.">通常把 JS 写进独立的 <code>.js</code> 文件，再由 HTML 引入；小练习也可以直接写在页面底部的 <code>&lt;script&gt;</code> 中。</span>
+</div>
+<pre>
+<code>&lt;!-- near the end of body --&gt;
+&lt;script src="app.js"&gt;&lt;/script&gt;
+
+// app.js
+console.log('Page loaded');</code>
+</pre>
+<ul>
+<li data-zh="<strong>内部 JS：</strong>写在 HTML 的 <code>&lt;script&gt;</code> 中，通常放在 <code>&lt;/body&gt;</code> 前；若放在 <code>&lt;head&gt;</code>，使用 <code>defer</code>，避免元素还未加载就查找失败。" data-en="<strong>Internal JavaScript:</strong> write it in an HTML <code>&lt;script&gt;</code>, normally before <code>&lt;/body&gt;</code>. If it is in <code>&lt;head&gt;</code>, use <code>defer</code> so code does not look for elements before they load.">
+<strong>内部 JS：</strong>写在 HTML 的 <code>&lt;script&gt;</code> 中，通常放在 <code>&lt;/body&gt;</code> 前；若放在 <code>&lt;head&gt;</code>，使用 <code>defer</code>，避免元素还未加载就查找失败。</li>
+<li data-zh="<strong>外部 JS：</strong>写入独立的 <code>.js</code> 文件，用 <code>&lt;script src=&quot;...&quot;&gt;&lt;/script&gt;</code> 引入。带 <code>src</code> 的 script 标签中不应再写可执行代码。" data-en="<strong>External JavaScript:</strong> write it in a separate <code>.js</code> file and include it with <code>&lt;script src=&quot;...&quot;&gt;&lt;/script&gt;</code>. A script tag with <code>src</code> should not also contain executable code.">
+<strong>外部 JS：</strong>写入独立的 <code>.js</code> 文件，用 <code>&lt;script src=&quot;...&quot;&gt;&lt;/script&gt;</code> 引入。带 <code>src</code> 的 script 标签中不应再写可执行代码。</li>
+<li data-zh="<strong>行内 JS：</strong>例如 <code>onclick</code>。它把 HTML 和 JS 混在一起，维护性和安全性更差，因此不建议使用。" data-en="<strong>Inline JavaScript:</strong> for example, <code>onclick</code>. It mixes HTML and JavaScript, making maintenance and security worse, so it is not recommended.">
+<strong>行内 JS：</strong>例如 <code>onclick</code>。它把 HTML 和 JS 混在一起，维护性和安全性更差，因此不建议使用。</li>
+</ul>
+<h3 data-zh="常用输入与输出" data-en="Common input and output">常用输入与输出</h3>
+<p data-zh="<code>alert()</code> 弹出提示框；<code>console.log()</code> 输出到控制台，适合调试；<code>document.write()</code> 向文档写内容；<code>prompt()</code> 返回用户输入，取消时返回 <code>null</code>；<code>confirm()</code> 返回布尔值。" data-en="<code>alert()</code> shows a dialog; <code>console.log()</code> prints to the console and is useful for debugging; <code>document.write()</code> writes to the document; <code>prompt()</code> returns user input or <code>null</code> when cancelled; <code>confirm()</code> returns a Boolean.">
+<code>alert()</code> 弹出提示框；<code>console.log()</code> 输出到控制台，适合调试；<code>document.write()</code> 向文档写内容；<code>prompt()</code> 返回用户输入，取消时返回 <code>null</code>；<code>confirm()</code> 返回布尔值。</p>
+<div class="card supp">
+<strong data-zh="更准确的理解" data-en="More accurate understanding">更准确的理解</strong>
+<span data-zh="<code>document.write()</code> 在文档解析期间会写入当前位置；在页面加载完成后调用通常会清空并重写当前文档，所以现代页面一般不用它。<code>alert()</code>、<code>prompt()</code> 会暂停交互，适合练习而不是正式 UI。" data-en="During document parsing, <code>document.write()</code> writes at the current position. Calling it after load usually clears and rewrites the document, so modern pages generally avoid it. <code>alert()</code> and <code>prompt()</code> pause interaction: useful for exercises, not production UI.">
+<code>document.write()</code> 在文档解析期间会写入当前位置；在页面加载完成后调用通常会清空并重写当前文档，所以现代页面一般不用它。<code>alert()</code>、<code>prompt()</code> 会暂停交互，适合练习而不是正式 UI。</span>
+</div>
+<h3 data-zh="命名、注释、结束符与字面量" data-en="Naming, comments, semicolons, and literals">命名、注释、结束符与字面量</h3>
+<p data-zh="变量名不能使用关键字（如 <code>let</code>、<code>if</code>、<code>for</code>），不能以数字开头，不能有空格或特殊字符，区分大小写；短横线 <code>-</code> 不能用于变量名。建议用有意义的小驼峰名称，例如 <code>myUserName</code>。" data-en="A variable name cannot use a keyword such as <code>let</code>, <code>if</code>, or <code>for</code>; it cannot begin with a number or include spaces or special characters; and it is case-sensitive. A hyphen <code>-</code> cannot be used in a variable name. Prefer meaningful camelCase names such as <code>myUserName</code>.">变量名不能使用关键字（如 <code>let</code>、<code>if</code>、<code>for</code>），不能以数字开头，不能有空格或特殊字符，区分大小写；短横线 <code>-</code> 不能用于变量名。建议用有意义的小驼峰名称，例如 <code>myUserName</code>。</p>
+<p data-zh="单行注释使用 <code>//</code>；块注释使用 <code>/* ... */</code>，且不能嵌套。分号可以按项目规范统一写或省略；自动插入分号（ASI）有边界情况，初学阶段统一写更直观。字面量是直接写在代码中的固定值，例如 <code>42</code>、<code>'JavaScript'</code>、<code>true</code>、<code>[1, 2, 3]</code>、<code>{ name: 'Alice', age: 30 }</code>。" data-en="Use <code>//</code> for a one-line comment and <code>/* ... */</code> for a block comment; block comments cannot nest. A project may consistently write or omit semicolons, but automatic semicolon insertion (ASI) has edge cases, so writing them consistently is clearer at this stage. A literal is a fixed value written directly in code, such as <code>42</code>, <code>'JavaScript'</code>, <code>true</code>, <code>[1, 2, 3]</code>, or <code>{ name: 'Alice', age: 30 }</code>.">单行注释使用 <code>//</code>；块注释使用 <code>/* ... */</code>，且不能嵌套。分号可以按项目规范统一写或省略；自动插入分号（ASI）有边界情况，初学阶段统一写更直观。字面量是直接写在代码中的固定值，例如 <code>42</code>、<code>'JavaScript'</code>、<code>true</code>、<code>[1, 2, 3]</code>、<code>{ name: 'Alice', age: 30 }</code>。</p>
+</section>
+
+<section id="variables" data-section>
+<h2 data-zh="03 变量与常量" data-en="03 Variables and constants">03 变量与常量</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="变量像贴了名字的盒子。值会变时用 <code>let</code>；绑定本身不换时用 <code>const</code>。先声明，再使用。" data-en="A variable is like a box with a name. Use <code>let</code> when its binding will change and <code>const</code> when the binding itself will not. Declare it before using it.">变量像贴了名字的盒子。值会变时用 <code>let</code>；绑定本身不换时用 <code>const</code>。先声明，再使用。</span>
+</div>
+<pre>
+<code>let age;            // declare
+age = 18;           // assign
+age = 19;           // update: do not write let again
+let name = 'Siyu';  // declare and assign</code>
+</pre>
+<p data-zh="变量是程序在内存中申请的一小块存储空间：变量名像门牌号，地址由程序分配，数据放在对应空间中。基本使用包括声明、赋值、更新，以及声明多个变量。赋值永远是右边的值给左边。<code>let</code> 不能在同一作用域重复声明。多个变量可写成 <code>let a = 1, b = 2;</code>，但原笔记建议一行一个，阅读更清楚。" data-en="A variable is a small storage space requested by a program in memory: its name is like an address label, the program assigns the address, and data is stored there. Basic use includes declaration, assignment, update, and declaring multiple variables. Assignment always moves the value on the right to the left. <code>let</code> cannot be redeclared in the same scope. Multiple variables can be written as <code>let a = 1, b = 2;</code>, but the original note recommends one per line for clarity.">变量是程序在内存中申请的一小块存储空间：变量名像门牌号，地址由程序分配，数据放在对应空间中。基本使用包括声明、赋值、更新，以及声明多个变量。赋值永远是右边的值给左边。<code>let</code> 不能在同一作用域重复声明。多个变量可写成 <code>let a = 1, b = 2;</code>，但原笔记建议一行一个，阅读更清楚。</p>
+<h3 data-zh="案例：交换变量" data-en="Case: swapping variables">案例：交换变量</h3>
+<div class="card course">
+<strong data-zh="需求与思路" data-en="Goal and reasoning">需求与思路</strong>
+<span data-zh="交换 <code>a</code> 和 <code>b</code> 时，不能直接先写 <code>a = b</code>，否则原来的 <code>a</code> 会丢失。借第三个临时变量 <code>temp</code> 暂存；<code>temp</code> 是惯用名，不是固定名称。" data-en="To swap <code>a</code> and <code>b</code>, do not start with <code>a = b</code>, because the original value of <code>a</code> would be lost. Store it in a third temporary variable, <code>temp</code>; <code>temp</code> is conventional, not required.">交换 <code>a</code> 和 <code>b</code> 时，不能直接先写 <code>a = b</code>，否则原来的 <code>a</code> 会丢失。借第三个临时变量 <code>temp</code> 暂存；<code>temp</code> 是惯用名，不是固定名称。</span>
+</div>
+<pre>
+<code>let a = 114;
+let b = 514;
+let temp = a;
+a = b;
+b = temp;
+console.log(a, b); // 514 114</code>
+</pre>
+<p data-zh="<strong>每一步变化：</strong>
+<code>a=114, b=514</code> → <code>temp=114</code>（保存原 a）→ <code>a=514</code>（得到原 b）→ <code>b=114</code>（取回原 a）。<strong>输出：</strong>
+<code>514 114</code>。" data-en="<strong>Step-by-step changes:</strong> <code>a=114, b=514</code> → <code>temp=114</code> (save original a) → <code>a=514</code> (receive original b) → <code>b=114</code> (recover original a). <strong>Output:</strong> <code>514 114</code>.">
+<strong>每一步变化：</strong>
+<code>a=114, b=514</code> → <code>temp=114</code>（保存原 a）→ <code>a=514</code>（得到原 b）→ <code>b=114</code>（取回原 a）。<strong>输出：</strong>
+<code>514 114</code>。</p>
+<h3 data-zh="let、var 与 const" data-en="let, var, and const">let、var 与 const</h3>
+<ul>
+<li data-zh="<code>var</code> 是旧写法，可重复声明，使用函数作用域并有变量提升；现代代码通常不用。" data-en="<code>var</code> is the older form. It can be redeclared, uses function scope, and has hoisting; modern code generally avoids it.">
+<code>var</code> 是旧写法，可重复声明，使用函数作用域并有变量提升；现代代码通常不用。</li>
+<li data-zh="<code>let</code> 不可在同一作用域重复声明，使用块级作用域；声明前处于暂时性死区，不能访问。" data-en="<code>let</code> cannot be redeclared in the same scope and uses block scope; before declaration it is in the temporal dead zone and cannot be accessed.">
+<code>let</code> 不可在同一作用域重复声明，使用块级作用域；声明前处于暂时性死区，不能访问。</li>
+<li data-zh="<code>const</code> 必须在声明时赋值，之后不能重新赋值。原则是：能用 <code>const</code> 就用，确定值会变时才用 <code>let</code>。" data-en="<code>const</code> must be assigned when declared and cannot later be reassigned. Rule of thumb: use <code>const</code> when possible, and use <code>let</code> when the value is known to change.">
+<code>const</code> 必须在声明时赋值，之后不能重新赋值。原则是：能用 <code>const</code> 就用，确定值会变时才用 <code>let</code>。</li>
+</ul>
+<div class="card supp">
+<strong data-zh="更准确的理解" data-en="More accurate understanding">更准确的理解</strong>
+<span data-zh="<code>const</code> 禁止的是重新赋值，不是冻结数组或对象内部。<code>const list = [];</code> 后可写 <code>list.push(1)</code>，但不能写 <code>list = []</code>；对象属性同理。若要禁止内部修改，需要 <code>Object.freeze()</code>，且默认是浅冻结。" data-en="<code>const</code> prevents reassignment; it does not freeze an array or object internally. After <code>const list = [];</code>, <code>list.push(1)</code> is allowed, but <code>list = []</code> is not. The same applies to object properties. Preventing internal changes requires <code>Object.freeze()</code>, which is shallow by default.">
+<code>const</code> 禁止的是重新赋值，不是冻结数组或对象内部。<code>const list = [];</code> 后可写 <code>list.push(1)</code>，但不能写 <code>list = []</code>；对象属性同理。若要禁止内部修改，需要 <code>Object.freeze()</code>，且默认是浅冻结。</span>
+</div>
+</section>
+
+<section id="types" data-section>
+<h2 data-zh="04 数组与数据类型" data-en="04 Arrays and data types">04 数组与数据类型</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="数据类型决定一个值能做什么。数组用一个变量名按顺序保存多个值，访问时从索引 0 开始。" data-en="A data type affects what a value can do. An array stores multiple values in order under one variable name, and indexes begin at 0.">数据类型决定一个值能做什么。数组用一个变量名按顺序保存多个值，访问时从索引 0 开始。</span>
+</div>
+<h3 data-zh="数组（Arrays）" data-en="Arrays">数组（Arrays）</h3>
+<p data-zh="数组是有序值的集合，可以混合放数字、字符串、布尔值、对象等。每一个值是元素（element），索引（index）是位置，从 0 开始；长度（length）是元素数量。" data-en="An array is an ordered collection of values. It can mix numbers, strings, Booleans, objects, and more. Each value is an element; an index is its position and begins at 0; length is the number of elements.">数组是有序值的集合，可以混合放数字、字符串、布尔值、对象等。每一个值是元素（element），索引（index）是位置，从 0 开始；长度（length）是元素数量。</p>
+<pre>
+<code>let fruits = ['apple', 'banana', 'orange'];
+let numbers = [1, 2, 3, 4, 5];
+let mixed = [42, 'hello', true, null];
 console.log(fruits[0]);      // apple
-console.log(fruits.length);  // 3</code></pre><p data-zh="数组按顺序存多个值，index（索引）从 0 开始。JS 是动态类型语言。常见基础值：number、string、boolean、undefined、null、symbol、bigint；对象与数组是 object value。用 <code>Array.isArray()</code> 判断数组。" data-en="Arrays store ordered values and their indexes start at 0. JS is dynamically typed. Common primitive values are number, string, boolean, undefined, null, symbol, bigint; objects and arrays are object values. Use <code>Array.isArray()</code> to identify an array."></p><div class="card supp" data-zh="<strong>更准确的理解</strong><code>typeof null</code> 与 <code>typeof []</code> 都是 <code>'object'</code>，是历史/分类限制。<code>NaN</code> 仍是 number，且 <code>NaN !== NaN</code>；用 <code>Number.isNaN(value)</code> 检查。" data-en="<strong>More accurate explanation</strong><code>typeof null</code> and <code>typeof []</code> both return <code>'object'</code>, a historical/classification limitation. <code>NaN</code> is still a number and <code>NaN !== NaN</code>; check with <code>Number.isNaN(value)</code>."></div></section>
-<section id="conversion" data-section><h2>05 Type Conversion</h2><pre><code>const price = Number(prompt('Price?'));
-Number('42');       // 42
-parseInt('42.9px'); // 42
-parseFloat('3.14px'); // 3.14</code></pre><p data-zh="输入通常是 string；要计算时先显式转换。<code>'10' + 5</code> 得字符串 <code>'105'</code>，而 <code>'10' - 5</code> 得 5。重要计算优先 Number / String / Boolean 等显式转换，不依赖隐式规则。" data-en="Input is usually a string; explicitly convert before calculating. <code>'10' + 5</code> becomes the string <code>'105'</code>, while <code>'10' - 5</code> is 5. For important calculations, prefer explicit Number / String / Boolean conversion over implicit rules."></p></section>
-<section id="operators" data-section><h2>06 Operators</h2><pre><code>const passed = score >= 60 && score <= 100;
-console.log(1 === '1'); // false</code></pre><p data-zh="<code>=</code> 是赋值，不是比较。算术有 <code>+ - * / %</code>；比较有 <code>&gt; &lt; &gt;= &lt;=</code>；实际开发优先严格比较 <code>===</code> / <code>!==</code>。逻辑 <code>&amp;&amp;</code>、<code>||</code>、<code>!</code> 会短路，可能返回原操作数。" data-en="<code>=</code> assigns; it does not compare. Arithmetic uses <code>+ - * / %</code>; comparisons use <code>&gt; &lt; &gt;= &lt;=</code>; prefer strict <code>===</code> / <code>!==</code> in real development. Logical <code>&amp;&amp;</code>, <code>||</code>, and <code>!</code> short-circuit and may return an original operand."></p></section>
-<section id="branch" data-section><h2>07 Conditionals</h2><pre><code>if (score >= 60) {
-  console.log('Pass');
+console.log(fruits.length);  // 3</code>
+</pre>
+<h3 data-zh="JavaScript 的数据类型" data-en="JavaScript data types">JavaScript 的数据类型</h3>
+<p data-zh="JS 是动态类型语言：变量不需要先写死类型，值改变时类型可以随之变化。基础值类型包括 <code>number</code>、<code>string</code>、<code>boolean</code>、<code>undefined</code>、<code>null</code>、<code>symbol</code>、<code>bigint</code>；对象和数组等是对象值。" data-en="JavaScript is dynamically typed: a variable does not need a fixed type written in advance, and its type can change as its value changes. Primitive types include <code>number</code>, <code>string</code>, <code>boolean</code>, <code>undefined</code>, <code>null</code>, <code>symbol</code>, and <code>bigint</code>; objects and arrays are object values.">JS 是动态类型语言：变量不需要先写死类型，值改变时类型可以随之变化。基础值类型包括 <code>number</code>、<code>string</code>、<code>boolean</code>、<code>undefined</code>、<code>null</code>、<code>symbol</code>、<code>bigint</code>；对象和数组等是对象值。</p>
+<ul>
+<li data-zh="<strong>Number：</strong>正数、负数、小数都是 Number；<code>Infinity</code> 表示无穷大。" data-en="<strong>Number:</strong> positive numbers, negative numbers, and decimals are Numbers; <code>Infinity</code> represents infinity.">
+<strong>Number：</strong>正数、负数、小数都是 Number；<code>Infinity</code> 表示无穷大。</li>
+<li data-zh="<strong>String：</strong>文本可用单引号、双引号或反引号；模板字符串可写 <code>`My name is ${name}`</code>。" data-en="<strong>String:</strong> text can use single quotes, double quotes, or backticks; a template string can be written as <code>`My name is ${name}`</code>.">
+<strong>String：</strong>文本可用单引号、双引号或反引号；模板字符串可写 <code>`My name is ${name}`</code>。</li>
+<li data-zh="<strong>Boolean：</strong>只有 <code>true</code> 和 <code>false</code>。假值有 <code>false</code>、<code>0</code>、<code>''</code>、<code>null</code>、<code>undefined</code>、<code>NaN</code>；其余值为真值。" data-en="<strong>Boolean:</strong> it has only <code>true</code> and <code>false</code>. Falsy values are <code>false</code>, <code>0</code>, <code>''</code>, <code>null</code>, <code>undefined</code>, and <code>NaN</code>; other values are truthy.">
+<strong>Boolean：</strong>只有 <code>true</code> 和 <code>false</code>。假值有 <code>false</code>、<code>0</code>、<code>''</code>、<code>null</code>、<code>undefined</code>、<code>NaN</code>；其余值为真值。</li>
+<li data-zh="<strong>null：</strong>主动表示“这里没有值”；<strong>undefined：</strong>通常表示未赋值，函数没有返回值也会得到它。" data-en="<strong>null:</strong> intentionally means “there is no value here”; <strong>undefined:</strong> usually means a value was not assigned, and a function with no return value also produces it.">
+<strong>null：</strong>主动表示“这里没有值”；<strong>undefined：</strong>通常表示未赋值，函数没有返回值也会得到它。</li>
+<li data-zh="<strong>Symbol：</strong>每次创建都唯一，常作对象属性键，初级阶段了解即可。" data-en="<strong>Symbol:</strong> each created Symbol is unique and is often used as an object-property key; knowing this is enough at this stage.">
+<strong>Symbol：</strong>每次创建都唯一，常作对象属性键，初级阶段了解即可。</li>
+<li data-zh="<strong>Object / Array：</strong>对象是键值对集合；数组是有序数据。" data-en="<strong>Object / Array:</strong> an object is a collection of key–value pairs; an array is ordered data.">
+<strong>Object / Array：</strong>对象是键值对集合；数组是有序数据。</li>
+</ul>
+<pre>
+<code>typeof 42;         // 'number'
+typeof 'hello';    // 'string'
+typeof true;       // 'boolean'
+typeof undefined;  // 'undefined'
+typeof null;       // 'object'
+typeof [];         // 'object'</code>
+</pre>
+<div class="card supp">
+<strong data-zh="更准确的理解" data-en="More accurate understanding">更准确的理解</strong>
+<span data-zh="原笔记用“基本 / 引用”帮助入门，但规范里没有“引用类型”这一正式分类；对象（包括数组、函数）是对象值。判断数组使用 <code>Array.isArray([])</code>，不要只看 <code>typeof</code>。<code>typeof null</code> 与 <code>typeof []</code> 都是 <code>'object'</code>，是历史/分类限制。<code>NaN</code> 是 number 类型的特殊值，<code>NaN !== NaN</code>；用 <code>Number.isNaN(value)</code> 判断。" data-en="The original note uses “primitive / reference” to help beginners, but the specification does not use “reference type” as a formal category; objects, including arrays and functions, are object values. Use <code>Array.isArray([])</code> to identify an array rather than relying only on <code>typeof</code>. Both <code>typeof null</code> and <code>typeof []</code> return <code>'object'</code>, a historical limitation. <code>NaN</code> is a special number value, <code>NaN !== NaN</code>, and <code>Number.isNaN(value)</code> checks it.">原笔记用“基本 / 引用”帮助入门，但规范里没有“引用类型”这一正式分类；对象（包括数组、函数）是对象值。判断数组使用 <code>Array.isArray([])</code>，不要只看 <code>typeof</code>。<code>typeof null</code> 与 <code>typeof []</code> 都是 <code>'object'</code>，是历史/分类限制。<code>NaN</code> 是 number 类型的特殊值，<code>NaN !== NaN</code>；用 <code>Number.isNaN(value)</code> 判断。</span>
+</div>
+</section>
+
+<section id="conversion" data-section>
+<h2 data-zh="05 类型转换" data-en="05 Type conversion">05 类型转换</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="输入框拿到的内容通常是字符串。要计算时先明确转换成数字，避免 <code>'10' + 5</code> 得到 <code>'105'</code>。" data-en="Input from a prompt is usually a string. Convert it explicitly before calculating so <code>'10' + 5</code> does not become <code>'105'</code>.">输入框拿到的内容通常是字符串。要计算时先明确转换成数字，避免 <code>'10' + 5</code> 得到 <code>'105'</code>。</span>
+</div>
+<pre>
+<code>const price = Number(prompt('Price?'));
+console.log(price + 5);
+Number('42');        // 42
+parseInt('42.9px');  // 42
+parseFloat('3.14px');// 3.14</code>
+</pre>
+<h3 data-zh="显式转换" data-en="Explicit conversion">显式转换</h3>
+<p data-zh="显式转换是自己调用函数：<code>Number('42')</code> 得 42，<code>String(42)</code> 得 <code>'42'</code>，<code>Boolean(0)</code> 得 <code>false</code>。<code>parseInt('42.9px')</code> 得 42，<code>parseFloat('3.14px')</code> 得 3.14；字符串开头不是数字时，<code>parseInt('px42')</code> 得 <code>NaN</code>。它们可从 CSS 的 <code>'300px'</code> 中提取数字。" data-en="Explicit conversion means calling a function yourself: <code>Number('42')</code> gives 42, <code>String(42)</code> gives <code>'42'</code>, and <code>Boolean(0)</code> gives <code>false</code>. <code>parseInt('42.9px')</code> gives 42 and <code>parseFloat('3.14px')</code> gives 3.14; if a string does not begin with a number, <code>parseInt('px42')</code> gives <code>NaN</code>. They can extract a number from CSS text such as <code>'300px'</code>.">显式转换是自己调用函数：<code>Number('42')</code> 得 42，<code>String(42)</code> 得 <code>'42'</code>，<code>Boolean(0)</code> 得 <code>false</code>。<code>parseInt('42.9px')</code> 得 42，<code>parseFloat('3.14px')</code> 得 3.14；字符串开头不是数字时，<code>parseInt('px42')</code> 得 <code>NaN</code>。它们可从 CSS 的 <code>'300px'</code> 中提取数字。</p>
+<ul>
+<li data-zh="<code>Number('')</code>、<code>Number(null)</code> 是 0；<code>Number('hello')</code>、<code>Number(undefined)</code> 是 <code>NaN</code>。" data-en="<code>Number('')</code> and <code>Number(null)</code> are 0; <code>Number('hello')</code> and <code>Number(undefined)</code> are <code>NaN</code>.">
+<code>Number('')</code>、<code>Number(null)</code> 是 0；<code>Number('hello')</code>、<code>Number(undefined)</code> 是 <code>NaN</code>。</li>
+<li data-zh="<code>String(true)</code>、<code>String(null)</code>、<code>String(undefined)</code> 会变成对应文字字符串。" data-en="<code>String(true)</code>, <code>String(null)</code>, and <code>String(undefined)</code> become their corresponding text strings.">
+<code>String(true)</code>、<code>String(null)</code>、<code>String(undefined)</code> 会变成对应文字字符串。</li>
+<li data-zh="<code>Boolean(0)</code>、<code>Boolean('')</code>、<code>Boolean(null)</code>、<code>Boolean(undefined)</code>、<code>Boolean(NaN)</code> 都是 <code>false</code>。" data-en="<code>Boolean(0)</code>, <code>Boolean('')</code>, <code>Boolean(null)</code>, <code>Boolean(undefined)</code>, and <code>Boolean(NaN)</code> are all <code>false</code>.">
+<code>Boolean(0)</code>、<code>Boolean('')</code>、<code>Boolean(null)</code>、<code>Boolean(undefined)</code>、<code>Boolean(NaN)</code> 都是 <code>false</code>。</li>
+</ul>
+<h3 data-zh="隐式转换" data-en="Implicit conversion">隐式转换</h3>
+<p data-zh="隐式转换由 JS 自动进行：<code>'10' + 5</code> 得 <code>'105'</code>，而 <code>'10' - 5</code> 得 5；一元 <code>+'42'</code> 得 42。重要计算优先写明确的 <code>Number</code>、<code>String</code>、<code>Boolean</code> 转换，不依赖隐式规则。" data-en="JavaScript performs implicit conversion automatically: <code>'10' + 5</code> becomes <code>'105'</code>, while <code>'10' - 5</code> is 5; unary <code>+'42'</code> is 42. For important calculations, prefer clear <code>Number</code>, <code>String</code>, or <code>Boolean</code> conversions instead of relying on implicit rules.">隐式转换由 JS 自动进行：<code>'10' + 5</code> 得 <code>'105'</code>，而 <code>'10' - 5</code> 得 5；一元 <code>+'42'</code> 得 42。重要计算优先写明确的 <code>Number</code>、<code>String</code>、<code>Boolean</code> 转换，不依赖隐式规则。</p>
+</section>
+
+<section id="operators" data-section>
+<h2 data-zh="06 运算符" data-en="06 Operators">06 运算符</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="运算符让值计算、比较或组合条件。最要分清的是：<code>=</code> 是赋值，<code>===</code> 是比较值和类型。" data-en="Operators calculate values, compare values, or combine conditions. The key distinction is that <code>=</code> assigns, while <code>===</code> compares both value and type.">运算符让值计算、比较或组合条件。最要分清的是：<code>=</code> 是赋值，<code>===</code> 是比较值和类型。</span>
+</div>
+<pre>
+<code>const passed = score >= 60 && score <= 100;
+console.log(1 === '1'); // false</code>
+</pre>
+<h3 data-zh="先认识符号" data-en="Meet the symbols first">先认识符号</h3>
+<pre data-zh="算术&#10;├── + 加   - 减   * 乘&#10;├── / 除&#10;└── % 取余&#10;&#10;赋值&#10;├── = 把右侧的值放进左侧变量&#10;├── += 等于原值加后再赋值&#10;└── -= 等于原值减后再赋值&#10;&#10;变化&#10;├── i++ 等于 i = i + 1&#10;└── i-- 等于 i = i - 1&#10;&#10;比较&#10;├── >、<、>=、<= 比较大小&#10;└── ===、!== 比较值与类型&#10;&#10;逻辑&#10;├── && 两边都为 true&#10;├── || 至少一边为 true&#10;└── ! 反转 true / false" data-en="Arithmetic&#10;├── + add   - subtract   * multiply&#10;├── / divide&#10;└── % remainder&#10;&#10;Assignment&#10;├── = put the right-side value into the left variable&#10;├── += add, then assign&#10;└── -= subtract, then assign&#10;&#10;Change&#10;├── i++ is i = i + 1&#10;└── i-- is i = i - 1&#10;&#10;Comparison&#10;├── >, <, >=, <= compare size&#10;└── ===, !== compare value and type&#10;&#10;Logic&#10;├── && requires both sides to be true&#10;├── || requires at least one side to be true&#10;└── ! reverses true / false">算术
+├── + 加   - 减   * 乘
+├── / 除
+└── % 取余
+
+赋值
+├── = 把右侧的值放进左侧变量
+├── += 等于原值加后再赋值
+└── -= 等于原值减后再赋值
+
+变化
+├── i++ 等于 i = i + 1
+└── i-- 等于 i = i - 1
+
+比较
+├── >、<、>=、<= 比较大小
+└── ===、!== 比较值与类型
+
+逻辑
+├── && 两边都为 true
+├── || 至少一边为 true
+└── ! 反转 true / false</pre>
+<p data-zh="例如 <code>80 >= 60</code> 中，<code>>=</code> 问的是“左边是否大于或等于右边？”；80 大于 60，所以结果是 <code>true</code>。这个 true/false 结果正是后面条件语句和循环要检查的东西。" data-en="For example, in <code>80 >= 60</code>, <code>>=</code> asks, “is the left side greater than or equal to the right side?” Because 80 is greater than 60, the result is <code>true</code>. This true/false result is exactly what later conditionals and loops test.">例如 <code>80 >= 60</code> 中，<code>>=</code> 问的是“左边是否大于或等于右边？”；80 大于 60，所以结果是 <code>true</code>。这个 true/false 结果正是后面条件语句和循环要检查的东西。</p>
+<p data-zh="<strong>赋值：</strong>
+<code>=</code> 直接赋值；<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code> 是计算后赋值。<strong>一元：</strong>
+<code>++</code>/<code>--</code> 令变量加/减一；前置 <code>++a</code> 先改后取值，后置 <code>a++</code> 先取值后改。<strong>二元：</strong>
+<code>+ - * / %</code> 需要两个操作数。" data-en="<strong>Assignment:</strong> <code>=</code> assigns directly; <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, and <code>%=</code> calculate and then assign. <strong>Unary:</strong> <code>++</code>/<code>--</code> add/subtract one; prefix <code>++a</code> changes first and then yields a value, while postfix <code>a++</code> yields a value and then changes. <strong>Binary:</strong> <code>+ - * / %</code> need two operands.">
+<strong>赋值：</strong>
+<code>=</code> 直接赋值；<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code>、<code>%=</code> 是计算后赋值。<strong>一元：</strong>
+<code>++</code>/<code>--</code> 令变量加/减一；前置 <code>++a</code> 先改后取值，后置 <code>a++</code> 先取值后改。<strong>二元：</strong>
+<code>+ - * / %</code> 需要两个操作数。</p>
+<p data-zh="<strong>算术：</strong>常用优先级是括号 → 乘除取余 → 加减。<strong>比较：</strong>
+<code>&gt; &lt; &gt;= &lt;=</code> 返回布尔值；<code>==</code> 比较时会转换类型，<code>===</code> 同时比较值和类型；<code>!=</code> 和 <code>!==</code> 分别是不等形式。实际开发优先 <code>===</code> 与 <code>!==</code>。" data-en="<strong>Arithmetic:</strong> a useful precedence order is parentheses → multiplication/division/remainder → addition/subtraction. <strong>Comparison:</strong> <code>&gt; &lt; &gt;= &lt;=</code> return Booleans; <code>==</code> converts types while comparing, whereas <code>===</code> compares both value and type; <code>!=</code> and <code>!==</code> are not-equal forms. In practice, prefer <code>===</code> and <code>!==</code>.">
+<strong>算术：</strong>常用优先级是括号 → 乘除取余 → 加减。<strong>比较：</strong>
+<code>&gt; &lt; &gt;= &lt;=</code> 返回布尔值；<code>==</code> 比较时会转换类型，<code>===</code> 同时比较值和类型；<code>!=</code> 和 <code>!==</code> 分别是不等形式。实际开发优先 <code>===</code> 与 <code>!==</code>。</p>
+<div class="card supp">
+<strong data-zh="更准确的理解" data-en="More accurate understanding">更准确的理解</strong>
+<span data-zh="<code>==</code> 并不是“只比较值”；它会执行复杂的抽象相等转换。例如 <code>'' == 0</code> 和 <code>false == 0</code> 都为真，容易误读。<code>===</code> 不做这种类型转换，通常更安全。" data-en="<code>==</code> does not merely “compare values”; it runs complex abstract-equality conversions. For example, <code>'' == 0</code> and <code>false == 0</code> are both true, which is easy to misread. <code>===</code> does not perform that conversion and is usually safer.">
+<code>==</code> 并不是“只比较值”；它会执行复杂的抽象相等转换。例如 <code>'' == 0</code> 和 <code>false == 0</code> 都为真，容易误读。<code>===</code> 不做这种类型转换，通常更安全。</span>
+</div>
+<p data-zh="<strong>逻辑：</strong>
+<code>&amp;&amp;</code>（且）要求两个条件都真；<code>||</code>（或）要求至少一个真；<code>!</code>（非）反转真假。它们会短路，并且可能返回原操作数，而不总是布尔值。<strong>NaN：</strong>
+<code>'老师' - 2</code> 得 <code>NaN</code>，含 NaN 的多数数值运算仍得 NaN。逻辑非 <code>!</code> 的优先级高于 <code>&amp;&amp;</code> 和 <code>||</code>；不确定时用括号。<strong>表达式：</strong>会计算出值，如 <code>2 * (3 + 4)</code>；<strong>语句：</strong>执行操作但不一定有值，如变量声明、<code>if</code>、<code>for</code>、<code>break</code>。" data-en="<strong>Logical:</strong> <code>&amp;&amp;</code> (and) requires both conditions; <code>||</code> (or) requires at least one; <code>!</code> (not) reverses truthiness. They short-circuit and may return an original operand rather than always returning a Boolean. <strong>NaN:</strong> <code>'teacher' - 2</code> gives <code>NaN</code>, and most numeric operations involving NaN still give NaN. Logical not <code>!</code> has higher precedence than <code>&amp;&amp;</code> and <code>||</code>; use parentheses when uncertain. <strong>An expression</strong> evaluates to a value, such as <code>2 * (3 + 4)</code>; <strong>a statement</strong> performs an action but does not necessarily produce a value, such as a variable declaration, <code>if</code>, <code>for</code>, or <code>break</code>.">
+<strong>逻辑：</strong>
+<code>&amp;&amp;</code>（且）要求两个条件都真；<code>||</code>（或）要求至少一个真；<code>!</code>（非）反转真假。它们会短路，并且可能返回原操作数，而不总是布尔值。<strong>NaN：</strong>
+<code>'老师' - 2</code> 得 <code>NaN</code>，含 NaN 的多数数值运算仍得 NaN。逻辑非 <code>!</code> 的优先级高于 <code>&amp;&amp;</code> 和 <code>||</code>；不确定时用括号。<strong>表达式：</strong>会计算出值，如 <code>2 * (3 + 4)</code>；<strong>语句：</strong>执行操作但不一定有值，如变量声明、<code>if</code>、<code>for</code>、<code>break</code>。</p>
+</section>
+
+<section id="branch" data-section>
+<h2 data-zh="07 条件语句与分支" data-en="07 Conditionals and branches">07 条件语句与分支</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="流程控制包括顺序（从上到下）、分支（按条件走不同路径）和循环（重复执行到条件不成立）。简单选择用 <code>if</code>，固定值匹配用 <code>switch</code>，很短的二选一可用三元运算符。" data-en="Control flow includes sequence (top to bottom), branching (taking different paths by condition), and looping (repeating until a condition fails). Use <code>if</code> for ordinary choices, <code>switch</code> for fixed-value matching, and a ternary for a short two-way choice.">流程控制包括顺序（从上到下）、分支（按条件走不同路径）和循环（重复执行到条件不成立）。简单选择用 <code>if</code>，固定值匹配用 <code>switch</code>，很短的二选一可用三元运算符。</span>
+</div>
+<pre>
+<code>// one branch
+if (score >= 60) { console.log('Pass'); }
+// two branches
+if (score >= 60) { console.log('Pass'); } else { console.log('Try again'); }
+// multiple branches: only the first matching branch runs
+if (score >= 90) { console.log('A'); }
+else if (score >= 60) { console.log('B'); }
+else { console.log('C'); }</code>
+</pre>
+<h3 data-zh="条件的心智地图" data-en="A mental map of conditions">条件的心智地图</h3>
+<pre data-zh="条件语句&#10;│&#10;├── if：条件为 true 时执行&#10;├── if...else：true / false 各走一条路&#10;├── 三元运算符：简短二选一表达式&#10;└── switch：匹配多个固定值&#10;&#10;条件&#10;│&#10;├── true  → 执行 true 分支&#10;└── false → 执行 false 分支" data-en="Conditionals&#10;│&#10;├── if: run when the condition is true&#10;├── if...else: one path for true, one for false&#10;├── ternary: a short two-result expression&#10;└── switch: match several fixed values&#10;&#10;condition&#10;│&#10;├── true  → run the true branch&#10;└── false → run the false branch">条件语句
+│
+├── if：条件为 true 时执行
+├── if...else：true / false 各走一条路
+├── 三元运算符：简短二选一表达式
+└── switch：匹配多个固定值
+
+条件
+│
+├── true  → 执行 true 分支
+└── false → 执行 false 分支</pre>
+<p data-zh="<code>if</code> 只处理“条件为真时要不要做”；<code>if...else</code> 明确处理两种结果。范围判断如分数适合 <code>if...else</code>；按固定值如星期几匹配适合 <code>switch</code>。" data-en="<code>if</code> only answers “should this run when the condition is true?” <code>if...else</code> explicitly handles both outcomes. A range such as a score suits <code>if...else</code>; matching fixed values such as a day suits <code>switch</code>."> <code>if</code> 只处理“条件为真时要不要做”；<code>if...else</code> 明确处理两种结果。范围判断如分数适合 <code>if...else</code>；按固定值如星期几匹配适合 <code>switch</code>。</p>
+<figure class="knowledge-diagram condition-diagram" data-diagram="condition" aria-labelledby="condition-figure-title">
+<figcaption id="condition-figure-title"><span>FIG. JS_05.02</span><strong data-zh="条件如何选择代码路径" data-en="How a condition chooses a code path">条件如何选择代码路径</strong></figcaption>
+<div class="diagram-stage" role="group" data-zh-aria-label="条件执行关系图" data-en-aria-label="Condition execution relationship" aria-label="条件执行关系图">
+<div class="diagram-node input"><b>01</b><span data-zh="输入：age = 18" data-en="Input: age = 18">输入：age = 18</span></div><i aria-hidden="true">↓</i>
+<div class="diagram-node evaluate"><b>02</b><span><code>age &gt;= 18</code></span><small data-zh="求值为 boolean" data-en="evaluates to Boolean">求值为 boolean</small></div><i aria-hidden="true">↓</i>
+<div class="diagram-choices"><button type="button" class="diagram-node branch true" data-path="true" aria-pressed="false"><b>03A</b><strong>TRUE</strong><small data-zh="执行 if" data-en="run if">执行 if</small></button><button type="button" class="diagram-node branch false" data-path="false" aria-pressed="false"><b>03B</b><strong>FALSE</strong><small data-zh="执行 else" data-en="run else">执行 else</small></button></div>
+<div class="diagram-result" aria-live="polite" data-zh="选择 TRUE 或 FALSE，查看对应代码与结果。" data-en="Select TRUE or FALSE to inspect the matching code and result.">选择 TRUE 或 FALSE，查看对应代码与结果。</div>
+</div>
+<div class="diagram-code"><pre><code><span data-code="true">if (age &gt;= 18) {
+  console.log('Adult');
+}</span><span data-code="false"> else {
+  console.log('Minor');
+}</span></code></pre><p class="diagram-explain" aria-live="polite" data-zh="这里的关键不是记住 if 的外形，而是先看条件的结果，再沿着对应路径执行。" data-en="The key is not memorizing the shape of if: evaluate the condition first, then follow the matching path.">这里的关键不是记住 if 的外形，而是先看条件的结果，再沿着对应路径执行。</p></div>
+</figure>
+<p data-zh="三元运算符语法为 <code>条件 ? 成立时的值 : 不成立时的值</code>，适合简单双分支；嵌套超过两层会难读，复杂逻辑改用清楚的 <code>if...else</code>。" data-en="The ternary syntax is <code>condition ? value when true : value when false</code>, which suits a simple two-way branch. More than two nested levels become hard to read; use clear <code>if...else</code> for complex logic.">三元运算符语法为 <code>条件 ? 成立时的值 : 不成立时的值</code>，适合简单双分支；嵌套超过两层会难读，复杂逻辑改用清楚的 <code>if...else</code>。</p>
+<h3 data-zh="三元运算符：把二选一写成一个表达式" data-en="Ternary: write a two-way choice as one expression">三元运算符：把二选一写成一个表达式</h3>
+<pre data-zh="condition ? true value : false value&#10;│&#10;├── condition：正在测试的问题&#10;├── ?：若条件为 true，选择 true value&#10;└── :：否则，选择 false value" data-en="condition ? true value : false value&#10;│&#10;├── condition: the question being tested&#10;├── ?: when true, choose true value&#10;└── :: otherwise, choose false value">condition ? true value : false value
+│
+├── condition：正在测试的问题
+├── ?：若条件为 true，选择 true value
+└── :：否则，选择 false value</pre>
+<pre>
+<code>let age = 20;
+let result = age >= 18 ? 'Adult' : 'Minor';</code>
+</pre>
+<p data-zh="<strong>TRUE 情况：</strong><code>age</code> 是 20；<code>>=</code> 是“大于或等于”；所以 <code>20 >= 18</code> 为 <code>true</code>，选择 <code>'Adult'</code>。<strong>FALSE 情况：</strong>如果 <code>age</code> 是 16，<code>16 >= 18</code> 为 <code>false</code>，就选择 <code>'Minor'</code>。三元运算符没有创造新的判断逻辑；它只是把简单的 <code>if...else</code> 二选一缩写成会产生一个值的表达式。" data-en="<strong>TRUE case:</strong> <code>age</code> is 20; <code>>=</code> means “greater than or equal to”; so <code>20 >= 18</code> is <code>true</code>, and it chooses <code>'Adult'</code>. <strong>FALSE case:</strong> if <code>age</code> is 16, <code>16 >= 18</code> is <code>false</code>, so it chooses <code>'Minor'</code>. A ternary introduces no new decision logic; it is a short form of a simple <code>if...else</code> two-way choice that produces a value."><strong>TRUE 情况：</strong><code>age</code> 是 20；<code>>=</code> 是“大于或等于”；所以 <code>20 >= 18</code> 为 <code>true</code>，选择 <code>'Adult'</code>。<strong>FALSE 情况：</strong>如果 <code>age</code> 是 16，<code>16 >= 18</code> 为 <code>false</code>，就选择 <code>'Minor'</code>。三元运算符没有创造新的判断逻辑；它只是把简单的 <code>if...else</code> 二选一缩写成会产生一个值的表达式。</p>
+<pre>
+<code>let result;
+if (age >= 18) {
+  result = 'Adult';
 } else {
-  console.log('Try again');
+  result = 'Minor';
+}</code>
+</pre>
+<pre>
+<code>switch (day) {
+  case 1: console.log('Monday'); break;
+  case 2: console.log('Tuesday'); break;
+  default: console.log('Other');
+}</code>
+</pre>
+<p data-zh="<code>switch</code> 适合多个固定值匹配；范围判断用 <code>if...else</code> 更清楚。每个 <code>case</code> 通常要写 <code>break</code>，否则会继续穿透到下一个 case；<code>default</code> 相当于 else，建议保留。" data-en="<code>switch</code> suits matching several fixed values; <code>if...else</code> is clearer for ranges. Each <code>case</code> normally needs <code>break</code>, otherwise execution falls through into the next case. <code>default</code> is like else and is worth keeping.">
+<code>switch</code> 适合多个固定值匹配；范围判断用 <code>if...else</code> 更清楚。每个 <code>case</code> 通常要写 <code>break</code>，否则会继续穿透到下一个 case；<code>default</code> 相当于 else，建议保留。</p>
+<div class="card supp">
+<strong data-zh="更准确的理解" data-en="More accurate understanding">更准确的理解</strong>
+<span data-zh="<code>switch</code> 的 <code>case</code> 比较采用严格相等语义，因此 <code>switch(1)</code> 不匹配 <code>case '1'</code>；但并不是在语法里“写了 <code>===</code>”。" data-en="A <code>switch</code> <code>case</code> uses strict-equality semantics, so <code>switch(1)</code> does not match <code>case '1'</code>. This does not mean the syntax literally writes <code>===</code>.">
+<code>switch</code> 的 <code>case</code> 比较采用严格相等语义，因此 <code>switch(1)</code> 不匹配 <code>case '1'</code>；但并不是在语法里“写了 <code>===</code>”。</span>
+</div>
+</section>
+
+<section id="debug" data-section>
+<h2 data-zh="08 断点调试" data-en="08 Breakpoint debugging">08 断点调试</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="断点会让代码在指定行暂停，便于看“这一刻变量到底是什么”。它比反复添加 <code>console.log</code> 更容易追踪执行过程。" data-en="A breakpoint pauses code at a chosen line so you can ask, “what is this variable right now?” It can make execution easier to trace than repeatedly adding <code>console.log</code>.">断点会让代码在指定行暂停，便于看“这一刻变量到底是什么”。它比反复添加 <code>console.log</code> 更容易追踪执行过程。</span>
+</div>
+<pre>
+<code>let total = 0;
+for (let i = 1; i <= 3; i++) {
+  total += i; // set a breakpoint on this line
 }
-const result = score >= 60 ? 'Pass' : 'Try again';</code></pre><p data-zh="流程可顺序、分支或循环。简单选择用 if/else；多个固定值匹配可用 switch（case 采用严格相等语义）；简短二选一可用 ternary（条件 ? A : B）。复杂嵌套宁可用清楚的 if。" data-en="Control flow can be sequential, branching, or looping. Use if/else for choices; switch can match many fixed values (with strict equality semantics); use a ternary (condition ? A : B) for a short two-way choice. Prefer clear if statements over complex nested ternaries."></p></section>
-<section id="debug" data-section><h2>08 Debugging</h2><p data-zh="DevTools → Sources 中点击行号设 breakpoint（断点）。刷新后代码会暂停；查看变量，用下一步、进入函数、跳出函数来追踪执行。断点回答的是：<strong>此刻变量到底是什么？</strong>" data-en="In DevTools → Sources, click a line number to set a breakpoint. After reload, code pauses; inspect values and step over, into, or out of functions. A breakpoint answers: <strong>what is this variable right now?</strong>"></p></section>
-<section id="loops" data-section><h2>09 Loops</h2><pre><code>let sum = 0;
-for (let i = 1; i <= 100; i++) {
-  sum += i;
+// total changes: 0 → 1 → 3 → 6</code>
+</pre>
+<ol>
+<li data-zh="按 F12 打开开发者工具，进入 Sources（源代码）面板。" data-en="Press F12 to open DevTools and enter the Sources panel.">按 F12 打开开发者工具，进入 Sources（源代码）面板。</li>
+<li data-zh="找到 JS 文件，点击行号；出现标记就是断点。" data-en="Find the JavaScript file and click a line number; the marker is a breakpoint.">找到 JS 文件，点击行号；出现标记就是断点。</li>
+<li data-zh="刷新页面；代码运行到断点会暂停。" data-en="Reload the page; code pauses when it reaches the breakpoint.">刷新页面；代码运行到断点会暂停。</li>
+<li data-zh="在右侧查看变量值，再用控制按钮继续或逐行执行。" data-en="Inspect variable values in the panel, then use controls to continue or step line by line.">在右侧查看变量值，再用控制按钮继续或逐行执行。</li>
+</ol>
+<p data-zh="常见按钮包括：继续（到下一个断点）、下一步（执行下一行）、进入（跳进函数）、跳出（离开当前函数）。在可疑位置暂停，逐行检查变量是否和预期一致。上例中，若在累加行暂停，依次检查 <code>i</code> 和 <code>total</code>：开始 <code>total=0</code>，i=1 后为 1，i=2 后为 3，i=3 后为 6。" data-en="Common controls include Continue (to the next breakpoint), Step over (run the next line), Step into (enter a function), and Step out (leave the current function). Pause at the suspicious location and check whether values match expectations line by line. In the example, inspect <code>i</code> and <code>total</code> at the addition: it starts with <code>total=0</code>, then becomes 1 at i=1, 3 at i=2, and 6 at i=3.">常见按钮包括：继续（到下一个断点）、下一步（执行下一行）、进入（跳进函数）、跳出（离开当前函数）。在可疑位置暂停，逐行检查变量是否和预期一致。上例中，若在累加行暂停，依次检查 <code>i</code> 和 <code>total</code>：开始 <code>total=0</code>，i=1 后为 1，i=2 后为 3，i=3 后为 6。</p>
+<figure class="knowledge-diagram learning-instrument debug-lab" data-execution-trace="accumulator" aria-labelledby="debug-lab-title"><figcaption id="debug-lab-title"><span>LAB. JS_08.01</span><strong data-zh="Debug Lab：暂停 → 查看 → 下一步" data-en="Debug Lab: pause → inspect → step">Debug Lab：暂停 → 查看 → 下一步</strong></figcaption><p class="instrument-intro" data-zh="这是 FrontEnd_Key 的教学模拟，不是浏览器 DevTools。先练习“暂停时看变量、再执行一行”。" data-en="This is a FrontEnd_Key teaching simulation, not browser DevTools. Practise inspecting variables while paused, then executing one line.">这是 FrontEnd_Key 的教学模拟，不是浏览器 DevTools。先练习“暂停时看变量、再执行一行”。</p><div class="trace-shell"><pre class="trace-code"><code><span data-trace-line="total">let total = 0;</span><span data-trace-line="loop">for (let i = 1; i &lt;= 3; i++) {</span><span data-trace-line="add">  total += i;</span><span data-trace-line="end">}</span><span data-trace-line="output">console.log(total);</span></code></pre><div class="trace-panel"><p><b data-zh="暂停位置" data-en="Paused at">暂停位置</b> <code data-trace-current>准备开始</code></p><dl><div><dt>i</dt><dd data-trace-i>—</dd></div><div><dt>total</dt><dd data-trace-total>—</dd></div><div><dt data-zh="条件" data-en="condition">条件</dt><dd data-trace-condition>—</dd></div></dl><p><b data-zh="输出" data-en="output">输出</b> <code data-trace-output>—</code></p><p class="trace-reason" aria-live="polite" data-trace-reason data-zh="尚未执行。按“下一步”从 total 的初始化开始。" data-en="Nothing has executed. Use Step to begin with total’s initialization.">尚未执行。按“下一步”从 total 的初始化开始。</p></div></div><div class="instrument-actions"><button type="button" data-trace-reset data-zh="重置" data-en="Reset">重置</button><button type="button" data-trace-back data-zh="上一步" data-en="Back">上一步</button><button type="button" data-trace-next data-zh="下一步" data-en="Step">下一步</button></div></figure>
+</section>
+
+<section id="loops" data-section>
+<h2 data-zh="09 循环与详细案例" data-en="09 Loops and detailed cases">09 循环与详细案例</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="重复做同一件事时使用循环。次数明确时多用 <code>for</code>；只知道停止条件时可用 <code>while</code>；必须先做一次再判断时用 <code>do...while</code>。" data-en="Use a loop when repeating the same work. <code>for</code> is common when the count is known, <code>while</code> when only the stopping condition is known, and <code>do...while</code> when the body must run once before being checked.">重复做同一件事时使用循环。次数明确时多用 <code>for</code>；只知道停止条件时可用 <code>while</code>；必须先做一次再判断时用 <code>do...while</code>。</span>
+</div>
+<pre>
+<code>for (let i = 0; i < 3; i++) {
+  console.log(i); // 0, 1, 2
 }
 
-for (let i = 0; i < fruits.length; i++) {
-  console.log(fruits[i]);
-}</code></pre><p data-zh="次数明确用 <code>for</code>；只知道停止条件用 <code>while</code>；至少执行一次用 <code>do...while</code>。<code>break</code> 退出循环，<code>continue</code> 跳过本轮。循环需要可靠的退出条件；数组遍历写 <code>i &lt; arr.length</code>，不要写 <code>&lt;=</code>。" data-en="Use <code>for</code> for known counts, <code>while</code> for a stopping condition, and <code>do...while</code> when it must run once. <code>break</code> exits a loop; <code>continue</code> skips the current iteration. A loop needs a reliable exit condition; arrays use <code>i &lt; arr.length</code>, not <code>&lt;=</code>."></p></section></main></div><button class="to-top" aria-label="Back to top">↑</button><script src="../assets/js/notes.js"></script></body></html>
+let i = 0;
+while (i < 3) { console.log(i); i++; }
+i = 0;
+do { console.log(i); i++; } while (i < 3);</code>
+</pre>
+<div class="card course">
+<strong data-zh="原笔记的执行顺序" data-en="Execution order from the original note">原笔记的执行顺序</strong>
+<span data-zh="<code>for</code>：初始值（只执行一次）→ 判断条件 → 循环体 → 更新 → 再判断……。<code>while</code>：判断条件 → 循环体 → 再判断……，所以初始值通常在外部声明。<code>do...while</code>：先执行循环体（至少一次）→ 判断条件 → 条件成立才重复。" data-en="<code>for</code>: initialization (only once) → test condition → loop body → update → test again…. <code>while</code>: test condition → loop body → test again…, so initialization is usually outside. <code>do...while</code>: run the body first (at least once) → test condition → repeat only when true.">
+<code>for</code>：初始值（只执行一次）→ 判断条件 → 循环体 → 更新 → 再判断……。<code>while</code>：判断条件 → 循环体 → 再判断……，所以初始值通常在外部声明。<code>do...while</code>：先执行循环体（至少一次）→ 判断条件 → 条件成立才重复。</span>
+</div>
+<div class="card supp">
+<strong data-zh="注意事项" data-en="Notes">注意事项</strong>
+<span data-zh="循环必须有可靠的退出条件；本页的 <code>for</code>/<code>while</code>/<code>do...while</code> 例子需要更新变量，避免死循环。<code>break</code> 退出整个当前循环；<code>continue</code> 跳过本次循环剩余代码，进入下一次。" data-en="A loop needs a reliable exit condition. The <code>for</code>/<code>while</code>/<code>do...while</code> examples here need variable updates to avoid an infinite loop. <code>break</code> exits the current loop; <code>continue</code> skips the remaining code in the current iteration.">循环必须有可靠的退出条件；本页的 <code>for</code>/<code>while</code>/<code>do...while</code> 例子需要更新变量，避免死循环。<code>break</code> 退出整个当前循环；<code>continue</code> 跳过本次循环剩余代码，进入下一次。</span>
+</div>
+<h3 data-zh="循环的心智地图" data-en="A mental map of loops">循环的心智地图</h3>
+<pre data-zh="循环：条件允许时重复工作&#10;│&#10;├── for&#10;│   └── 次数明确&#10;├── while&#10;│   └── 先检查条件&#10;├── do...while&#10;│   └── 先执行一次，再检查&#10;├── break&#10;│   └── 结束当前循环&#10;└── continue&#10;    └── 跳过这一轮，进入下一轮" data-en="Loops: repeat while a condition allows it&#10;│&#10;├── for&#10;│   └── count is known&#10;├── while&#10;│   └── check the condition first&#10;├── do...while&#10;│   └── run once, then check&#10;├── break&#10;│   └── end the current loop&#10;└── continue&#10;    └── skip this round; start the next">循环：条件允许时重复工作
+│
+├── for
+│   └── 次数明确
+├── while
+│   └── 先检查条件
+├── do...while
+│   └── 先执行一次，再检查
+├── break
+│   └── 结束当前循环
+└── continue
+    └── 跳过这一轮，进入下一轮</pre>
+<h3 data-zh="for：先建立最小循环模型" data-en="for: establish the smallest loop model first">for：先建立最小循环模型</h3>
+<pre><code>for (let i = 0; i &lt; 3; i++) {
+  console.log(i);
+}</code></pre>
+<figure class="knowledge-diagram loop-diagram" data-diagram="loop" aria-labelledby="loop-figure-title">
+<figcaption id="loop-figure-title"><span>FIG. JS_09.01</span><strong data-zh="for 循环如何回到下一轮" data-en="How a for loop returns to the next round">for 循环如何回到下一轮</strong></figcaption>
+<div class="diagram-stage loop-stages" role="group" data-zh-aria-label="选择循环执行步骤" data-en-aria-label="Select a loop execution step" aria-label="选择循环执行步骤">
+<button type="button" class="diagram-node" data-loop="init" aria-pressed="true"><b>01</b><strong>let i = 0</strong><small data-zh="初始化：只在开始时运行一次" data-en="initialization: runs only once at the start">初始化：只在开始时运行一次</small></button><i>↓</i>
+<button type="button" class="diagram-node" data-loop="condition" aria-pressed="false"><b>02</b><strong>i &lt; 3 ?</strong><small data-zh="条件：每一轮开始前检查" data-en="condition: checked before each round">每一轮开始前检查</small></button><i>↓ true</i>
+<button type="button" class="diagram-node" data-loop="body" aria-pressed="false"><b>03</b><strong>console.log(i)</strong><small data-zh="循环体：这一轮实际执行的工作" data-en="loop body: the work that runs this round">循环体：这一轮实际执行的工作</small></button><i>↓</i>
+<button type="button" class="diagram-node" data-loop="update" aria-pressed="false"><b>04</b><strong>i++</strong><small data-zh="更新：i 加 1，然后回到条件" data-en="update: add 1 to i, then return to the condition">i 加 1，然后回到条件</small></button>
+</div>
+<p class="diagram-explain" aria-live="polite" data-diagram-result data-zh="初始化令 i 从 0 开始。这一步只运行一次，之后才进入条件检查。" data-en="Initialization starts i at 0. It runs once only, before the condition is checked.">初始化令 i 从 0 开始。这一步只运行一次，之后才进入条件检查。</p>
+</figure>
+<figure class="knowledge-diagram learning-instrument execution-trace" data-execution-trace="accumulator" aria-labelledby="trace-figure-title"><figcaption id="trace-figure-title"><span>LAB. JS_09.02</span><strong data-zh="执行追踪：总和如何成为 6" data-en="Execution trace: how the total becomes 6">执行追踪：总和如何成为 6</strong></figcaption><p class="instrument-intro" data-zh="这是同一段已有的累加示例，缩小到 1–3，方便逐步预测下一状态。" data-en="This is the existing accumulation example, reduced to 1–3 so you can predict each next state.">这是同一段已有的累加示例，缩小到 1–3，方便逐步预测下一状态。</p><div class="trace-shell"><pre class="trace-code"><code><span data-trace-line="total">let total = 0;</span><span data-trace-line="loop">for (let i = 1; i &lt;= 3; i++) {</span><span data-trace-line="add">  total += i;</span><span data-trace-line="end">}</span><span data-trace-line="output">console.log(total);</span></code></pre><div class="trace-panel"><p><b data-zh="当前步骤" data-en="Current step">当前步骤</b> <code data-trace-current>准备开始</code></p><dl><div><dt>i</dt><dd data-trace-i>—</dd></div><div><dt>total</dt><dd data-trace-total>—</dd></div><div><dt data-zh="条件" data-en="condition">条件</dt><dd data-trace-condition>—</dd></div></dl><p><b data-zh="输出" data-en="output">输出</b> <code data-trace-output>—</code></p><p class="trace-reason" aria-live="polite" data-trace-reason data-zh="尚未执行。按“下一步”从 total 的初始化开始。" data-en="Nothing has executed. Use Step to begin with total’s initialization.">尚未执行。按“下一步”从 total 的初始化开始。</p></div></div><div class="instrument-actions"><button type="button" data-trace-reset data-zh="重置" data-en="Reset">重置</button><button type="button" data-trace-back data-zh="上一步" data-en="Back">上一步</button><button type="button" data-trace-next data-zh="下一步" data-en="Step">下一步</button><button type="button" data-trace-auto aria-pressed="false" data-zh="自动播放" data-en="Auto">自动播放</button></div></figure>
+<pre data-zh="let i = 0     初始化：只在开始时运行一次，i 从 0 起步
+i &lt; 3         条件：每一轮前检查；i 小于 3 才继续
+console.log(i) 循环体：这一轮实际要做的工作
+i++           更新：这一轮结束后 i 加 1，也就是 i = i + 1
+
+START
+  │
+  ▼
+let i = 0
+  │
+  ▼
+i &lt; 3 ?
+  │
+  ├── false ─────────────→ STOP
+  │
+  └── true
+       │
+       ▼
+ console.log(i)
+       │
+       ▼
+      i++
+       │
+       └──────────────→ 再检查 i &lt; 3</pre>
+<table>
+<thead><tr><th data-zh="轮次" data-en="Round">轮次</th><th>i</th><th>i &lt; 3</th><th data-zh="结果" data-en="Result">结果</th></tr></thead>
+<tbody><tr><td>1</td><td>0</td><td>true</td><td data-zh="输出 0，然后 i 变为 1" data-en="output 0, then i becomes 1">输出 0，然后 i 变为 1</td></tr><tr><td>2</td><td>1</td><td>true</td><td data-zh="输出 1，然后 i 变为 2" data-en="output 1, then i becomes 2">输出 1，然后 i 变为 2</td></tr><tr><td>3</td><td>2</td><td>true</td><td data-zh="输出 2，然后 i 变为 3" data-en="output 2, then i becomes 3">输出 2，然后 i 变为 3</td></tr><tr><td data-zh="检查" data-en="check">检查</td><td>3</td><td>false</td><td data-zh="停止：3 不小于 3" data-en="stop: 3 is not less than 3">停止：3 不小于 3</td></tr></tbody>
+</table>
+<p data-zh="循环停止是因为更新后的 <code>i</code> 变成 3，下一次检查 <code>i &lt; 3</code> 得到 false。掌握初始化、条件、循环体和更新后，再读下面六个实践案例。" data-en="The loop stops because the update makes <code>i</code> become 3, and the next check <code>i &lt; 3</code> is false. Once initialization, condition, body, and update are clear, read the six practical cases below.">循环停止是因为更新后的 <code>i</code> 变成 3，下一次检查 <code>i &lt; 3</code> 得到 false。掌握初始化、条件、循环体和更新后，再读下面六个实践案例。</p>
+<h3 data-zh="while 与 do...while：同一目标，不同检查位置" data-en="while and do...while: same goal, different check position">while 与 do...while：同一目标，不同检查位置</h3>
+<pre data-zh="while&#10;│&#10;├── 检查条件&#10;├── true → 执行循环体&#10;├── 更新&#10;└── 再检查&#10;&#10;do...while&#10;│&#10;├── 执行循环体&#10;├── 更新&#10;├── 检查条件&#10;└── true → 重复&#10;&#10;所以 do...while 的循环体至少执行一次。" data-en="while&#10;│&#10;├── check the condition&#10;├── true → run the body&#10;├── update&#10;└── check again&#10;&#10;do...while&#10;│&#10;├── run the body&#10;├── update&#10;├── check the condition&#10;└── true → repeat&#10;&#10;So a do...while body runs at least once.">while
+│
+├── 检查条件
+├── true → 执行循环体
+├── 更新
+└── 再检查
+
+do...while
+│
+├── 执行循环体
+├── 更新
+├── 检查条件
+└── true → 重复
+
+所以 do...while 的循环体至少执行一次。</pre>
+<pre><code>let i = 0;
+while (i &lt; 3) {
+  console.log(i);
+  i++;
+}
+
+i = 3;
+do {
+  console.log(i); // still outputs 3 once
+  i++;
+} while (i &lt; 3);</code></pre>
+<p data-zh="<code>while</code> 的初始值和更新通常写在外面；若忘记更新，条件可能一直为 true，造成死循环。<code>do...while</code> 不是另一种条件，而是把第一次检查放在循环体之后。" data-en="A <code>while</code> usually places initialization and update outside its parentheses. Forgetting the update can leave the condition true and create an infinite loop. <code>do...while</code> does not use a different kind of condition; it places the first check after the body."><code>while</code> 的初始值和更新通常写在外面；若忘记更新，条件可能一直为 true，造成死循环。<code>do...while</code> 不是另一种条件，而是把第一次检查放在循环体之后。</p>
+<h3 data-zh="break 与 continue：停止和跳过不是同一件事" data-en="break and continue: ending and skipping are different">break 与 continue：停止和跳过不是同一件事</h3>
+<pre data-zh="break&#10;│&#10;└── 结束整个当前循环&#10;    └── LOOP END&#10;&#10;continue&#10;│&#10;└── 跳过这一轮剩余代码&#10;    └── NEXT ITERATION&#10;&#10;break 不会只跳过一轮；continue 不会结束整个循环。" data-en="break&#10;│&#10;└── end the entire current loop&#10;    └── LOOP END&#10;&#10;continue&#10;│&#10;└── skip the remaining code of this round&#10;    └── NEXT ITERATION&#10;&#10;break does not merely skip one round; continue does not end the whole loop.">break
+│
+└── 结束整个当前循环
+    └── LOOP END
+
+continue
+│
+└── 跳过这一轮剩余代码
+    └── NEXT ITERATION
+
+break 不会只跳过一轮；continue 不会结束整个循环。</pre>
+<h3 data-zh="案例一：累加求和" data-en="Case 1: accumulating a sum">案例一：累加求和</h3>
+<p data-zh="<strong>需求：</strong>计算 1 加到 100 的总和。<strong>思路：</strong>在循环外声明 <code>sum</code> 存结果，每一轮把当前 <code>i</code> 加入。" data-en="<strong>Goal:</strong> calculate the total from 1 to 100. <strong>Reasoning:</strong> declare <code>sum</code> outside the loop and add the current <code>i</code> on every iteration.">
+<strong>需求：</strong>计算 1 加到 100 的总和。<strong>思路：</strong>在循环外声明 <code>sum</code> 存结果，每一轮把当前 <code>i</code> 加入。</p>
+<pre>
+<code>let sum = 0;
+for (let i = 1; i <= 100; i++) { sum += i; }
+console.log(sum); // 5050</code>
+</pre>
+<p data-zh="<strong>每一步变化：</strong>开始 <code>sum=0</code>；i=1 后为 1；i=2 后为 3；……；i=100 后为 5050。<strong>输出：</strong>5050。<strong>注意：</strong>
+<code>sum</code> 必须在循环外，否则每次会重置为 0。" data-en="<strong>Step-by-step changes:</strong> start <code>sum=0</code>; after i=1 it is 1; after i=2 it is 3; …; after i=100 it is 5050. <strong>Output:</strong> 5050. <strong>Note:</strong> <code>sum</code> must be outside the loop or it resets to 0 on each iteration.">
+<strong>每一步变化：</strong>开始 <code>sum=0</code>；i=1 后为 1；i=2 后为 3；……；i=100 后为 5050。<strong>输出：</strong>5050。<strong>注意：</strong>
+<code>sum</code> 必须在循环外，否则每次会重置为 0。</p>
+<h3 data-zh="案例二：倒序循环" data-en="Case 2: counting down">案例二：倒序循环</h3>
+<p data-zh="<strong>需求：</strong>从 10 倒数到 1。<strong>思路：</strong>从大值开始，条件使用 <code>&gt;=</code>，每次用 <code>i--</code> 更新。" data-en="<strong>Goal:</strong> count down from 10 to 1. <strong>Reasoning:</strong> start from the larger value, use <code>&gt;=</code>, and update with <code>i--</code>.">
+<strong>需求：</strong>从 10 倒数到 1。<strong>思路：</strong>从大值开始，条件使用 <code>&gt;=</code>，每次用 <code>i--</code> 更新。</p>
+<pre>
+<code>for (let i = 10; i >= 1; i--) {
+  console.log(i); // 10 9 8 7 6 5 4 3 2 1
+}</code>
+</pre>
+<p data-zh="i 从 10 输出后减为 9，直到 i=1 输出后减为 0，条件不成立而结束。<strong>输出：</strong>10 到 1。<strong>注意：</strong>倒序的条件和更新方向必须配套。" data-en="i prints 10 and becomes 9; after i=1 prints, it becomes 0, the condition fails, and the loop ends. <strong>Output:</strong> 10 to 1. <strong>Note:</strong> a countdown condition and update direction must match.">i 从 10 输出后减为 9，直到 i=1 输出后减为 0，条件不成立而结束。<strong>输出：</strong>10 到 1。<strong>注意：</strong>倒序的条件和更新方向必须配套。</p>
+<h3 data-zh="案例三：遍历数组" data-en="Case 3: traversing an array">案例三：遍历数组</h3>
+<p data-zh="<strong>需求：</strong>依次输出数组每个元素。<strong>思路：</strong>i 从 0 开始，用 <code>arr[i]</code> 访问，到 <code>arr.length - 1</code> 为止。" data-en="<strong>Goal:</strong> output every array element in order. <strong>Reasoning:</strong> begin i at 0, access with <code>arr[i]</code>, and continue through <code>arr.length - 1</code>.">
+<strong>需求：</strong>依次输出数组每个元素。<strong>思路：</strong>i 从 0 开始，用 <code>arr[i]</code> 访问，到 <code>arr.length - 1</code> 为止。</p>
+<pre>
+<code>let arr = ['a', 'b', 'c'];
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]); // a b c
+}</code>
+</pre>
+<p data-zh="i=0 取 <code>arr[0]='a'</code>；i=1 取 <code>'b'</code>；i=2 取 <code>'c'</code>；i=3 时不满足 <code>i &lt; arr.length</code>。<strong>输出：</strong>a、b、c。<strong>注意：</strong>索引从 0 开始，所以写 <code>i &lt; arr.length</code>，不能写 <code>&lt;=</code>；也不要把长度写成固定数字。" data-en="i=0 gets <code>arr[0]='a'</code>; i=1 gets <code>'b'</code>; i=2 gets <code>'c'</code>; at i=3, <code>i &lt; arr.length</code> is false. <strong>Output:</strong> a, b, c. <strong>Note:</strong> because indexing begins at 0, use <code>i &lt; arr.length</code>, not <code>&lt;=</code>; do not hard-code the length.">i=0 取 <code>arr[0]='a'</code>；i=1 取 <code>'b'</code>；i=2 取 <code>'c'</code>；i=3 时不满足 <code>i &lt; arr.length</code>。<strong>输出：</strong>a、b、c。<strong>注意：</strong>索引从 0 开始，所以写 <code>i &lt; arr.length</code>，不能写 <code>&lt;=</code>；也不要把长度写成固定数字。</p>
+<h3 data-zh="案例四：筛选输出奇数" data-en="Case 4: filtering odd numbers">案例四：筛选输出奇数</h3>
+<p data-zh="<strong>需求：</strong>输出 1–10 的所有奇数。<strong>思路：</strong>使用 <code>%</code> 取余；除以 2 后余数不为 0 就是奇数。" data-en="<strong>Goal:</strong> output every odd number from 1 to 10. <strong>Reasoning:</strong> use <code>%</code> for a remainder; a number whose remainder after division by 2 is not 0 is odd.">
+<strong>需求：</strong>输出 1–10 的所有奇数。<strong>思路：</strong>使用 <code>%</code> 取余；除以 2 后余数不为 0 就是奇数。</p>
+<pre>
+<code>for (let i = 1; i <= 10; i++) {
+  if (i % 2 !== 0) console.log(i);
+}</code>
+</pre>
+<p data-zh="i=1 余 1，输出；i=2 余 0，跳过；依次继续。<strong>输出：</strong>1、3、5、7、9。也可写 <code>if (i % 2 === 0) continue;</code>，先跳过偶数。" data-en="i=1 leaves remainder 1 and prints; i=2 leaves remainder 0 and is skipped; then the pattern continues. <strong>Output:</strong> 1, 3, 5, 7, 9. You can also write <code>if (i % 2 === 0) continue;</code> to skip even numbers first.">i=1 余 1，输出；i=2 余 0，跳过；依次继续。<strong>输出：</strong>1、3、5、7、9。也可写 <code>if (i % 2 === 0) continue;</code>，先跳过偶数。</p>
+<h3 data-zh="案例五：break 与 continue" data-en="Case 5: break and continue">案例五：break 与 continue</h3>
+<p data-zh="<strong>需求：</strong>遇到第一个大于 5 的数时停止；或跳过所有大于 5 的数。<strong>思路：</strong>前者使用 <code>break</code>，后者使用 <code>continue</code>。" data-en="<strong>Goal:</strong> stop at the first number greater than 5, or skip every number greater than 5. <strong>Reasoning:</strong> use <code>break</code> for the first behavior and <code>continue</code> for the second.">
+<strong>需求：</strong>遇到第一个大于 5 的数时停止；或跳过所有大于 5 的数。<strong>思路：</strong>前者使用 <code>break</code>，后者使用 <code>continue</code>。</p>
+<pre>
+<code>// break: exits at i=6; later iterations do not run
+for (let i = 1; i <= 10; i++) {
+  if (i > 5) break;
+  console.log(i); // 1 2 3 4 5
+}
+// continue: iterations 6–10 still test, but do not print
+for (let i = 1; i <= 10; i++) {
+  if (i > 5) continue;
+  console.log(i); // 1 2 3 4 5
+}</code>
+</pre>
+<p data-zh="<strong>输出：</strong>两段都打印 1–5，但逻辑不同：<code>break</code> 后，6 之后完全不再运行；<code>continue</code> 后，6–10 仍会循环，只跳过本轮剩余代码。" data-en="<strong>Output:</strong> both blocks print 1–5, but their logic differs. After <code>break</code>, nothing after 6 runs; after <code>continue</code>, iterations 6–10 still occur but skip remaining code for that iteration.">
+<strong>输出：</strong>两段都打印 1–5，但逻辑不同：<code>break</code> 后，6 之后完全不再运行；<code>continue</code> 后，6–10 仍会循环，只跳过本轮剩余代码。</p>
+<h3 data-zh="案例六：嵌套 for 循环" data-en="Case 6: nested for loops">案例六：嵌套 for 循环</h3>
+<p data-zh="<strong>需求：</strong>组合两层重复工作，例如打印表格或九九乘法表。<strong>思路：</strong>外层每进行一次，内层完整执行一遍。" data-en="<strong>Goal:</strong> combine two layers of repeated work, such as printing a table or multiplication chart. <strong>Reasoning:</strong> every outer iteration runs the entire inner loop once.">
+<strong>需求：</strong>组合两层重复工作，例如打印表格或九九乘法表。<strong>思路：</strong>外层每进行一次，内层完整执行一遍。</p>
+<pre>
+<code>for (let i = 1; i <= 3; i++) {
+  for (let j = 1; j <= 3; j++) {
+    console.log(`${i} * ${j} = ${i * j}`);
+  }
+}</code>
+</pre>
+<p data-zh="<strong>每一步变化：</strong>i=1 时，j=1、2、3 全部完成；再进入 i=2，j 又从 1 开始。<strong>注意：</strong>嵌套时使用不同变量名（常用 i、j、k），每一层都需要正确的终止条件。" data-en="<strong>Step-by-step changes:</strong> when i=1, j=1, 2, and 3 all finish; then i becomes 2 and j begins at 1 again. <strong>Note:</strong> use different variable names in nested loops (commonly i, j, and k), and every layer needs a correct termination condition.">
+<strong>每一步变化：</strong>i=1 时，j=1、2、3 全部完成；再进入 i=2，j 又从 1 开始。<strong>注意：</strong>嵌套时使用不同变量名（常用 i、j、k），每一层都需要正确的终止条件。</p>
+</section>
+
+<section id="reference" data-section>
+<h2 data-zh="JavaScript 学习范围说明" data-en="JavaScript learning-scope note">JavaScript 学习范围说明</h2>
+<div class="card course">
+<strong data-zh="课程笔记与原始证据" data-en="Course note and source evidence">课程笔记与原始证据</strong>
+<span data-zh="本页按现有《JS 基础笔记｜整理版》的介绍、术语、示例、图示含义、注意事项和解题过程组织。原始证据未修改；本页不新增原笔记未涉及的 React、Promise 等章节。" data-en="This page is organized from the existing JavaScript foundation note’s introduction, terminology, examples, diagram meanings, cautions, and problem-solving process. The original evidence is unchanged; this page does not add chapters such as React or Promise that are not in that note.">本页按现有《JS 基础笔记｜整理版》的介绍、术语、示例、图示含义、注意事项和解题过程组织。原始证据未修改；本页不新增原笔记未涉及的 React、Promise 等章节。</span>
+</div>
+</section>
+</main>
+</div>
+<button class="to-top" data-zh-aria-label="返回顶部" data-en-aria-label="Back to top" aria-label="返回顶部">↑</button>
+<script src="../assets/js/knowledge-diagrams.js"></script>
+<script src="../assets/js/notes.js">
+</script>
+</body>
+</html>
