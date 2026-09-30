@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>React 笔记</title>
+<link rel="stylesheet" href="../assets/css/notes.css">
+</head>
+<body data-title data-zh="React 笔记｜Siyu 的前端知识库" data-en="React Notes | Siyu's Frontend Knowledge Base">
+<div class="progress">
+</div>
+<a class="skip" href="#main" data-zh="跳到内容" data-en="Skip to content">跳到内容</a>
+<header class="topbar">
+<a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span>
+</a>
+<nav class="tabs" data-zh-aria-label="主导航" data-en-aria-label="Primary navigation" aria-label="主导航">
+<a href="../index.html" data-zh="首页" data-en="Home">首页</a>
+<a href="html.html">HTML</a>
+<a href="css.html">CSS</a>
+<a href="javascript.html">JavaScript</a>
+<a href="web-data.html" data-zh="Web 数据" data-en="Web Data">Web 数据</a>
+<a aria-current="page" href="react.html">React</a>
+<a href="git.html">Git</a>
+</nav>
+<div class="lang">
+<button data-lang="zh">中文</button>
+<button data-lang="en">EN</button>
+</div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+<h2>REACT</h2>
+<nav data-zh-aria-label="React 章节" data-en-aria-label="React sections" aria-label="React 章节">
+<a href="#model" data-zh="01 React 心智模型" data-en="01 React mental model">01 React 心智模型</a>
+<a href="#components" data-zh="02 组件与 Props" data-en="02 Components and props">02 组件与 Props</a>
+<a href="#tsx">03 JSX / TSX</a>
+<a href="#style" data-zh="04 样式与组织" data-en="04 Styling and organization">04 样式与组织</a>
+<a href="#project" data-zh="05 Vite 项目设置" data-en="05 Vite project setup">05 Vite 项目设置</a>
+<a href="#data" data-zh="06 State 与 API 数据" data-en="06 State and API data">06 State 与 API 数据</a>
+</nav>
+</aside>
+<main id="main">
+<header class="hero">
+<h1 data-zh="React：组件、TSX 与数据" data-en="React: components, TSX, and data">React：组件、TSX 与数据</h1>
+<p data-zh="来自 CS303 Lec-4/5、9 月 29 日组件课与 React discussion；范围止于组件、TSX、TypeScript 类型、styled-components、Vite、useState、useEffect 与 GET。" data-en="From CS303 Lec-4/5, the September 29 components lecture, and the React discussion; scope stops at components, TSX, TypeScript types, styled-components, Vite, useState, useEffect, and GET.">来自 CS303 Lec-4/5、9 月 29 日组件课与 React discussion；范围止于组件、TSX、TypeScript 类型、styled-components、Vite、useState、useEffect 与 GET。</p>
+</header>
+<div class="search-wrap">
+<input id="site-search" type="search" data-zh-placeholder="搜索 component、props、Vite、TSX" data-en-placeholder="Search component, props, Vite, TSX">
+<p id="search-result" class="search-result">
+</p>
+</div>
+<section id="model" data-section>
+<h2 data-zh="01 React 心智模型：UI、DOM 与更新" data-en="01 React mental model: UI, DOM, and updates">01 React 心智模型：UI、DOM 与更新</h2>
+<div class="card course">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="React 用组件描述 UI。它把你写的 JSX/TSX 转成可比较的表示，再只把需要的变化更新到页面的 Real DOM。" data-en="React describes UI with components. It turns written JSX/TSX into a representation it can compare, then updates only needed changes in the page’s Real DOM.">React 用组件描述 UI。它把你写的 JSX/TSX 转成可比较的表示，再只把需要的变化更新到页面的 Real DOM。</span>
+</div>
+<h3 data-zh="课程中的 React" data-en="React in this course">课程中的 React</h3>
+<p data-zh="课程将 abstraction 解释为用较简单的 API 隐藏复杂技术细节。HTML 管结构、CSS 管表现、JS 管行为；页面和重复 UI 增多时，维护、复用、state 与数据请求更难组织。" data-en="The course explains abstraction as using a simpler API to hide technical detail. HTML handles structure, CSS presentation, and JS behavior; as pages and repeated UI grow, maintenance, reuse, state, and data requests become harder to organize.">课程将 abstraction 解释为用较简单的 API 隐藏复杂技术细节。HTML 管结构、CSS 管表现、JS 管行为；页面和重复 UI 增多时，维护、复用、state 与数据请求更难组织。</p>
+<ul><li data-zh="<strong>React（React.js / ReactJS）：</strong>由 Meta（原 Facebook）的工程师 Jordan Walke 创建，是专注 UI/组件的开源 JavaScript library。" data-en="<strong>React (React.js / ReactJS):</strong> created by Jordan Walke, an engineer at Meta (formerly Facebook), and an open-source JavaScript library for UI/components."><strong>React（React.js / ReactJS）：</strong>由 Meta（原 Facebook）的工程师 Jordan Walke 创建，是专注 UI/组件的开源 JavaScript library。</li><li data-zh="<strong>课程关键特性：</strong>Virtual DOM、performance、one-way data binding、simplicity、JSX/TSX 和 components。" data-en="<strong>Key course features:</strong> Virtual DOM, performance, one-way data binding, simplicity, JSX/TSX, and components."><strong>课程关键特性：</strong>Virtual DOM、performance、one-way data binding、simplicity、JSX/TSX 和 components。</li><li data-zh="<strong>课程的 simplicity：</strong>起步时可继续使用已学的 HTML、CSS、JavaScript，而 React 处理其余 UI 工作。" data-en="<strong>Course simplicity:</strong> beginners continue using learned HTML, CSS, and JavaScript while React handles the remaining UI work."><strong>课程的 simplicity：</strong>起步时可继续使用已学的 HTML、CSS、JavaScript，而 React 处理其余 UI 工作。</li></ul>
+<h3 data-zh="JSX/TSX 编译提示" data-en="A JSX/TSX compilation clue">JSX/TSX 编译提示</h3>
+<p data-zh="讲义以“你写的 JSX/TSX”和 React 编译后看到的 <code>_jsx()</code> 调用作对比。<code>_jsx()</code> 是理解编译结果的提示，不是当前需要手写的 React 代码。" data-en="The lecture contrasts written JSX/TSX with the <code>_jsx()</code> calls React sees after compilation. <code>_jsx()</code> is a clue for understanding the compiled result, not React code to write now.">讲义以“你写的 JSX/TSX”和 React 编译后看到的 <code>_jsx()</code> 调用作对比。<code>_jsx()</code> 是理解编译结果的提示，不是当前需要手写的 React 代码。</p>
+<pre data-zh="DOM：HTML 文档的树状结构；Real DOM 是 UI 中实际结构&#10;Virtual DOM：内存中的 DOM 表示&#10; ↓&#10;UI 变化 → 比较前后表示（diffing）&#10; ↓&#10;Reconciliation：把需要的变化更新到 Real DOM" data-en="DOM: an HTML document tree; the Real DOM is the actual UI structure&#10;Virtual DOM: an in-memory DOM representation&#10; ↓&#10;UI changes → compare before/after representations (diffing)&#10; ↓&#10;Reconciliation: update required changes in the Real DOM">
+<code>DOM：HTML 文档的树状结构；Real DOM 是 UI 中实际结构
+Virtual DOM：内存中的 DOM 表示
+ ↓
+UI 变化 → 比较前后表示（diffing）
+ ↓
+Reconciliation：把需要的变化更新到 Real DOM</code>
+</pre>
+<figure class="knowledge-diagram react-render-flow" aria-labelledby="react-render-flow-title">
+<figcaption id="react-render-flow-title"><span>FIG. REACT_01.01</span><strong data-zh="React 如何把 UI 描述变成页面更新" data-en="How React turns a UI description into a page update">React 如何把 UI 描述变成页面更新</strong></figcaption>
+<div class="diagram-stage render-flow">
+<div class="diagram-node"><b>01</b><strong>JSX / TSX</strong><small data-zh="你写的组件 UI" data-en="the component UI you write">你写的组件 UI</small></div>
+<i>↓</i>
+<div class="diagram-node"><b>02</b><strong>Virtual DOM</strong><small data-zh="内存中的 DOM 表示" data-en="in-memory DOM representation">内存中的 DOM 表示</small></div>
+<i>↓</i>
+<div class="diagram-node"><b>03</b><strong>Diffing</strong><small data-zh="比较前后表示" data-en="compare before/after representations">比较前后表示</small></div>
+<i>↓</i>
+<div class="diagram-node"><b>04</b><strong>Reconciliation</strong><small data-zh="把需要的变化更新到 Real DOM" data-en="update needed changes in the Real DOM">把需要的变化更新到 Real DOM</small></div>
+</div>
+</figure>
+<h3 data-zh="课程的性能与列表心智模型" data-en="Course performance and list mental model">课程的性能与列表心智模型</h3>
+<ul><li data-zh="课程用 reconciliation 说明 React 避免冗余 DOM 重渲染，并以 Diffing Algorithm 的 <code>O(n)</code> 对比早期 <code>O(n³)</code> 的性能叙述。" data-en="The course uses reconciliation to explain avoiding redundant DOM rerenders and frames Diffing Algorithm <code>O(n)</code> against an earlier <code>O(n³)</code> performance story.">课程用 reconciliation 说明 React 避免冗余 DOM 重渲染，并以 Diffing Algorithm 的 <code>O(n)</code> 对比早期 <code>O(n³)</code> 的性能叙述。</li><li data-zh="这是课程性能心智模型，本页不把该简化复杂度叙述扩展成通用性能定律。" data-en="This is a course performance mental model; this page does not turn that simplified complexity story into a universal performance law.">这是课程性能心智模型，本页不把该简化复杂度叙述扩展成通用性能定律。</li><li data-zh="列表中 React 需识别每一项时使用 <code>key</code>；课程说明有些 key 需开发者通过 props 指定。" data-en="Use <code>key</code> when React identifies each item in a list; the course notes that developers specify some keys through props.">列表中 React 需识别每一项时使用 <code>key</code>；课程说明有些 key 需开发者通过 props 指定。</li></ul>
+</section>
+<section id="components" data-section>
+<h2 data-zh="02 组件、Props 与单向数据流" data-en="02 Components, Props, and one-way data flow">02 组件、Props 与单向数据流</h2>
+<div class="card">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="组件把可重复 UI 变成可复用函数；props 是 parent 传给 child 的数据。数据方向保持 Parent → Child。" data-en="Components turn repeated UI into reusable functions; props are data a parent passes to a child. The data direction stays Parent → Child.">组件把可重复 UI 变成可复用函数；props 是 parent 传给 child 的数据。数据方向保持 Parent → Child。</span>
+</div>
+<p data-zh="Component 是通常返回 JSX/TSX 输出的函数，也可包含其他 component。把重复 UI 写一次再复用，符合 DRY。单向数据绑定是 Parent → Child：父组件在 JSX/TSX 中用自定义属性传数据，属性值叫 props；课程以此说明可读性和可维护性。" data-en="A Component is a function that usually returns JSX/TSX and may contain other components. Write repeated UI once and reuse it, following DRY. One-way data binding is Parent → Child: the parent uses made-up JSX/TSX attributes to pass data, and those values are props; the course uses this to explain readability and maintainability.">Component 是通常返回 JSX/TSX 输出的函数，也可包含其他 component。把重复 UI 写一次再复用，符合 DRY。单向数据绑定是 Parent → Child：父组件在 JSX/TSX 中用自定义属性传数据，属性值叫 props；课程以此说明可读性和可维护性。</p>
+<pre>
+<code>// Parent.tsx
+&lt;Child optimist={optimist} /&gt;
+// Child.tsx
+interface ChildProps { optimist: string; }
+function Child(props: ChildProps) { return &lt;h2&gt;{props.optimist}&lt;/h2&gt;; }</code>
+</pre>
+<figure class="knowledge-diagram props-flow" aria-labelledby="props-flow-title">
+<figcaption id="props-flow-title"><span>FIG. REACT_02.01</span><strong data-zh="Props 的单向传递" data-en="The one-way path of props">Props 的单向传递</strong></figcaption>
+<div class="diagram-stage component-flow">
+<div class="diagram-node"><b>01</b><strong>Parent</strong><small data-zh="拥有变量 optimist" data-en="has the optimist variable">拥有变量 optimist</small></div>
+<i>→</i>
+<div class="diagram-node"><b>02</b><strong>&lt;Child optimist={optimist} /&gt;</strong><small data-zh="通过 JSX/TSX 属性传递" data-en="pass it through a JSX/TSX attribute">通过 JSX/TSX 属性传递</small></div>
+<i>→</i>
+<div class="diagram-node"><b>03</b><strong>Child props</strong><small data-zh="读取 props.optimist 输出 UI" data-en="read props.optimist to output UI">读取 props.optimist 输出 UI</small></div>
+</div>
+</figure>
+<h3 data-zh="读取组件 JSX/TSX" data-en="Reading component JSX/TSX">读取组件 JSX/TSX</h3>
+<ul><li data-zh="<code>&lt;Child /&gt;</code> 是 JSX/TSX 中的组件引用。<code>{ }</code> 从标签内的文本/XML 切换到 JavaScript 表达式范围，因此可读变量和 props。" data-en="<code>&lt;Child /&gt;</code> references a component in JSX/TSX. <code>{ }</code> switches from text/XML inside a tag to JavaScript expression scope, so it can read variables and props."><code>&lt;Child /&gt;</code> 是 JSX/TSX 中的组件引用。<code>{ }</code> 从标签内的文本/XML 切换到 JavaScript 表达式范围，因此可读变量和 props。</li><li data-zh="<code>?</code> 与 <code>:</code> 是 ternary expression（if/else 简写）的操作符；课程示例用 Unicode ☺ / ☹ 决定显示哪个表情。" data-en="<code>?</code> and <code>:</code> are ternary-expression operands (if/else shorthand); the course example uses Unicode ☺ / ☹ to select a face."><code>?</code> 与 <code>:</code> 是 ternary expression（if/else 简写）的操作符；课程示例用 Unicode ☺ / ☹ 决定显示哪个表情。</li><li data-zh="<code>children</code> 是 parent 传给 child 的占位 JSX/TSX 内容。" data-en="<code>children</code> is placeholder JSX/TSX content passed from a parent to a child."><code>children</code> 是 parent 传给 child 的占位 JSX/TSX 内容。</li><li data-zh="<code>return()</code> 只能返回一个外层元素（其内可含其他元素/组件）；不想产生额外 DOM 包装时用 React Fragment：<code>&lt;&gt;...&lt;/&gt;</code>。若 return 内容只有一行，圆括号可以省略。" data-en="<code>return()</code> can return one outer element (which may contain other elements/components); use a React Fragment, <code>&lt;&gt;...&lt;/&gt;</code>, when no extra DOM wrapper is wanted. When return has only one line, its parentheses may be omitted."><code>return()</code> 只能返回一个外层元素（其内可含其他元素/组件）；不想产生额外 DOM 包装时用 React Fragment：<code>&lt;&gt;...&lt;/&gt;</code>。若 return 内容只有一行，圆括号可以省略。</li></ul>
+</section>
+<section id="tsx" data-section>
+<h2>03 JSX / TSX</h2>
+<h3 data-zh="TSX 与 HTML 的关键差异" data-en="Key TSX versus HTML differences">TSX 与 HTML 的关键差异</h3>
+<p data-zh="TSX 让标签、CSS、JS 和 TypeScript 类型在组件文件协作；这里 TypeScript 是“JS + 类型声明”。" data-en="TSX lets tags, CSS, JS, and TypeScript types cooperate in a component file; here TypeScript is “JS + type declarations.”">TSX 让标签、CSS、JS 和 TypeScript 类型在组件文件协作；这里 TypeScript 是“JS + 类型声明”。</p>
+<table class="compare"><thead><tr><th>HTML</th><th>JSX / TSX</th><th data-zh="含义" data-en="Meaning">含义</th></tr></thead><tbody><tr><td><code>class</code></td><td><code>className</code></td><td data-zh="使用 JSX/TSX 属性名。" data-en="Use the JSX/TSX attribute name.">使用 JSX/TSX 属性名。</td></tr><tr><td><code>maxlength</code></td><td><code>maxLength</code></td><td data-zh="属性使用 camelCase。" data-en="Attributes use camelCase.">属性使用 camelCase。</td></tr><tr><td>style string</td><td><code>style={{color: 'blue'}}</code> object</td><td data-zh="内联样式改为 object。" data-en="Inline styles become an object.">内联样式改为 object。</td></tr><tr><td><code>onclick=&quot;fn()&quot;</code></td><td><code>onClick={fn}</code></td><td data-zh="传函数引用。" data-en="Pass a function reference.">传函数引用。</td></tr><tr><td><code>&lt;!-- --&gt;</code></td><td><code>{/* */}</code></td><td data-zh="使用 JSX/TSX 注释语法。" data-en="Use JSX/TSX comment syntax.">使用 JSX/TSX 注释语法。</td></tr><tr><td><code>&lt;img&gt;</code></td><td><code>&lt;img /&gt;</code></td><td data-zh="自闭合标签必须写成自闭合形式。" data-en="Self-closing tags must use the self-closing form.">自闭合标签必须写成自闭合形式。</td></tr></tbody></table>
+<div class="card warning">
+<strong data-zh="常见错误：事件处理提前执行" data-en="Common mistake: handler runs early">常见错误：事件处理提前执行</strong>
+<span data-zh="onClick={handleClick()} 会在渲染时调用；用 onClick={handleClick} 传引用。匿名写法可为 onClick={() =&gt; console.log('Hello World!')}。" data-en="onClick={handleClick()} calls the handler while rendering; use onClick={handleClick} to pass the reference. An anonymous form is onClick={() =&gt; console.log('Hello World!')}. ">onClick={handleClick()} 会在渲染时调用；用 onClick={handleClick} 传引用。匿名写法可为 onClick={() =&gt; console.log('Hello World!')}。</span>
+</div>
+</section>
+<section id="style" data-section>
+<h2 data-zh="04 样式与组件组织" data-en="04 Styling and component organization">04 样式与组件组织</h2>
+<h3 data-zh="组件文件与命名" data-en="Component files and naming">组件文件与命名</h3>
+<ul><li data-zh="组件必须先 <code>export</code> 才能被 <code>import</code>；遵循单一职责时，一个文件只有一个主要组件，常用 <code>export default</code>。" data-en="A component must be <code>export</code>ed before it can be <code>import</code>ed. Under single responsibility, a file with one main component often uses <code>export default</code>.">组件必须先 <code>export</code> 才能被 <code>import</code>；遵循单一职责时，一个文件只有一个主要组件，常用 <code>export default</code>。</li><li data-zh="课程命名约定：组件文件、函数和功能变量首字母大写，文件名与组件名对应，例如 <code>Sample.tsx</code> 包含 <code>Sample</code>；小写会被 React 当成普通 HTML 标签。" data-en="The course naming convention capitalizes component files, functions, and functional variables, and a file corresponds to its component name, for example <code>Sample.tsx</code> contains <code>Sample</code>; lowercase is treated by React as an ordinary HTML tag.">课程命名约定：组件文件、函数和功能变量首字母大写，文件名与组件名对应，例如 <code>Sample.tsx</code> 包含 <code>Sample</code>；小写会被 React 当成普通 HTML 标签。</li></ul>
+<h3>styled-components</h3>
+<p data-zh="styled-components 是本学期会使用的 CSS-in-JS library；名字首字母大写，反引号中的 string interpolation 写 CSS。" data-en="styled-components is the CSS-in-JS library used this semester; its name starts capitalized and CSS goes in backtick string interpolation.">styled-components 是本学期会使用的 CSS-in-JS library；名字首字母大写，反引号中的 string interpolation 写 CSS。</p>
+<pre>
+<code>const StyledHeader = styled.h1`
+  color: blueviolet;
+`;</code>
+</pre>
+</section>
+<section id="project" data-section>
+<h2 data-zh="05 Vite 项目与文件职责" data-en="05 Vite project and file responsibilities">05 Vite 项目与文件职责</h2>
+<h3 data-zh="课程环境与创建流程" data-en="Course environment and creation flow">课程环境与创建流程</h3>
+<p data-zh="课程环境需要全局安装的 Node.js（不是 Java JRE）和 Vite；讲义列出按平台更新全局 npm 的命令，执行前应确认课程和本机要求。项目可在 Terminal/CMD 或 IDE 中创建。" data-en="The course environment needs globally installed Node.js (not Java JRE) and Vite; the lecture lists a platform-specific command for updating global npm, whose course and local-machine requirement should be confirmed before running it. A project can be created in Terminal/CMD or an IDE.">课程环境需要全局安装的 Node.js（不是 Java JRE）和 Vite；讲义列出按平台更新全局 npm 的命令，执行前应确认课程和本机要求。项目可在 Terminal/CMD 或 IDE 中创建。</p>
+<ol><li data-zh="<code>npm create vite@latest</code>；项目名使用 spinal-case，例如 <code>mp-2</code>。" data-en="Run <code>npm create vite@latest</code>; use a spinal-case project name, for example <code>mp-2</code>."><code>npm create vite@latest</code>；项目名使用 spinal-case，例如 <code>mp-2</code>。</li><li data-zh="选择 React，再选择 TypeScript + SWC（Node.js compiler）。" data-en="Choose React, then TypeScript + SWC (a Node.js compiler).">选择 React，再选择 TypeScript + SWC（Node.js compiler）。</li><li data-zh="<code>cd mp-2</code> → <code>npm install</code> → <code>npm run dev</code>。" data-en="Run <code>cd mp-2</code> → <code>npm install</code> → <code>npm run dev</code>."><code>cd mp-2</code> → <code>npm install</code> → <code>npm run dev</code>。</li></ol>
+<h3 data-zh="清理与入口文件" data-en="Cleanup and entry files">清理与入口文件</h3>
+<ul><li data-zh="Vite 默认文件（如 <code>vite.svg</code>、<code>react.svg</code>、<code>App.css</code>）及其引用可删除；每删一步重跑，防止漏掉引用。" data-en="Default Vite files (such as <code>vite.svg</code>, <code>react.svg</code>, and <code>App.css</code>) and their references can be removed; rerun after each deletion to avoid a missing reference.">Vite 默认文件（如 <code>vite.svg</code>、<code>react.svg</code>、<code>App.css</code>）及其引用可删除；每删一步重跑，防止漏掉引用。</li><li data-zh="<code>index.html</code> 保留 boilerplate/root；<code>main.tsx</code> import App 并 <code>createRoot(...).render(&lt;App /&gt;)</code>；<code>App.tsx</code> 是主组件。" data-en="<code>index.html</code> keeps boilerplate/root; <code>main.tsx</code> imports App and calls <code>createRoot(...).render(&lt;App /&gt;)</code>; <code>App.tsx</code> is the main component."><code>index.html</code> 保留 boilerplate/root；<code>main.tsx</code> import App 并 <code>createRoot(...).render(&lt;App /&gt;)</code>；<code>App.tsx</code> 是主组件。</li></ul>
+<h3 data-zh="项目文件职责" data-en="Project file responsibilities">项目文件职责</h3>
+<table class="compare"><thead><tr><th data-zh="文件" data-en="File">文件</th><th data-zh="课程中的职责" data-en="Course responsibility">课程中的职责</th></tr></thead><tbody><tr><td><code>package.json</code></td><td data-zh="项目 manifest：details、dependencies、scripts、configuration。" data-en="Project manifest: details, dependencies, scripts, configuration.">项目 manifest：details、dependencies、scripts、configuration。</td></tr><tr><td><code>node_modules/</code></td><td data-zh="自动管理的 packages；不要上传/commit 到 GitHub。" data-en="Auto-managed packages; never upload/commit them to GitHub.">自动管理的 packages；不要上传/commit 到 GitHub。</td></tr><tr><td><code>eslint.config.js</code></td><td data-zh="ESLint rules/environment/plugins；错误不一定会阻止 compilation。" data-en="ESLint rules/environment/plugins; an error need not stop compilation.">ESLint rules/environment/plugins；错误不一定会阻止 compilation。</td></tr><tr><td><code>public/</code></td><td data-zh="静态 images、fonts、icons；可由 URL 访问，不经 build 处理。" data-en="Static images, fonts, icons; URL-accessible, not build-processed.">静态 images、fonts、icons；可由 URL 访问，不经 build 处理。</td></tr><tr><td><code>README.md</code></td><td data-zh="项目 documentation；课程说要保持最新。" data-en="Project documentation; the course says to keep it current.">项目 documentation；课程说要保持最新。</td></tr></tbody></table>
+<div class="card supp"><strong data-zh="课程后续与 Extra Credit" data-en="Course follow-up and Extra Credit">课程后续与 Extra Credit</strong><span data-zh="课程说明 commenting 和 logging 会在第 5 周简要覆盖。若做 Extra Credit，可从讲义尚未覆盖的 Vite 文件或文件夹中选一个，研究后向课堂说明。" data-en="The course says commenting and logging will be briefly covered in week 5. For Extra Credit, choose a Vite file or folder not yet covered in the lecture, research it, and explain it to the class.">课程说明 commenting 和 logging 会在第 5 周简要覆盖。若做 Extra Credit，可从讲义尚未覆盖的 Vite 文件或文件夹中选一个，研究后向课堂说明。</span></div>
+</section>
+<section id="data" data-section>
+<h2 data-zh="06 useState、useEffect 与 API" data-en="06 useState, useEffect, and API">06 useState、useEffect 与 API</h2>
+<pre>
+<code>const [numArtworks, setNumArtworks] = useState(5);
+const [artworks, setArtworks] = useState&lt;ArtworkProps[]&gt;([]);
+useEffect(() =&gt; { async function fetchArtworks() {
+  const response = await fetch(`...artworks?limit=${numArtworks}`);
+  const json = await response.json(); setArtworks(json.data);
+} fetchArtworks(); }, [numArtworks]);</code>
+</pre>
+<pre data-zh="input 改变 → setNumArtworks(Number(e.target.value))&#10; ↓&#10;numArtworks 改变 → useEffect 再请求&#10; ↓&#10;response.json() → setArtworks(json.data)&#10; ↓&#10;artworks.map(...) → 一个 ArtworkPreview / artwork" data-en="input changes → setNumArtworks(Number(e.target.value))&#10; ↓&#10;numArtworks changes → useEffect requests again&#10; ↓&#10;response.json() → setArtworks(json.data)&#10; ↓&#10;artworks.map(...) → one ArtworkPreview / artwork">
+<code>input 改变 → setNumArtworks(Number(e.target.value))
+ ↓
+numArtworks 改变 → useEffect 再请求
+ ↓
+response.json() → setArtworks(json.data)
+ ↓
+artworks.map(...) → 一个 ArtworkPreview / artwork</code>
+</pre>
+<h3 data-zh="State、effect 与渲染各做什么" data-en="What state, effect, and rendering each do">State、effect 与渲染各做什么</h3>
+<ul><li data-zh="<code>useState</code> 给当前 state 与 setter；此例初始数量为 <code>5</code>、列表为空。" data-en="<code>useState</code> supplies current state and setter; here number starts at <code>5</code> and the list is empty."><code>useState</code> 给当前 state 与 setter；此例初始数量为 <code>5</code>、列表为空。</li><li data-zh="<code>useEffect</code> 在 <code>numArtworks</code> 改变时重新 GET。" data-en="<code>useEffect</code> GETs again when <code>numArtworks</code> changes."><code>useEffect</code> 在 <code>numArtworks</code> 改变时重新 GET。</li><li data-zh="<code>map</code> 用匿名函数返回 <code>ArtworkPreview</code>，<code>{...artwork}</code> 展开对象字段为 props。" data-en="<code>map</code> returns <code>ArtworkPreview</code> with an anonymous function, and <code>{...artwork}</code> spreads fields into props."><code>map</code> 用匿名函数返回 <code>ArtworkPreview</code>，<code>{...artwork}</code> 展开对象字段为 props。</li></ul>
+<h3 data-zh="课程任务顺序" data-en="Course task order">课程任务顺序</h3>
+<ol><li data-zh="初始化。" data-en="Initialize.">初始化。</li><li data-zh="创建 <code>ArtworksListContent</code>，用 input 观察 state。" data-en="Create <code>ArtworksListContent</code> and observe state with an input.">创建 <code>ArtworksListContent</code>，用 input 观察 state。</li><li data-zh="定义 <code>ArtworkProps</code>，建并 mock-test <code>ArtworkPreview</code>。" data-en="Define <code>ArtworkProps</code>, then build and mock-test <code>ArtworkPreview</code>.">定义 <code>ArtworkProps</code>，建并 mock-test <code>ArtworkPreview</code>。</li><li data-zh="按 <code>limit</code> GET Chicago Art Institute API、解析并用 map 显示。" data-en="GET the Chicago Art Institute API by <code>limit</code>, parse, and display with map.">按 <code>limit</code> GET Chicago Art Institute API、解析并用 map 显示。</li></ol>
+<div class="card supp"><strong data-zh="Optional work" data-en="Optional work">Optional work</strong><span data-zh="错误处理、只请求所需字段和过滤仍是 optional work。" data-en="Error handling, requesting only needed fields, and filtering remain optional work.">错误处理、只请求所需字段和过滤仍是 optional work。</span></div>
+</section>
+</main>
+</div>
+<script src="../assets/js/notes.js">
+</script>
+</body>
+</html>

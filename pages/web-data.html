@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web 数据笔记</title>
+<link rel="stylesheet" href="../assets/css/notes.css">
+</head>
+<body data-title data-zh="Web 数据笔记｜Siyu 的前端知识库" data-en="Web Data Notes | Siyu's Frontend Knowledge Base">
+<div class="progress">
+</div>
+<a class="skip" href="#main" data-zh="跳到内容" data-en="Skip to content">跳到内容</a>
+<header class="topbar">
+<a class="brand" href="../index.html">Siyu’s <span>Frontend KB</span>
+</a>
+<nav class="tabs" data-zh-aria-label="主导航" data-en-aria-label="Primary navigation" aria-label="主导航">
+<a href="../index.html" data-zh="首页" data-en="Home">首页</a>
+<a href="html.html">HTML</a>
+<a href="css.html">CSS</a>
+<a href="javascript.html">JavaScript</a>
+<a aria-current="page" href="web-data.html" data-zh="Web 数据" data-en="Web Data">Web 数据</a>
+<a href="react.html">React</a>
+<a href="git.html">Git</a>
+</nav>
+<div class="lang">
+<button data-lang="zh">中文</button>
+<button data-lang="en">EN</button>
+</div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+<h2>WEB DATA</h2>
+<nav data-zh-aria-label="Web 数据章节" data-en-aria-label="Web Data sections" aria-label="Web 数据章节">
+<a href="#map" data-zh="01 远程数据地图" data-en="01 Remote data map">01 远程数据地图</a>
+<a href="#json">02 JSON</a>
+<a href="#http" data-zh="03 HTTP 与 CRUD" data-en="03 HTTP and CRUD">03 HTTP 与 CRUD</a>
+<a href="#async" data-zh="04 fetch 与 Promise" data-en="04 fetch and Promises">04 fetch 与 Promise</a>
+<a href="#response" data-zh="05 响应元信息" data-en="05 Response metadata">05 响应元信息</a>
+<a href="#practice" data-zh="06 课程实操与安全" data-en="06 Course practice and safety">06 课程实操与安全</a>
+</nav>
+</aside>
+<main id="main">
+<header class="hero">
+<h1 data-zh="Web 数据：JSON、HTTP 与 fetch" data-en="Web Data: JSON, HTTP, and fetch">Web 数据：JSON、HTTP 与 fetch</h1>
+<p data-zh="CS303 Lec-4/5、9 月 28 日课堂笔记中目前学过的远程数据交换链路。" data-en="The remote-data exchange chain currently studied in CS303 Lec-4/5 and the September 28 class note.">CS303 Lec-4/5、9 月 28 日课堂笔记中目前学过的远程数据交换链路。</p>
+</header>
+<div class="search-wrap">
+<input id="site-search" type="search" data-zh-placeholder="搜索 JSON、GET、headers、Promise" data-en-placeholder="Search JSON, GET, headers, Promise">
+<p id="search-result" class="search-result">
+</p>
+</div>
+<section id="map" data-section>
+<h2 data-zh="01 远程数据的一整条链路" data-en="01 The complete remote-data chain">01 远程数据的一整条链路</h2>
+<div class="card course">
+<strong data-zh="快速理解" data-en="Quick understanding">快速理解</strong>
+<span data-zh="远程数据不是一个单独的 API 名词：JSON 说明数据形状，HTTP 说明请求，fetch() 启动网络工作，Promise 表示未来结果。" data-en="Remote data is not one isolated API term: JSON describes data shape, HTTP describes the request, fetch() starts network work, and a Promise represents the future result.">远程数据不是一个单独的 API 名词：JSON 说明数据形状，HTTP 说明请求，fetch() 启动网络工作，Promise 表示未来结果。</span>
+</div>
+<pre data-zh="网页需要远程数据&#10; ↓&#10;JSON — 数据是什么形状？&#10; ↓&#10;HTTP — 要做什么请求？&#10; ↓&#10;fetch() — JS 怎样发起请求？&#10; ↓&#10;Promise 立刻出现；浏览器后台做网络工作&#10; ↓&#10;pending → fulfilled / rejected&#10; ↓&#10;.then() / .catch() 或 async / await&#10; ↓&#10;Response.json()、Headers、Status Code → 可用 JS 数据" data-en="A webpage needs remote data&#10; ↓&#10;JSON — What shape is the data?&#10; ↓&#10;HTTP — What request is made?&#10; ↓&#10;fetch() — How does JS start it?&#10; ↓&#10;A Promise appears immediately; the browser does network work&#10; ↓&#10;pending → fulfilled / rejected&#10; ↓&#10;.then() / .catch() or async / await&#10; ↓&#10;Response.json(), Headers, Status Code → usable JS data">
+<code>网页需要远程数据
+ ↓
+JSON — 数据是什么形状？
+ ↓
+HTTP — 要做什么请求？
+ ↓
+fetch() — JS 怎样发起请求？
+ ↓
+Promise 立刻出现；浏览器后台做网络工作
+ ↓
+pending → fulfilled / rejected
+ ↓
+.then() / .catch() 或 async / await
+ ↓
+Response.json()、Headers、Status Code → 可用 JS 数据</code>
+</pre>
+<p data-zh="它们不是独立术语：JSON 定义传输的数据形状，HTTP 定义 client/server 的对话，fetch() 是 JS 入口，Promise 代表尚未完成的结果，而 Response、headers 和 status 说明结果及其元信息。" data-en="These are not isolated terms: JSON defines transmitted data shape, HTTP defines the client/server conversation, fetch() is the JS entry point, a Promise represents an unfinished result, and Response, headers, and status describe that result and its metadata.">它们不是独立术语：JSON 定义传输的数据形状，HTTP 定义 client/server 的对话，fetch() 是 JS 入口，Promise 代表尚未完成的结果，而 Response、headers 和 status 说明结果及其元信息。</p>
+</section>
+<section id="json" data-section>
+<h2>02 JSON</h2>
+<h3 data-zh="JSON 与 JavaScript object" data-en="JSON and JavaScript objects">JSON 与 JavaScript object</h3>
+<p data-zh="JSON（JavaScript Object Notation）与 JavaScript object 都可写成 key: value 字段集合，但用途不同：object 是程序运行中的值；JSON 是保存或交换数据的文本。JSON 的 key 必须用双引号；不能含 function、undefined 或 class instance，而 object 可以。" data-en="JSON (JavaScript Object Notation) and a JavaScript object can both look like key:value collections, but serve different purposes: an object is a value in a running program; JSON is text for storing or exchanging data. JSON keys must use double quotes and it cannot contain functions, undefined, or class instances, while an object can.">JSON（JavaScript Object Notation）与 JavaScript object 都可写成 key: value 字段集合，但用途不同：object 是程序运行中的值；JSON 是保存或交换数据的文本。JSON 的 key 必须用双引号；不能含 function、undefined 或 class instance，而 object 可以。</p>
+<table class="compare json-compare">
+<thead><tr><th data-zh="比较点" data-en="Compare">比较点</th><th>JSON</th><th>JavaScript object</th></tr></thead>
+<tbody><tr><td data-zh="主要用途" data-en="Primary use">主要用途</td><td data-zh="保存或交换数据的文本" data-en="text for storing or exchanging data">保存或交换数据的文本</td><td data-zh="程序运行中的值" data-en="a value in a running program">程序运行中的值</td></tr><tr><td data-zh="key 写法" data-en="Key syntax">key 写法</td><td data-zh="必须使用双引号" data-en="must use double quotes">必须使用双引号</td><td data-zh="可按 JavaScript object 语法书写" data-en="can use JavaScript object syntax">可按 JavaScript object 语法书写</td></tr><tr><td data-zh="可含内容" data-en="Can contain">可含内容</td><td data-zh="不含 function、undefined 或 class instance" data-en="not functions, undefined, or class instances">不含 function、undefined 或 class instance</td><td data-zh="可含这些程序运行时的值" data-en="can contain those runtime values">可含这些程序运行时的值</td></tr></tbody>
+</table>
+<h3 data-zh="课程列出的价值与用途" data-en="Course-listed benefits and uses">课程列出的价值与用途</h3>
+<ul><li data-zh="轻量、人易读改、机器易解析/生成、跨语言/平台、传输安全。" data-en="Lightweight, human-readable/editable, easy for machines to parse/generate, cross-language/platform, and safe to transmit.">轻量、人易读改、机器易解析/生成、跨语言/平台、传输安全。</li><li data-zh="可嵌套对象和数组、流式分段处理大数据、无需预先固定 schema 而新增字段。" data-en="It can nest objects and arrays, stream large data in pieces, and add fields without a pre-fixed schema.">可嵌套对象和数组、流式分段处理大数据、无需预先固定 schema 而新增字段。</li><li data-zh="常见于配置、小项目的轻量数据存储和 API 服务器数据。" data-en="It is common in configuration, lightweight project data storage, and API server data.">常见于配置、小项目的轻量数据存储和 API 服务器数据。</li></ul>
+<h3 data-zh="JSON 与 object 之间的转换" data-en="Converting between JSON and objects">JSON 与 object 之间的转换</h3>
+<pre>
+<code>const object = JSON.parse('{"name":"Siyu"}'); // JSON → object
+const text = JSON.stringify(object);            // object → JSON</code>
+</pre>
+</section>
+<section id="http" data-section>
+<h2>03 HTTP 与 CRUD</h2>
+<h3 data-zh="HTTP 请求要表达什么" data-en="What an HTTP request expresses">HTTP 请求要表达什么</h3>
+<p data-zh="HTTP（Hypertext Transfer Protocol）是浏览器等 client 和 server 交换 request/response、传输数据的基础通信协议。method 表明这次想对数据做什么；<code>fetch()</code> 未设置 method 时默认 <code>GET</code>。" data-en="HTTP (Hypertext Transfer Protocol) is the foundational protocol through which clients such as browsers and servers exchange requests/responses and transfer data. A method says what the request does; <code>fetch()</code> defaults to <code>GET</code> if no method is set.">HTTP（Hypertext Transfer Protocol）是浏览器等 client 和 server 交换 request/response、传输数据的基础通信协议。method 表明这次想对数据做什么；<code>fetch()</code> 未设置 method 时默认 <code>GET</code>。</p>
+<h3>CRUD → HTTP</h3>
+<table class="compare"><thead><tr><th>CRUD</th><th>HTTP</th></tr></thead><tbody><tr><td>Create</td><td><code>POST</code></td></tr><tr><td>Read</td><td><code>GET</code></td></tr><tr><td>Update</td><td><code>PUT</code></td></tr><tr><td>Delete</td><td><code>DELETE</code></td></tr></tbody></table>
+</section>
+<section id="async" data-section>
+<h2 data-zh="04 fetch()、Promise 与异步" data-en="04 fetch(), Promises, and async">04 fetch()、Promise 与异步</h2>
+<h3 data-zh="fetch() 立刻给什么" data-en="What fetch() returns immediately">fetch() 立刻给什么</h3>
+<p data-zh="网络需要时间，JS 不应傻等。调用 <code>fetch()</code> 时，它同步地、立刻返回一个 pending Promise；真正的网络请求交给浏览器 Web API 在后台处理。" data-en="Networking takes time, so JS should not wait idly. Calling <code>fetch()</code> synchronously and immediately returns a pending Promise; the browser Web API handles the actual network request in the background.">网络需要时间，JS 不应傻等。调用 <code>fetch()</code> 时，它同步地、立刻返回一个 pending Promise；真正的网络请求交给浏览器 Web API 在后台处理。</p>
+<div class="card supp"><strong data-zh="Promise 的状态" data-en="Promise state">Promise 的状态</strong><span data-zh="Promise 不是 API 完成后才创建：它先作为“空壳”存在，结果回来后才变为 fulfilled，失败则变 rejected。" data-en="A Promise is not created after the API finishes: it first exists as an empty shell, then becomes fulfilled when a result returns or rejected on failure.">Promise 不是 API 完成后才创建：它先作为“空壳”存在，结果回来后才变为 fulfilled，失败则变 rejected。</span></div>
+<pre data-zh="1. fetch()&#10; ↓&#10;2. 立刻返回 pending Promise；当前 JS 继续&#10; ↓&#10;3. 浏览器 Web API 请求服务器&#10; ↓&#10;4. 结果回来 → Promise fulfilled / rejected&#10; ↓&#10;5. .then()/.catch() 或 await 后的处理运行" data-en="1. fetch()&#10; ↓&#10;2. Immediately returns a pending Promise; current JS continues&#10; ↓&#10;3. Browser Web API requests the server&#10; ↓&#10;4. Result returns → Promise fulfilled / rejected&#10; ↓&#10;5. Processing after .then()/.catch() or await runs">
+<code>1. fetch()
+ ↓
+2. 立刻返回 pending Promise；当前 JS 继续
+ ↓
+3. 浏览器 Web API 请求服务器
+ ↓
+4. 结果回来 → Promise fulfilled / rejected
+ ↓
+5. .then()/.catch() 或 await 后的处理运行</code>
+</pre>
+<figure class="knowledge-diagram fetch-lifecycle" aria-labelledby="fetch-lifecycle-title">
+<figcaption id="fetch-lifecycle-title"><span>FIG. WEB_04.01</span><strong data-zh="fetch() 的请求生命周期" data-en="The request lifecycle of fetch()">fetch() 的请求生命周期</strong></figcaption>
+<div class="diagram-stage async-flow">
+<div class="diagram-node"><b>01</b><strong>fetch()</strong><small data-zh="JS 立即得到 Promise" data-en="JS immediately gets a Promise">JS 立即得到 Promise</small></div>
+<i>↓</i>
+<div class="diagram-node"><b>02</b><strong>pending</strong><small data-zh="浏览器 Web API 在后台请求" data-en="browser Web API requests in the background">浏览器 Web API 在后台请求</small></div>
+<i>↓</i>
+<div class="diagram-node"><b>03</b><strong>fulfilled / rejected</strong><small data-zh="结果回来或请求失败" data-en="a result returns or the request fails">结果回来或请求失败</small></div>
+<i>↓</i>
+<div class="diagram-node"><b>04</b><strong>.then() / .catch() or await</strong><small data-zh="后续结果处理运行" data-en="follow-up result handling runs">后续结果处理运行</small></div>
+</div>
+</figure>
+<h3 data-zh="结果回来后如何继续" data-en="How work continues when a result returns">结果回来后如何继续</h3>
+<ul><li data-zh="结果就绪后，浏览器把后续工作放入 microtask queue；Event Loop 在 Call Stack 空闲时让它执行。" data-en="When ready, the browser queues follow-up work in the microtask queue; the Event Loop lets it run once the Call Stack is free.">结果就绪后，浏览器把后续工作放入 microtask queue；Event Loop 在 Call Stack 空闲时让它执行。</li><li data-zh="JS 并非同时做两件事，而是把耗时工作交给浏览器，之后再继续结果处理。" data-en="JS is not doing two things at once: it delegates slow work to the browser, then resumes result handling.">JS 并非同时做两件事，而是把耗时工作交给浏览器，之后再继续结果处理。</li><li data-zh="<code>.then()/.catch()</code> 把成功/失败回调挂在 Promise 上；<code>async</code> 允许函数内使用 <code>await</code>，<code>await</code> 让该 async 函数的后续代码等结果后再继续。两种写法底层都是 Promise。" data-en="<code>.then()/.catch()</code> attach success/failure callbacks to a Promise; <code>async</code> permits <code>await</code> inside a function, and <code>await</code> makes later code in that async function continue after the result. Both forms use Promises underneath."><code>.then()/.catch()</code> 把成功/失败回调挂在 Promise 上；<code>async</code> 允许函数内使用 <code>await</code>，<code>await</code> 让该 async 函数的后续代码等结果后再继续。两种写法底层都是 Promise。</li></ul>
+<h3 data-zh="await 读取结果" data-en="Using await to read a result">await 读取结果</h3>
+<pre>
+<code>async function getData() {
+  const res = await fetch(BIN_URL);
+  console.log("这行代码不会提前跑");
+  const data = await res.json(); // .json() 也是异步的
+}</code>
+</pre>
+</section>
+<section id="response" data-section>
+<h2 data-zh="05 Response、Headers 与 Status" data-en="05 Response, Headers, and Status">05 Response、Headers 与 Status</h2>
+<h3 data-zh="读取 response body" data-en="Reading a response body">读取 response body</h3>
+<p data-zh="<code>fetch()</code> 返回 response 后，<code>res.json()</code> 才读取并解析 JSON；它也是异步的，所以同样 <code>await</code>。" data-en="After <code>fetch()</code> returns a response, <code>res.json()</code> reads and parses JSON; it is asynchronous too, so await it."><code>fetch()</code> 返回 response 后，<code>res.json()</code> 才读取并解析 JSON；它也是异步的，所以同样 <code>await</code>。</p>
+<h3>Headers</h3>
+<p data-zh="headers 是 request/response 的元数据：request headers 给服务器上下文，如 API key；response headers 描述返回内容。" data-en="Headers are request/response metadata: request headers give server context, such as an API key; response headers describe returned content.">headers 是 request/response 的元数据：request headers 给服务器上下文，如 API key；response headers 描述返回内容。</p>
+<h3 data-zh="Status code 范围" data-en="Status-code ranges">Status code 范围</h3>
+<table class="compare"><thead><tr><th data-zh="范围" data-en="Range">范围</th><th data-zh="课程中的结果类别" data-en="Course result category">课程中的结果类别</th></tr></thead><tbody><tr><td>100–199</td><td>informational</td></tr><tr><td>200–299</td><td>successful</td></tr><tr><td>300–399</td><td>redirection</td></tr><tr><td>400–499</td><td>client errors</td></tr><tr><td>500–599</td><td>server errors</td></tr></tbody></table>
+<p data-zh="可看 <code>res.status</code> 或 DevTools Network。" data-en="Inspect <code>res.status</code> or DevTools Network.">可看 <code>res.status</code> 或 DevTools Network。</p>
+</section>
+<section id="practice" data-section>
+<h2 data-zh="06 课程实操与安全" data-en="06 Course practice and safety">06 课程实操与安全</h2>
+<h3 data-zh="jsonbin.io 课堂实操" data-en="jsonbin.io course practice">jsonbin.io 课堂实操</h3>
+<p data-zh="课程以 jsonbin.io 作临时 JSON API server：创建 Bin、保存 mock JSON、复制 URL 和 key。" data-en="The course uses jsonbin.io as a temporary JSON API server: create a Bin, save mock JSON, and copy the URL and key.">课程以 jsonbin.io 作临时 JSON API server：创建 Bin、保存 mock JSON、复制 URL 和 key。</p>
+<ul><li data-zh="<code>GET</code> 把 key 放在 headers 并读取 <code>res.json()</code>。" data-en="<code>GET</code> sends the key in headers and reads <code>res.json()</code>."><code>GET</code> 把 key 放在 headers 并读取 <code>res.json()</code>。</li><li data-zh="<code>POST</code> 增加 method、Content-Type 和 <code>JSON.stringify(newRecord)</code> body。" data-en="<code>POST</code> adds method, Content-Type, and a <code>JSON.stringify(newRecord)</code> body."><code>POST</code> 增加 method、Content-Type 和 <code>JSON.stringify(newRecord)</code> body。</li><li data-zh="<code>PUT</code> 近似 POST；<code>DELETE</code> 没有 body。" data-en="<code>PUT</code> resembles POST; <code>DELETE</code> has no body."><code>PUT</code> 近似 POST；<code>DELETE</code> 没有 body。</li></ul>
+<h3 data-zh="React discussion 的真实 GET" data-en="The React discussion’s real GET">React discussion 的真实 GET</h3>
+<p data-zh="真实 GET 把 <code>numArtworks</code> 放进 <code>limit</code> query parameter，解析后以 <code>setArtworks(json.data)</code> 保存，再由 <code>map</code> 显示。" data-en="The real GET puts <code>numArtworks</code> in the <code>limit</code> query parameter, saves parsed data with <code>setArtworks(json.data)</code>, then displays it with <code>map</code>.">真实 GET 把 <code>numArtworks</code> 放进 <code>limit</code> query parameter，解析后以 <code>setArtworks(json.data)</code> 保存，再由 <code>map</code> 显示。</p>
+<div class="card warning">
+<strong data-zh="CS303 / MP-2 安全红线" data-en="CS303 / MP-2 safety boundary">CS303 / MP-2 安全红线</strong>
+<span data-zh="前端只用 GET；不要把 POST、PUT、DELETE 和 API_KEY 放在浏览器源码，因为用户可查看 key。服务端写入留待后续课程。" data-en="Use GET only from the frontend; do not put POST, PUT, DELETE, and an API_KEY in browser source because users can inspect the key. Server-side writes are for later coursework.">前端只用 GET；不要把 POST、PUT、DELETE 和 API_KEY 放在浏览器源码，因为用户可查看 key。服务端写入留待后续课程。</span>
+</div>
+<div class="card supp">
+<strong data-zh="更准确的课程简写" data-en="More accurate course shorthand">更准确的课程简写</strong>
+<span data-zh="“大于 299 没按预期走通”是课堂调试简写；200–299 都属成功范围（含 299），300–399 是重定向，不必然是错误。先看具体 status 和场景。" data-en="“Above 299 did not go as expected” is course debugging shorthand; 200–299 is all successful (including 299), while 300–399 is redirection, not automatically an error. Check the specific status and context.">“大于 299 没按预期走通”是课堂调试简写；200–299 都属成功范围（含 299），300–399 是重定向，不必然是错误。先看具体 status 和场景。</span>
+</div>
+</section>
+</main>
+</div>
+<script src="../assets/js/notes.js">
+</script>
+</body>
+</html>

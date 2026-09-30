@@ -1,23 +1,21 @@
 # Project Status
 
-Last updated: 2026-09-25
+## Recovery cache
 
-| Phase / area | Current state |
+**Purpose:** a compact current-state view, not history. Read with `AGENTS.md` before task routing.
+
+| Area | Current state |
 |---|---|
-| Repository architecture | **COMPLETE** |
-| Source coverage | **COMPLETE** |
-| Content reconstruction | **COMPLETE** |
-| Bilingual reconstruction | **COMPLETE** |
-| Teaching architecture | **ESTABLISHED** — source-led teaching structure, diagrams, and Learning Instruments are in place for the Foundation V1 scope. |
-| UI / UX / visual system | **ESTABLISHED — DESIGN PHASE CLOSED**. Further visual change requires concrete learner/browser evidence, not routine polishing. |
-| HTML | Source-led reconstruction complete and verified against the registered self-study and CS303 sources. |
-| CSS | Source-led reconstruction complete and verified against the registered self-study and CS303 sources. |
-| JavaScript | Actively learning. The current canonical JavaScript source has been reconstructed and verified; future integration follows source evidence only and must not invent advanced scope. |
-| Git | Beginner/reference reconstruction complete and verified against existing project evidence; it intentionally remains within that scope. |
-| React | No knowledge page yet. The user has begun encountering JSX/components in coursework, but React content is not created during this migration. |
+| Product | Static bilingual frontend learning knowledge base; `file://` compatible |
+| Domains | HTML, CSS, JavaScript, Web Data, React, Git |
+| Architecture | Multi-page notes with shared `assets/css/notes.css` and `assets/js/notes.js` |
+| UI baseline | Foundation V1 technical-editorial / industrial learning system is established; routine ingestion does not redesign it |
+| Mature references | Existing HTML, CSS, JavaScript, and Git pages; use only when a matching pattern is needed |
+| Recent completion | CS303 Sep 28–29 JSON/HTTP and React Components integrated into existing Web Data and React pages |
+| Active work | No active project work recorded |
+| Known issue | Browser-rendered visual QA remains unverified; do not treat static checks as visual evidence |
+| Next likely action | Complete the current task route; a future UI consistency pass requires targeted browser evidence |
 
-## Foundation V1 freeze
+## Boundaries
 
-Knowledge architecture, bilingual architecture, technical-editorial/industrial design language, responsive principles, interactive teaching diagrams, and the Learning Instruments foundation are **ESTABLISHED**. HTML, CSS, JavaScript, and Git form the established initial knowledge base. Future work primarily ingests new learning material through the documented pipeline; it does not reopen design by default.
-
-Optional, non-blocking future asset: a dedicated Git repository/history industrial 3D render. Browser review remains required whenever a future change materially affects visual composition or teaching interaction; this status does not claim a new browser pass.
+Web Data is scoped to studied JSON, HTTP, `fetch`, Promise/async handling, response metadata, and course examples. React is scoped to studied components, TSX, props, styling, Vite workflow, hooks, and GET examples. Do not infer broader curriculum coverage.
